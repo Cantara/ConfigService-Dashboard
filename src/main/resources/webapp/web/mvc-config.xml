@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+    <mvc:default-servlet-handler default-servlet-name="org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler"/>
+
+    <!-- defaultServletName="default"/> -->
+
+
+    <!-- <mvc:resources location="/images/" mapping="/images/**"/> -->
+   <!--  -->
+    <mvc:resources mapping="/images/**" location="/, classpath:/webapp/web/images/" />
+    <mvc:resources mapping="/img/**" location="/, classpath:/webapp/web/img/" />
+    <mvc:resources mapping="/template/**" location="/, classpath:/webapp/web/template/" />
+    <mvc:resources mapping="/favicon.ico" location="/, classpath:/webapp/web/images/favicon.ico" />
+    <mvc:resources mapping="/js/**" location="/, classpath:/webapp/web/js/" />
+	<mvc:resources mapping="/fonts/**" location="/, classpath:/webapp/web/fonts/" />
+    <mvc:resources mapping="/json/**" location="/, classpath:/webapp/web/json/" />
+    <mvc:resources mapping="/ext3/**" location="/, classpath:/webapp/web/ext3/" />
+    <mvc:resources mapping="/css/**" location="/, classpath:/webapp/web/css/" />
+
+
+	<context:component-scan base-package="no.cantara.csdb" />
+
+	<mvc:annotation-driven />
+
+	<bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="classpath:webapp/web/" />
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="cache" value="false" />
+		<property name="suffix" value=".ftl" />
+	</bean>
+</beans>
