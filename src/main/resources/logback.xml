@@ -8,9 +8,9 @@
 
 <!--Daily rolling file appender -->
 <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <File>logs/UserAdminWebApp.log</File>
+    <File>logs/CSDashboard.log</File>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-        <FileNamePattern>logs/UserAdminWebApp-%d{yyyy-MM-dd}.log</FileNamePattern>
+        <FileNamePattern>logs/CSDashboard-%d{yyyy-MM-dd}.log</FileNamePattern>
         <maxHistory>5</maxHistory>
     </rollingPolicy>
     <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">

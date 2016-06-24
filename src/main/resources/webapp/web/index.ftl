@@ -30,7 +30,7 @@
                         <li ng-class="{active: session.activeTab == 'about'}"><a href="#/about">About CS Dash board</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a id="logout" href="/logout">Log out <strong>${userName}</strong></a></li>
+                        <li><a id="logout" href="logout">Log out <strong>${userName}</strong></a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
