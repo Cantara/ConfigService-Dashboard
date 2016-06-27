@@ -1,102 +1,87 @@
+/* app css stylesheet */
+
+html{
+    height:100%;
+}
+
 body {
-	padding-top: 50px;
+    padding: 108px 15px 20px 15px;
+    min-height: 100%;
+    font-size: 13px;
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-weight: 400;
 }
 
-.margin-top {
-	margin-top: 10px;
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
 }
 
-.itemrow:hover {
-	background-color: #eee;
-	cursor: pointer;
+/* styles for validation helpers - start*/
+.field-validation-error {
+    color: #b94a48;
 }
 
-#messageContainer {
-    position: absolute;
-    width: 30%;
-    bottom: 0;
-    right: 0;
-    z-index: 1070;
-}
-#page-content {
-    margin: 30px auto;
-    padding: 1em;
-    max-width: 800px;
-	text-align: center;
+.field-validation-valid {
+    display: none;
 }
 
-/* To-do: Increase width for smaller screen sizes */
-
-
-/* TABLE */
-.table {
-    table-layout: fixed
-}
-td {
-    word-wrap: break-word
-}
-.td-edit-buttons { width: 10em }
-.td-checkbox { width: 2em }
-
-
-/* VIEW TRANSITION ANIMATION */
-
-#mainview.ng-enter,
-#mainview.ng-leave {
-  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.2s;
-     -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.2s;
-       -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.2s;
-          transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.2s;
+input.input-validation-error {
+    border: 1px solid #b94a48;
 }
 
-#mainview.ng-enter {
-  opacity:0;
-  padding-left: 15px;
-  padding-right: 15px;
-  left:50px;
-  width:100%;
-  position:absolute;
-}
-#mainview.ng-enter.ng-enter-active {
-  left:0;
-  opacity:1;
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
 }
 
-#mainview.ng-leave {
-  position:absolute;
-  padding-left: 15px;
-  padding-right: 15px;
-  left:0;
-  width:100%;
-  opacity:1;
-}
-#mainview.ng-leave.ng-leave-active {
-  left:-50px;
-  opacity:0;
+.validation-summary-errors {
+    color: #b94a48;
 }
 
-
-/* DIV/MESSAGE ANIMATION */
-
-.alert.ng-enter,
-.alert.ng-leave
-{
-  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .3s;
-     -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .3s;
-       -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .3s;
-          transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .3s;
+.validation-summary-valid {
+    display: none;
 }
+/* styles for validation helpers - end */
 
-.alert.ng-enter {
-  opacity:0;
+/*styles for top nav bar - start*/
+.navbar-default.top-navbar {
+    background-color: #4eaded;
+    border-color: #4eaded;
 }
+.navbar-default .second-top-nav{
+    background-color: #0088dc !important;
+    height: 0px;
+}
+.navbar-default .second-top-nav a {
+    color: white !important;
+}
+.navbar-default.top-navbar h1 {
+    color: white;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+/*styles for top nav bar - end*/
 
-.alert.ng-enter.ng-enter-active,
-.alert.ng-leave
-{
-  opacity:1;
+/*styles for left nav bar - start*/
+.left-nav-bar {
+    background-color: #1ba2db;
+    min-height: 100%;
+    position: fixed;
+    margin-top: -14px;
+    margin-left:-15px;
 }
+.left-nav-bar a{
+    color:white;
+    text-align:center;
+    width:100%;
+}
+/*styles for left nav bar - end*/
 
-.alert.ng-leave.ng-leave-active {
-  opacity:0;
-}
+/*styles for container - start*/
+
+
+
+/*styles for container - end*/
