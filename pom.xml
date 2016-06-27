@@ -189,7 +189,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>no.cantara.cddb.Main</mainClass>
+                    <mainClass>no.cantara.csdb.Main</mainClass>
                 </configuration>
             </plugin>
             <plugin>
@@ -198,7 +198,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Main-Class>no.cantara.cddb.Main</Main-Class>
+                            <Main-Class>no.cantara.csdb.Main</Main-Class>
                         </manifestEntries>
                     </archive>
                 </configuration>
