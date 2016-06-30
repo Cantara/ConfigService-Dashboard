@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>CS Dashboard</title>
+    <title>ConfigService Dashboard</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/cosmo/bootstrap.min.css" rel="stylesheet" />
@@ -24,7 +24,7 @@
 <div class="navbar navbar-default navbar-fixed-top top-navbar">
     <div class="container-fluid">
         <div class="navbar-header">
-            <div class="navbar-brand">CS Dashboard</div>
+            <div class="navbar-brand">ConfigService Dashboard</div>
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li><a id="logout" href="logout">Log out <strong>${userName}</strong></a></li>
