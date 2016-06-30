@@ -3,7 +3,7 @@
  */
 'use strict';
 
-angular.module('app', ['ngRoute', 'ngSanitize', 'Client', 'Application','ui.bootstrap', 'ngAnimate', 'ngMessages', 'ngResource']);
+angular.module('app', ['ngRoute', 'ngSanitize', 'Client', 'Application', 'ui.bootstrap', 'ngAnimate', 'ngMessages', 'ngResource']);
 
 angular.module('Client', []);
 angular.module('Application', []);

@@ -8,9 +8,7 @@
 
     <mvc:default-servlet-handler default-servlet-name="org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler"/>
 
-    <!-- defaultServletName="default"/> -->
-
-
+    
     <!-- <mvc:resources location="/images/" mapping="/images/**"/> -->
    <!--  -->
     <mvc:resources mapping="/images/**" location="/, classpath:/webapp/web/images/" />
@@ -22,12 +20,16 @@
     <mvc:resources mapping="/json/**" location="/, classpath:/webapp/web/json/" />
     <mvc:resources mapping="/ext3/**" location="/, classpath:/webapp/web/ext3/" />
     <mvc:resources mapping="/css/**" location="/, classpath:/webapp/web/css/" />
+     <mvc:resources mapping="/partials/**" location="/, classpath:/webapp/web/partials/" />
 
 
 	<context:component-scan base-package="no.cantara.csdb" />
 
 	<mvc:annotation-driven />
 
+	
+	
+    
 	<bean id="freemarkerConfig"
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 		<property name="templateLoaderPath" value="classpath:webapp/web/" />

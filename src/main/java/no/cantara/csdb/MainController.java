@@ -2,9 +2,13 @@ package no.cantara.csdb;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
+import no.cantara.csdb.client.ClientSessionDao;
 import no.cantara.csdb.config.ConfigValue;
 import no.cantara.csdb.config.ConstantValue;
 
@@ -14,15 +18,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class MainController {
+
+	@Produces(MediaType.TEXT_HTML + ";charset=utf-8")
+	@RequestMapping("/")
+	public String myapp(HttpServletRequest request, HttpServletResponse response, Model model) {
+		response.setContentType(ConstantValue.HTML_CONTENT_TYPE);
+
+		model.addAttribute("userName", ConfigValue.CONFIGSERVICE_USERNAME);
+
+		return "index";
+	}
 	
-	  @Produces(MediaType.TEXT_HTML + ";charset=utf-8")
-	    @RequestMapping("/")
-	    public String myapp(HttpServletRequest request, HttpServletResponse response, Model model) {
-	        response.setContentType(ConstantValue.HTML_CONTENT_TYPE);
-	       
-	        model.addAttribute("userName", ConfigValue.CONFIGSERVICE_USERNAME);
-	        
-	        return "index";
-	    }
 	
 }

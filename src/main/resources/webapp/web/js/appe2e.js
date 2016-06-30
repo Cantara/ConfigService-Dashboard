@@ -1,0 +1,9 @@
+angular.module('appe2e', ['app', 'ngMockE2E'])
+    .run(function ($httpBackend) {
+
+
+        $httpBackend.whenGET(/^partials\//).passThrough();
+        $httpBackend.whenGET('client/').respond([{"client":{"clientId":"ea15657a-62f4-4db5-a9a6-cc4340d3c708","applicationConfigId":"f9e14326-b9df-46ba-826f-afad3392cf54","autoUpgrade":true},"latestClientHeartbeatData":{"artifactId":"cantara-demo","tags":null,"clientName":"local-jau","configLastChanged":"2016-06-27T22:05:18.994Z","applicationConfigId":"f9e14326-b9df-46ba-826f-afad3392cf54","timeOfContact":"2016-06-29T19:38:32.590Z"}},{"client":{"clientId":"ec30e40a-0c08-47b5-9710-7fcac6926d78","applicationConfigId":"f9e14326-b9df-46ba-826f-afad3392cf54","autoUpgrade":true},"latestClientHeartbeatData":{"artifactId":"cantara-demo","tags":null,"clientName":"local-jau","configLastChanged":"2016-06-27T19:40:18.994Z","applicationConfigId":"f9e14326-b9df-46ba-826f-afad3392cf54","timeOfContact":"2016-06-27T20:00:12.235Z"}},{"client":{"clientId":"bed9e97b-2090-4fe0-bfac-ab44252151e6","applicationConfigId":"b2435492-e011-4d15-b2a3-815395608fa7","autoUpgrade":true},"latestClientHeartbeatData":{"artifactId":"myApplication","tags":null,"clientName":"local-jau","configLastChanged":"2016-06-27T22:05:18.994Z","applicationConfigId":"b2435492-e011-4d15-b2a3-815395608fa7","timeOfContact":"2016-06-29T16:32:23.076Z"}},{"client":{"clientId":"fac23d46-5ed9-4275-b677-d9f1ccaebc06","applicationConfigId":"f9e14326-b9df-46ba-826f-afad3392cf54","autoUpgrade":true},"latestClientHeartbeatData":{"artifactId":"cantara-demo","tags":null,"clientName":"local-jau","configLastChanged":"2016-06-27T22:05:18.994Z","applicationConfigId":"f9e14326-b9df-46ba-826f-afad3392cf54","timeOfContact":"2016-06-29T19:38:15.241Z"}}]);
+
+        
+    });

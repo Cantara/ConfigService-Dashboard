@@ -1,0 +1,20 @@
+<div class="row">
+
+    <div class="btn-group">
+        <label><input type="radio" name="searchFilter" ng-model="search.status" value="" ng-checked="true">Stats: no of Clients: {{clientStatuses.length}} </label>
+        <label><input type="radio" name="searchFilter" ng-model="search.status" value="green">Green: {{green}} </label>
+        <label><input type="radio" name="searchFilter" ng-model="search.status" value="yellow">Yellow: {{yellow}} </label>
+        <label><input type="radio" name="searchFilter" ng-model="search.status" value="red">Red: {{red}} </label>
+    </div>
+
+
+
+</div>
+<div id="client-list" class="row">
+    <div ng-repeat="clientStatus in clientStatuses | filter:search" ng-dblclick="goto(clientStatus)">
+
+        <div class="client-tile col-sm-1" ng-style="{'background-color': clientStatus.status}" popover-placement="right" data-popover-template="'partials/popuptemplate.html'" data-popover-trigger="mouseenter">
+            {{clientStatus.client.clientId}}
+        </div>
+    </div>
+</div>

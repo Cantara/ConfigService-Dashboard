@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/main.css" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.carousel.css" rel="stylesheet" type="text/css" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.theme.min.css" rel="stylesheet" type="text/css" />
+
     <!--
 
 
@@ -19,15 +20,15 @@
     -->
 </head>
 
-<body ng-app="app" ng-controller="RootController">
-<!--<body ng-app="app" ng-controller="RootController">-->
+<body ng-app="appe2e" ng-controller="RootController">
 <div class="navbar navbar-default navbar-fixed-top top-navbar">
     <div class="container-fluid">
         <div class="navbar-header">
             <div class="navbar-brand">CS Dashboard</div>
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li><a ng-click="doLogout()" title="Logout">Logout</a></li>
+            <li><a id="logout" href="logout">Log out <strong>${userName}</strong></a></li>
+            <!--<li><a ng-click="doLogout()" title="Logout">Logout</a></li>-->
         </ul>
     </div>
     <div id="top-nav-container" class="second-top-nav">
@@ -55,14 +56,26 @@
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-sanitize.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-animate.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-messages.js"></script>
-<!--Script required for E2E testing. Comment it in production use-->
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-mocks.js"></script>
+
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.carousel.js"></script>
+<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.js"></script>
+
+<!--Script required for E2E testing. Comment it in production use-->
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-mocks.js"></script>
+<!--Script required for E2E testing. Comment it in production use-->
+<script src="js/appe2e.js"></script>
 
 <script src="js/app.js"></script>
 <script src="js/root.js"></script>
+<script src="js/Client/controllers.js"></script>
+<script src="js/Client/services.js"></script>
+<script src="js/Application/controllers.js"></script>
+<script src="js/Application/services.js"></script>
+<script src="js/shared/models.js"></script>
+<script src="js/shared/services.js"></script>
 <script src="js/config.js"></script>
+
 
 </body>
 
