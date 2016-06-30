@@ -79,6 +79,9 @@ input[type="checkbox"].input-validation-error {
     width:100%;
     background-color: #9915ff;
 }
+.btn-group label{
+    margin-right: 30px;
+}
 /*styles for left nav bar - end*/
 
 
