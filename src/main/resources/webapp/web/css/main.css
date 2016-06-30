@@ -48,8 +48,8 @@ input[type="checkbox"].input-validation-error {
 
 /*styles for top nav bar - start*/
 .navbar-default.top-navbar {
-    background-color: #4eaded;
-    border-color: #4eaded;
+    background-color: #3399CC;
+    border-color: #3399CC;
 }
 .navbar-default .second-top-nav{
     background-color: #0088dc !important;
