@@ -1,10 +1,12 @@
 <div class="row">
 
     <div class="btn-group">
-        <label><input type="radio" name="searchFilter" ng-model="search.status" value="" ng-checked="true">Stats: no of Clients: {{clientStatuses.length}} </label>
-        <label><input type="radio" name="searchFilter" ng-model="search.status" value="green">Green: {{green}} </label>
-        <label><input type="radio" name="searchFilter" ng-model="search.status" value="yellow">Yellow: {{yellow}} </label>
-        <label><input type="radio" name="searchFilter" ng-model="search.status" value="red">Red: {{red}} </label>
+        <label><input type="radio" name="searchFilter" ng-model="search.status" value="" ng-checked="true">Config
+            Service Statistics: Registered Clients: {{clientStatuses.length}} </label>
+        <label><input type="radio" name="searchFilter" ng-model="search.status" value="green">OK: {{green}} </label>
+        <label><input type="radio" name="searchFilter" ng-model="search.status" value="yellow">Failing: {{yellow}}
+        </label>
+        <label><input type="radio" name="searchFilter" ng-model="search.status" value="red">Dead: {{red}} </label>
     </div>
 
 
