@@ -41,13 +41,15 @@ angular.module('app')
             var lastSeen = diff/ 1000;
             if(lastSeen<120) {
                 this.status = 'green';
+                this.color = '#A0CF89';
             } else if(lastSeen > 120 && lastSeen <240) {
                 this.status = 'yellow';
+                this.color = '#FFFF75';
             } else {
                 this.status = 'red';
+                this.color = '#FF8162';
             }
         };
-
 
 
         return ClientStatus;

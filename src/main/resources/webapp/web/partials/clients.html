@@ -20,7 +20,8 @@
 <div id="client-list" class="row">
     <div ng-repeat="clientStatus in clientStatuses | filter:search" ng-dblclick="goto(clientStatus)">
 
-        <div class="client-tile col-sm-1" ng-style="{'background-color': clientStatus.status}" popover-placement="right" data-popover-template="'partials/popuptemplate.html'" data-popover-trigger="mouseenter">
+        <div class="client-tile col-sm-1" ng-style="{'background-color': clientStatus.color}" popover-placement="right"
+             data-popover-template="'partials/popuptemplate.html'" data-popover-trigger="mouseenter">
             {{clientStatus.client.clientId}}
         </div>
     </div>
