@@ -1,5 +1,10 @@
 /* app css stylesheet */
 
+/*
+
+http://cssgradientbutton.com/?bg0=fcfac0&bg1=f6f283&bg2=faf68f&bg3=f3ed53&r=3&p_top=10&p_right=10&p_bottom=10&p_left=10&w_auto=yes&w=150&text_c=0A0A0A&textshadow=yes&textshadow_c=000000&shadow_bt=0&shadow_c=B4B5B5&border_s=1&border_c=f9f68a&border_c_hover=f7f25f&f_size_auto=no&f_s=12&font=arial, helvetica, sans-serif&bold=yes&inset=no&s_x=0&s_y=0&s_b=0&t_s_px=0&b_top=1&b_right=1&b_bottom=1&b_left=1&bt_c=f9f68a&br_c=f9f68a&bb_c=f9f68a&bl_c=f9f68a&bhover_top=1&bhover_right=1&bhover_bottom=1&bhover_left=1&bhover_t_c=f7f25f&bhover_r_c=f7f25f&bhover_b_c=f7f25f&bhover_l_c=f7f25f&bh_top=1&br_top=3&br_right=3&br_bottom=3&br_left=3&h_s=-1&v_s=-1&b_s=0&o_s=0.3
+  */
+
 html{
     height:100%;
 }
