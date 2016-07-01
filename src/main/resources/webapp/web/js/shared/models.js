@@ -47,7 +47,7 @@ angular.module('app')
                 this.color = '#FFFF75';
             } else {
                 this.status = 'red';
-                this.color = '#FF8162';
+                this.color = '#FF572E';
             }
         };
 
