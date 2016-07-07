@@ -5,8 +5,20 @@
 'use strict';
 
 angular.module('Client')
-    .factory("ClientService", ['$q', function ($q) {
+    .factory("ClientService", ['$q', 'CSService', function ($q, CSService) {
         var service = {};
+        var currentClientId;
+
+        service.getClientDetail = function (clientId) {
+            if (clientId) {
+                currentClientId = clientId;
+                return CSService.getClientDetail(clientId).then(function (clientDetail) {
+                    return clientDetail;
+                });
+            } else {
+                return null;
+            }
+        };
 
         return service;
     }]);

@@ -62,6 +62,7 @@
 
 <script src="js/app.js"></script>
 <script src="js/root.js"></script>
+<script src="js/shared/directives.js"></script>
 <script src="js/Client/controllers.js"></script>
 <script src="js/Client/services.js"></script>
 <script src="js/Application/controllers.js"></script>

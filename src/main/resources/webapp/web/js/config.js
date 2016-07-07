@@ -15,6 +15,12 @@ angular.module('app').config(function ($routeProvider, CSServiceProvider, $httpP
         topNav: 'partials/top-nav.html',
         controller: 'ClientListviewController'
     });
+    $routeProvider.when('/clients/:id', {
+        templateUrl: 'partials/client.html',
+        leftNav: 'partials/left-nav-main.html',
+        topNav: 'partials/top-nav.html',
+        controller: 'ClientDetailController'
+    });
     $routeProvider.when('/applications', {
         templateUrl: 'partials/applications.html',
         leftNav: 'partials/left-nav-main.html',

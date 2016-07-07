@@ -110,6 +110,23 @@ input[type="checkbox"].input-validation-error {
     background:#1D89CF;
 }
 
+.client-detail-container {
+    margin-right: 20px;
+}
+.client-header {
+    height: 80px;
+    color:black;
+    background-color: cornsilk;
+    align-content: center;
+    margin-bottom: 10px;
+    margin-top: 2px;
+    border-radius:10px;
+}
+.client-edit-btn {
+    border-radius:10px;
+
+}
+
 /*styles for container - end*/
 
 
@@ -157,3 +174,20 @@ div[ng-view].ng-leave-active {
 }
 /*styles for animation - end*/
 
+/*styles for tab - start */
+
+.nav-pills > li {
+    color: #4DC9C9 !important;
+}
+.nav-pills > li.active > a {
+  background-color: #6C6C6C !important;
+  border-color: #6C6C6C !important;
+  border-radius: 10px;
+}
+
+.tab-content{
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+/*style for tab - end */

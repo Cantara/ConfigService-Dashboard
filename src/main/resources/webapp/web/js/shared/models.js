@@ -55,3 +55,59 @@ angular.module('app')
         return ClientStatus;
 }]);
 
+angular.module('app')
+    .factory('ClientEnvironment', [function () {
+        function ClientEnvironment(args) {
+            this.envInfo = args.envInfo;
+            this.timestamp = args.timestamp;
+        };
+
+        ClientEnvironment.prototype.display = function () {
+            return JSON.stringify(this, null, 2);
+        }
+
+        return ClientEnvironment;
+    }]);
+
+angular.module('app')
+    .factory('ExtractedEventsStore', [function () {
+        function ExtractedEventsStore(args) {
+            this.eventGroups = args.eventGroups;
+        };
+
+        ExtractedEventsStore.prototype.display = function () {
+            var logs = this.eventGroups['jau']['files']['logs/jau.log']['tags']['jau']['events'];
+            return JSON.stringify(logs, null, 2);
+        }
+
+        return ExtractedEventsStore;
+    }]);
+angular.module('app')
+    .factory('ApplicationConfig', [function () {
+        function ApplicationConfig(args) {
+            this.id = args.id;
+            this.name = args.name;
+            this.lastChanged = args.lastChanged;
+            this.downloadItems = args.downloadItems;
+            this.configurationStores = args.configurationStores;
+            this.eventExtractionConfigs = args.eventExtractionConfigs;
+            this.startServiceScript = args.startServiceScript;
+        };
+
+        ApplicationConfig.prototype.display = function () {
+            return JSON.stringify(this, null, 2);
+        }
+        return ApplicationConfig;
+    }]);
+
+
+angular.module('app')
+    .factory('ClientDetail', ['ClientStatus', 'ClientEnvironment', 'ApplicationConfig', 'ExtractedEventsStore', function (ClientStatus, ClientEnvironment, ApplicationConfig, ExtractedEventsStore) {
+        function ClientDetail(status, env, config, events) {
+            this.status = new ClientStatus(status);
+            this.env = new ClientEnvironment(env);
+            this.config = new ApplicationConfig(config);
+            this.events = new ExtractedEventsStore(events);
+        };
+        return ClientDetail;
+    }]);
