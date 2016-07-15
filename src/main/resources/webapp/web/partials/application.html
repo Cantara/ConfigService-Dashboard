@@ -1,1 +1,16 @@
-<h1>Application</h1>
+<h1>{{applicationDetail.artifactId}}</h1>
+
+<button class="btn btn-danger pull-right client-edit-btn">Edit Application</button>
+<my-tabs>
+
+    <my-pane title="Status">
+        <pre>{{applicationDetail.status.display()}}</pre>
+    </my-pane>
+    <my-pane title="Config">
+        <pre>{{applicationDetail.config.display()}}</pre>
+    </my-pane>
+    <my-pane title="Clients">
+        <div ng-include="'partials/clients.html'"></div>
+    </my-pane>
+
+</my-tabs>

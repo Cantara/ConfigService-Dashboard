@@ -27,9 +27,14 @@ angular.module('app').config(function ($routeProvider, CSServiceProvider, $httpP
         topNav: 'partials/top-nav.html',
         controller: 'ApplicationListviewController'
     });
-
-    $routeProvider.when('/applications/new', {
+    $routeProvider.when('/applications/:id/:artifactId', {
         templateUrl: 'partials/application.html',
+        leftNav: 'partials/left-nav-main.html',
+        topNav: 'partials/top-nav.html',
+        controller: 'ApplicationDetailController'
+    });
+    $routeProvider.when('/applications/new', {
+        templateUrl: 'partials/application-new.html',
         leftNav: 'partials/left-nav-main.html',
         topNav: 'partials/top-nav.html',
         controller: 'ApplicationDetailController'

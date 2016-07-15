@@ -1,12 +1,12 @@
 <div class="client-detail-container">
-<div class="row client-header" ng-style="{'background-color': clientDetail.status.color}">
+<div class="client-header" ng-style="{'background-color': clientDetail.status.color}">
     <div class="col-sm-4">{{clientDetail.status.client.clientId}} / {{clientDetail.status.latestClientHeartbeatData.artifactId}}</div>
     <div class="col-sm-2"><b>AppConfig:</b> {{clientDetail.config.name}}</div>
     <div class="col-sm-2"><b>ConfigLastChanged:</b> {{clientDetail.status.latestClientHeartbeatData.configLastChanged|date:'medium'}}</div>
     <div class="col-sm-2"><b>LastSeen:</b> {{clientDetail.status.latestClientHeartbeatData.timeOfContact|date:'medium'}}</div>
 </div>
-<div class="row">
-    <button class="btn btn-danger pull-right client-edit-btn" ng-click="#">Edit Client</button>
+<div>
+    <button class="btn btn-danger pull-right client-edit-btn">Edit Client</button>
     <my-tabs>
 
         <my-pane title="Environment">

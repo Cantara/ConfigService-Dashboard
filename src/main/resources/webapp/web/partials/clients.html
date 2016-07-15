@@ -1,4 +1,4 @@
-<div class="row">
+<div>
 
     <div class="btn-group">
         <label>Config Service Statistics: </label>
@@ -14,11 +14,9 @@
         </label>
     </div>
 
-
-
 </div>
-<div id="client-list" class="row">
-    <div ng-repeat="clientStatus in clientStatuses | filter:search" ng-dblclick="goto(clientStatus)">
+<div id="client-list">
+    <div ng-repeat="clientStatus in clientStatuses | filter:search" ng-click="goto(clientStatus)">
 
         <div class="client-tile col-sm-1" ng-style="{'background-color': clientStatus.color}" popover-placement="right"
              data-popover-template="'partials/template_clientpopup.html'" data-popover-trigger="mouseenter">

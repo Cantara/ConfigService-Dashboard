@@ -111,3 +111,44 @@ angular.module('app')
         };
         return ClientDetail;
     }]);
+
+/* Model classes */
+angular.module('app')
+    .factory('Application', function () {
+        function Application(args) {
+
+            this.id = args.id;
+            this.artifactId = args.artifactId;
+
+        }
+
+        return Application;
+    });
+
+angular.module('app')
+    .factory('ApplicationStatus', function () {
+        function ApplicationStatus(args) {
+
+            this.numberOfRegisteredClients = args.numberOfRegisteredClients;
+            this.seenInTheLastHourCount = args.seenInTheLastHourCount;
+            this.seenInTheLastHour = args.seenInTheLastHour;
+            this.allClientHeartbeatData = args.allClientHeartbeatData;
+        }
+
+        ApplicationStatus.prototype.display = function () {
+            return JSON.stringify(this, null, 2);
+        }
+
+        return ApplicationStatus;
+    });
+
+angular.module('app')
+    .factory('ApplicationDetail', [ 'ApplicationStatus', 'ApplicationConfig', function ( ApplicationStatus, ApplicationConfig) {
+        function ApplicationDetail(id, artifactId, status, config) {
+            this.id = id;
+            this.artifactId = artifactId;
+            this.status = new ApplicationStatus(status);
+            this.config = new ApplicationConfig(config);
+        };
+        return ApplicationDetail;
+    }]);

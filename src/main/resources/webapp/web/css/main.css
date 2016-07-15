@@ -191,3 +191,16 @@ div[ng-view].ng-leave-active {
 }
 
 /*style for tab - end */
+
+@media (max-width: 767px) {
+    .navbar-fixed-top {
+        position: relative;
+        top: auto;
+    }
+    .navbar-collapse {
+        max-height: none;
+    }
+    body {
+        margin: 0;
+    }
+}

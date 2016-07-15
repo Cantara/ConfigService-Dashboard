@@ -13,7 +13,7 @@ angular.module('app')
             //some initialization if required here
         }
 
-        this.$get = ['ClientStatus', 'ClientDetail', '$http', '$q', '$resource', '$location', '$rootScope', function (ClientStatus, ClientDetail, $http, $q, $resource, $location, $rootScope) {
+        this.$get = ['ClientStatus', 'ClientDetail', 'Application', 'ApplicationDetail', '$http', '$q', '$resource', '$location', '$rootScope', function (ClientStatus, ClientDetail, Application , ApplicationDetail, $http, $q, $resource, $location, $rootScope) {
             var service = {
 
             };
@@ -41,6 +41,27 @@ angular.module('app')
 
             };
 
+            service.getAllApplications = function () {
+
+                return $http.get('application/')
+                    .then(function (response) {
+                        return response.data.map(function (app) {
+                            return new Application(app);
+                        });
+                    });
+
+            };
+            service.getApplicationDetail = function (id, artifactId){
+
+
+                return $q.all([$http.get('application/' + artifactId + "/status/"), $http.get('application/' + id + "/config/")])
+                    .then(function (response) {
+                        var status = response[0].data;
+                        var config = response[1].data;
+                        return new ApplicationDetail(id, artifactId, status, config);
+                    });
+
+            };
 
             return service;
         }];
