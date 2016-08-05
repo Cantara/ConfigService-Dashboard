@@ -54,14 +54,56 @@ angular.module('app')
             service.getApplicationDetail = function (id, artifactId){
 
 
-                return $q.all([$http.get('application/' + artifactId + "/status/"), $http.get('application/' + id + "/config/")])
-                    .then(function (response) {
+
+                if(artifactId!=null && id!=null) {
+                    return $q.all([$http.get('application/' + artifactId + "/status/"), $http.get('application/' + id + "/config/")]).then(function (response) {
                         var status = response[0].data;
                         var config = response[1].data;
                         return new ApplicationDetail(id, artifactId, status, config);
+                        });
+                } else if(id!=null) {
+                    return $q.all([$http.get('application/' + id + "/config/")]).then(function (response) {
+                        var config = response[0].data;
+                        return new ApplicationDetail(id, artifactId, null, config);
                     });
+                }
 
             };
+
+            service.addApplicationConfig = function(applicationDetail){
+                if(applicationDetail.artifactId){
+                    var appConfigToSave = angular.copy(applicationDetail);
+                    
+                    return $http.post('application/', {'artifactId' : appConfigToSave.artifactId}).then(function (response) {
+                    	if(appConfigToSave.configJsonContent!=null){
+	                        return $http.post('application/' +  response.data.id + "/config/", appConfigToSave.configJsonContent).then(function (response2) {
+	                            return response2.data;
+	                        });
+                    	} else {
+                    		return response.data;
+                    	}
+                    });
+                }
+            }
+
+            service.updateApplicationConfig = function (applicationDetail) {
+                if (applicationDetail.id) {
+                    var appConfigToSave = angular.copy(applicationDetail);
+                    console.log(appConfigToSave);
+                    if(typeof appConfigToSave.config.id != "undefined"){
+                    	 return $http.put('application/' + applicationDetail.id + "/config/" +  applicationDetail.config.id , appConfigToSave.configJsonContent).then(function (response) {
+                             return applicationDetail;
+                         });
+                    } else {
+                    	return $http.post('application/' +  applicationDetail.id+ "/config/", appConfigToSave.configJsonContent).then(function (response2) {
+                            return response2.data;
+                        });
+                    }
+                   
+                }
+            }
+
+
 
             return service;
         }];

@@ -26,36 +26,71 @@ angular.module('Application')
     }]);
 
 angular.module('Application')
-    .controller('ApplicationDetailController', ['$scope', 'ApplicationService', 'ClientStatus', '$routeParams', '$timeout', function ($scope, ApplicationService, ClientStatus, $routeParams, $timeout) {
+    .controller('ApplicationDetailController', ['$scope', '$route', 'ApplicationService', 'ClientStatus', '$routeParams', '$timeout', '$location', 'toastr', function ($scope, $route, ApplicationService, ClientStatus, $routeParams, $timeout, $location, toastr) {
+
+        $scope.goto = function (id) {
+            $location.path('/application/edit/' + id);
+        }
+
+        $scope.editMode = false;
+        $scope.setEdit = function () {
+            $scope.editMode = !$scope.editMode;
+        }
+
+        $scope.create = function () {
+            $scope.submitted = true;
+            if ($scope.applicationForm.$invalid) return;
+
+            ApplicationService.save().then(function (data) {
+
+                $scope.submitted = false;
+                init();
+                $scope.applicationForm.$setPristine();
+                toastr.success('Application was created successfully!');
+            });
+        }
+
+        $scope.update = function () {
+
+            ApplicationService.save().then(function (data) {
+                $scope.editMode = false;
+                $route.reload();
+                toastr.success('Update successfully');
+            });
+        }
+
+        $scope.hasError = function (modelController, error) {
+            return (modelController.$dirty || $scope.submitted) && error;
+        };
 
         var extractClientStatuses = function (appStatus) {
-            var applicationConfigId = appStatus.config.id;
-            var allClientHeartbeatData = appStatus.status.allClientHeartbeatData;
             var clientStatuses = [];
-            for (var k in allClientHeartbeatData) {
-                if (typeof allClientHeartbeatData[k] !== 'function') {
-                    var clientStatus = new ClientStatus({
-                        "client": {"clientId": k, "applicationConfigId": applicationConfigId},
-                        "latestClientHeartbeatData": allClientHeartbeatData[k]
-                    });
-                    clientStatuses.push(clientStatus);
+            if (appStatus.status != null) {
+                var applicationConfigId = appStatus.config.id;
+                var allClientHeartbeatData = appStatus.status.allClientHeartbeatData;
+                for (var k in allClientHeartbeatData) {
+                    if (typeof allClientHeartbeatData[k] !== 'function') {
+                        var clientStatus = new ClientStatus({
+                            "client": {"clientId": k, "applicationConfigId": applicationConfigId},
+                            "latestClientHeartbeatData": allClientHeartbeatData[k]
+                        });
+                        clientStatuses.push(clientStatus);
+                    }
                 }
             }
             return clientStatuses;
         }
 
         var init = function () {
-            if ($routeParams.artifactId && $routeParams.id) {
 
 
-                ApplicationService.getApplicationDetail($routeParams.id, $routeParams.artifactId).then(function (data) {
-                    $scope.applicationDetail = data;
-                    $scope.clientStatuses = extractClientStatuses(data);
-                }, function () {
+            ApplicationService.getApplicationDetail($routeParams.id, $routeParams.artifactId).then(function (data) {
+                $scope.applicationDetail = data;
+                $scope.clientStatuses = extractClientStatuses(data);
+            }, function () {
 
-                });
+            });
 
-            }
 
         }
 

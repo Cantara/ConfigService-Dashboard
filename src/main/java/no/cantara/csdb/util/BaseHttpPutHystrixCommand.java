@@ -19,19 +19,19 @@ public abstract class BaseHttpPutHystrixCommand<R> extends HystrixCommand<R> {
     protected URI serviceUri;
     protected String TAG = "";
     protected HttpRequest request;
+    
+    protected BaseHttpPutHystrixCommand(URI serviceUri, String hystrixGroupKey, int hystrixExecutionTimeOut) {
+		super(HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)).
+				andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
+						.withExecutionTimeoutInMilliseconds(hystrixExecutionTimeOut)));
+		init(serviceUri, hystrixGroupKey);
+	}
 
-    protected BaseHttpPutHystrixCommand(URI serviceUri, String myAppTokenXml, String myAppTokenId, String hystrixGroupKey, int hystrixExecutionTimeOut) {
-        super(HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)).
-                andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
-                        .withExecutionTimeoutInMilliseconds(hystrixExecutionTimeOut)));
-        init(serviceUri, hystrixGroupKey);
-    }
-
-    protected BaseHttpPutHystrixCommand(URI serviceUri, String myAppTokenXml, String myAppTokenId, String hystrixGroupKey) {
-        super(HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)));
-        init(serviceUri,  hystrixGroupKey);
-    }
-
+	protected BaseHttpPutHystrixCommand(URI serviceUri, String hystrixGroupKey) {
+		super(HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)));
+		init(serviceUri, hystrixGroupKey);
+	}
+	
 
     private void init(URI serviceUri,  String hystrixGroupKey) {
         this.serviceUri = serviceUri;
@@ -55,7 +55,7 @@ public abstract class BaseHttpPutHystrixCommand<R> extends HystrixCommand<R> {
                 uriString += getTargetPath();
             }
 
-            log.debug("TAG" + " - whydahServiceUri={}", uriString);
+            log.debug("TAG" + " - serviceUri={}", uriString);
 
             if (getQueryParameters() != null && getQueryParameters().length != 0) {
                 request = HttpRequest.put(uriString, true, getQueryParameters());
@@ -139,7 +139,7 @@ public abstract class BaseHttpPutHystrixCommand<R> extends HystrixCommand<R> {
 
     @Override
     protected R getFallback() {
-        log.warn(TAG + " - fallback - whydahServiceUri={}", serviceUri.toString() + getTargetPath());
+        log.warn(TAG + " - fallback - ServiceUri={}", serviceUri.toString() + getTargetPath());
         return null;
     }
     private byte[] responseBody;

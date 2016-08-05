@@ -58,7 +58,7 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R>{
 				 uriString += getTargetPath();
 			}
 
-			log.debug("TAG" + " - whydahServiceUri={}", uriString);
+			log.debug("TAG" + " - serviceUri={}", uriString);
 		
 			if(getQueryParameters()!=null && getQueryParameters().length!=0){
 				request = HttpRequest.post(uriString, true, getQueryParameters());
@@ -140,7 +140,7 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R>{
 
 	@Override
 	protected R getFallback() {
-		log.warn(TAG + " - fallback - whydahServiceUri={}", serviceUri.toString() + getTargetPath());
+		log.warn(TAG + " - fallback - erviceUri={}", serviceUri.toString() + getTargetPath());
 		return null;
 	}
 	

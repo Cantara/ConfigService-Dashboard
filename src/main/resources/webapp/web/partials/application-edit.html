@@ -1,0 +1,31 @@
+
+<div class="application-edit-container">
+  
+<form class="row" name="applicationForm" novalidate>
+    <div id="application-data" class="col-sm-3">
+        <div class="form-group row" ng-class="{'has-error':applicationForm.artifactId.$error.required}">
+            <label for="artifact-id">Artifact Id:</label>
+            <input type="text" name="artifactId" class="form-control" id="artifact-id" placeholder="Enter artifact id. Must be unique." ng-model="applicationDetail.artifactId"  required>
+            <label ng-show="hasError(applicationForm.artifactId, applicationForm.artifactId.$error.required)" ng-class="{'text-danger': applicationForm.artifactId.$error.required}">Artifact id is required and it should be unique.</label>
+        </div>
+    </div>
+    <div class="col-sm-5">
+        <div class="row">
+            <label for="app-config" >Application config:</label>
+            <textarea style="min-width: 100%"  msd-elastic name="appconfig" class="form-control" id="app-config" placeholder="Enter application config. Leave this empty to config later." ng-model="applicationDetail.configJsonContent" rows="15"></textarea>
+        </div>
+
+    </div>
+    <div class="col-sm-3">
+        <div>
+            <button class="btn  pull-right" ng-class="{'btn-default':applicationForm.$valid,'btn-warning':!applicationForm.$valid}" ng-click="create()"
+                    popover="{{applicationForm.$invalid ? 'The form has errors.' : null}}" popover-trigger="mouseenter">Create new application
+            </button>
+
+        </div>
+    </div>
+
+
+</form>
+
+</div>

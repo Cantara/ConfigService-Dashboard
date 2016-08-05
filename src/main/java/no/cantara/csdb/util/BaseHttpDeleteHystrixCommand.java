@@ -17,8 +17,6 @@ public abstract class BaseHttpDeleteHystrixCommand<R> extends HystrixCommand<R> 
 
     protected Logger log;
     protected URI serviceUri;
-    protected String myAppTokenId = "";
-    protected String myAppTokenXml = "";
     protected String TAG = "";
     protected HttpRequest request;
     private byte[] responseBody;
@@ -56,7 +54,7 @@ public abstract class BaseHttpDeleteHystrixCommand<R> extends HystrixCommand<R> 
                 uriString += getTargetPath();
             }
 
-            log.debug("TAG" + " - whydahServiceUri={} myAppTokenId={}", uriString, myAppTokenId);
+            log.debug("TAG" + " - serviceUri={}", uriString);
 
             if (getQueryParameters() != null && getQueryParameters().length != 0) {
                 request = HttpRequest.delete(uriString, true, getQueryParameters());
@@ -127,7 +125,7 @@ public abstract class BaseHttpDeleteHystrixCommand<R> extends HystrixCommand<R> 
 
     @Override
     protected R getFallback() {
-        log.warn(TAG + " - fallback - whydahServiceUri={}", serviceUri.toString() + getTargetPath());
+        log.warn(TAG + " - fallback {}", serviceUri.toString() + getTargetPath());
         return null;
     }
 

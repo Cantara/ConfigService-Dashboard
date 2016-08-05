@@ -147,8 +147,13 @@ angular.module('app')
         function ApplicationDetail(id, artifactId, status, config) {
             this.id = id;
             this.artifactId = artifactId;
-            this.status = new ApplicationStatus(status);
-            this.config = new ApplicationConfig(config);
+            if (status != null) {
+                this.status = new ApplicationStatus(status);
+            }
+            if(config!=null) {
+                this.config = new ApplicationConfig(config);
+                this.configJsonContent = JSON.stringify(this.config, null, 2);
+            }
         };
         return ApplicationDetail;
     }]);

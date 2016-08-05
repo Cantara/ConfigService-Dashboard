@@ -3,7 +3,7 @@
  */
 'use strict';
 
-angular.module('app', ['smart-table','ngRoute', 'ngSanitize', 'Client', 'Application', 'ui.bootstrap', 'ngAnimate', 'ngMessages', 'ngResource']);
+angular.module('app', ['smart-table', 'toastr', 'monospaced.elastic','ngRoute', 'ngSanitize', 'Client', 'Application', 'ui.bootstrap', 'ngAnimate', 'ngMessages', 'ngResource']);
 
 angular.module('Client', []);
 angular.module('Application',[]);

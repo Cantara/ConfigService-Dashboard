@@ -127,6 +127,11 @@ input[type="checkbox"].input-validation-error {
 
 }
 
+
+.application-edit-container {
+    margin-right: 20px;
+    margin-left: 20px;
+}
 /*styles for container - end*/
 
 

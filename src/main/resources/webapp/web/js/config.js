@@ -33,12 +33,17 @@ angular.module('app').config(function ($routeProvider, CSServiceProvider, $httpP
         topNav: 'partials/top-nav.html',
         controller: 'ApplicationDetailController'
     });
-    $routeProvider.when('/applications/new', {
-        templateUrl: 'partials/application-new.html',
+    $routeProvider.when('/application/new', {
+        templateUrl: 'partials/application-edit.html',
         leftNav: 'partials/left-nav-main.html',
         topNav: 'partials/top-nav.html',
         controller: 'ApplicationDetailController'
     });
-
+    $routeProvider.when('/application/edit/:id', {
+        templateUrl: 'partials/application-edit.html',
+        leftNav: 'partials/left-nav-main.html',
+        topNav: 'partials/top-nav.html',
+        controller: 'ApplicationDetailController'
+    });
 
 });
