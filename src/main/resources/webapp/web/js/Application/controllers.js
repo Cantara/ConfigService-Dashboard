@@ -28,8 +28,9 @@ angular.module('Application')
 angular.module('Application')
     .controller('ApplicationDetailController', ['$scope', '$route', 'ApplicationService', 'ClientStatus', '$routeParams', '$timeout', '$location', 'toastr', function ($scope, $route, ApplicationService, ClientStatus, $routeParams, $timeout, $location, toastr) {
 
-        $scope.goto = function (id) {
-            $location.path('/application/edit/' + id);
+        $scope.goto = function (clientStatus) {
+        	console.log(clientStatus);
+            $location.path('/clients/' + clientStatus.client.clientId);
         }
 
         $scope.editMode = false;
