@@ -9,6 +9,9 @@ import java.util.List;
 import no.cantara.cs.dto.Client;
 import no.cantara.cs.dto.ClientStatus;
 import no.cantara.csdb.commands.CommandGetAllClients;
+import no.cantara.csdb.commands.CommandGetClientAppConfig;
+import no.cantara.csdb.commands.CommandGetClientEnvironment;
+import no.cantara.csdb.commands.CommandGetClientEvents;
 import no.cantara.csdb.commands.CommandGetClientStatus;
 
 import org.codehaus.jackson.JsonParseException;
@@ -50,6 +53,28 @@ public enum ClientSessionDao {
 			}
 		}
 		return "";
+	}
+	
+
+	public String getClientEnvironment(String clientId) {
+		String json = new CommandGetClientEnvironment(clientId).execute();
+		return json;
+	}
+
+	public String getClientStatus(String clientId) {
+		String json = new CommandGetClientStatus(clientId).execute();
+		return json;
+	}
+
+	public String getClientAppConfig(String clientId) {
+		String json = new CommandGetClientAppConfig(clientId).execute();
+		return json;
+		
+	}
+
+	public String getClientEvents(String clientId) {
+		String json = new CommandGetClientEvents(clientId).execute();
+		return json;
 	}
 	
 	

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/main.css" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.carousel.css" rel="stylesheet" type="text/css" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.theme.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="https://npmcdn.com/angular-toastr/dist/angular-toastr.css" />
     <!--
 
 
@@ -38,6 +39,8 @@
 </div>
 <div class="container-fluid">
     <div id="content-container" class="row">
+
+        <!--  OLD LAYOUT
         <div class="col-sm-2 left-nav-bar" ng-if="currentRoute.leftNav">
             <div id="left-nav" ng-include="currentRoute.leftNav">
             </div>
@@ -46,6 +49,9 @@
             <label ng-if="routeHasError" class="alert alert-danger">{{routeError}}</label>
             <div id="page-content" ng-view></div>
         </div>
+        -->
+         <label ng-if="routeHasError" class="alert alert-danger">{{routeError}}</label>
+         <div id="page-content" ng-view></div>
     </div>
 </div>
 
@@ -58,10 +64,15 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-messages.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.carousel.js"></script>
+<script src="https://npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
 <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.js"></script>
 
+<script src="js/vendor/smart-table.debug.js"></script>
+<script src="js/vendor/smart-table-directives.js"></script>
+<script src="js/vendor/elastic.js"></script>
 <script src="js/app.js"></script>
 <script src="js/root.js"></script>
+<script src="js/shared/directives.js"></script>
 <script src="js/Client/controllers.js"></script>
 <script src="js/Client/services.js"></script>
 <script src="js/Application/controllers.js"></script>

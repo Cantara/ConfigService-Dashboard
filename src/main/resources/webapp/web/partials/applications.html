@@ -1,1 +1,26 @@
-<h1>Application List</h1>
+
+<table st-table="applications" class="table table-striped">
+    <thead>
+    <tr>
+        <th>No</th>
+        <th>ArtifactId</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="application in applications">
+        <td>{{$index+1}}</td>
+        <td>{{application.artifactId}}</td>
+        <td>
+            <button class="btn btn-sm" type="button" ng-click="goto(application)">
+                <i class="glyphicon glyphicon-eye-open"></i>
+            </button>
+<!--
+            <button type="button" ng-click="removeApplication(application)" class="btn btn-sm btn-danger">
+                <i class="glyphicon glyphicon-remove-circle">
+                </i>
+            </button>
+!-->
+        <td>
+    </tr>
+    </tbody>
+</table>

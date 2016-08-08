@@ -15,19 +15,35 @@ angular.module('app').config(function ($routeProvider, CSServiceProvider, $httpP
         topNav: 'partials/top-nav.html',
         controller: 'ClientListviewController'
     });
+    $routeProvider.when('/clients/:id', {
+        templateUrl: 'partials/client.html',
+        leftNav: 'partials/left-nav-main.html',
+        topNav: 'partials/top-nav.html',
+        controller: 'ClientDetailController'
+    });
     $routeProvider.when('/applications', {
         templateUrl: 'partials/applications.html',
         leftNav: 'partials/left-nav-main.html',
         topNav: 'partials/top-nav.html',
         controller: 'ApplicationListviewController'
     });
-
-    $routeProvider.when('/applications/new', {
+    $routeProvider.when('/applications/:id/:artifactId', {
         templateUrl: 'partials/application.html',
         leftNav: 'partials/left-nav-main.html',
         topNav: 'partials/top-nav.html',
         controller: 'ApplicationDetailController'
     });
-
+    $routeProvider.when('/application/new', {
+        templateUrl: 'partials/application-edit.html',
+        leftNav: 'partials/left-nav-main.html',
+        topNav: 'partials/top-nav.html',
+        controller: 'ApplicationDetailController'
+    });
+    $routeProvider.when('/application/edit/:id', {
+        templateUrl: 'partials/application-edit.html',
+        leftNav: 'partials/left-nav-main.html',
+        topNav: 'partials/top-nav.html',
+        controller: 'ApplicationDetailController'
+    });
 
 });

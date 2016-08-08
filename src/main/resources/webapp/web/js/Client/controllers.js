@@ -15,7 +15,7 @@ angular.module('Client')
 
 
            
-            CSService.getclientStatuses().then(function (data) {
+            CSService.getAllClientStatuses().then(function (data) {
 
                 $scope.green = 0;
                 $scope.red = 0;
@@ -44,11 +44,19 @@ angular.module('Client')
     }]);
 
 angular.module('Client')
-    .controller('ClientDetailController', ['$scope', '$timeout', function ($scope, $timeout) {
+    .controller('ClientDetailController', ['$scope', 'ClientService',  '$routeParams', '$timeout', function ($scope, ClientService, $routeParams, $timeout) {
+
 
         var init = function () {
+            if ($routeParams.id) {
 
+                ClientService.getClientDetail($routeParams.id).then(function (data) {
+                    $scope.clientDetail = data;
+                }, function () {
 
+                });
+
+            }
         }
 
         init();
