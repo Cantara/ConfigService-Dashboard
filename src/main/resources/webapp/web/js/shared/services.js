@@ -28,6 +28,7 @@ angular.module('app')
                         });
 
             };
+
             service.getClientDetail = function (clientId){
 
                 return $q.all([$http.get('client/' + clientId + "/status/"), $http.get('client/' + clientId + "/env/"), $http.get('client/' + clientId + "/config/"),  $http.get('client/' + clientId + "/events/")])
@@ -51,6 +52,7 @@ angular.module('app')
                     });
 
             };
+
             service.getApplicationDetail = function (id, artifactId){
 
 
@@ -103,7 +105,9 @@ angular.module('app')
                 }
             }
 
-
+            service.removeApplicationConfig = function(applicationId, configId){
+                return $http.delete("application/" + applicationId  + "/config/" + configId);
+            }
 
             return service;
         }];

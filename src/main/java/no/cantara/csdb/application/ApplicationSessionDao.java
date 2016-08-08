@@ -2,9 +2,9 @@ package no.cantara.csdb.application;
 
 import no.cantara.csdb.commands.CommandCreateApplication;
 import no.cantara.csdb.commands.CommandCreateConfig;
+import no.cantara.csdb.commands.CommandDeleteApplicationConfig;
 import no.cantara.csdb.commands.CommandGetAllApplications;
 import no.cantara.csdb.commands.CommandGetApplicationStatus;
-import no.cantara.csdb.commands.CommandGetClientEnvironment;
 import no.cantara.csdb.commands.CommandGetConfigForApplication;
 import no.cantara.csdb.commands.CommandUpdateConfig;
 
@@ -44,6 +44,11 @@ public enum ApplicationSessionDao {
 
 	public String createApplication(String json) {
 		String result = new CommandCreateApplication(json).execute();
+		return result;
+	}
+
+	public String deleteApplicationConfig(String applicationId, String configId) {
+		String result = new CommandDeleteApplicationConfig(applicationId, configId).execute();
 		return result;
 	}
 	

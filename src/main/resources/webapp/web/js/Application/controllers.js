@@ -4,6 +4,8 @@
 angular.module('Application')
     .controller('ApplicationListviewController', ['$scope', 'CSService', '$location', function ($scope, CSService, $location) {
 
+
+
         $scope.goto = function (application) {
             $location.path('/applications/' + application.id + "/" + application.artifactId);
         }
@@ -58,6 +60,16 @@ angular.module('Application')
                 $route.reload();
                 toastr.success('Update successfully');
             });
+        }
+
+        $scope.canRemoveThisConfig = function () {
+            return ApplicationService.canRemoveThisConfig();
+        }
+        $scope.removeApplicationConfig = function () {
+            ApplicationService.removeApplicationConfig().then(function (data) {
+                $route.reload();
+                toastr.success('Delete successfully');
+            })
         }
 
         $scope.hasError = function (modelController, error) {

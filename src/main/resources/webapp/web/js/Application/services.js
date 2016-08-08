@@ -23,6 +23,19 @@ angular.module('Application')
             }
         };
 
+        service.canRemoveThisConfig = function(){
+            if(currentApplicationDetail!=null) {
+                return typeof currentApplicationDetail.config.id != "undefined";
+            } else {
+                return false;
+            }
+        }
+
+        service.removeApplicationConfig = function () {
+            if(service.canRemoveThisConfig()){
+                return CSService.removeApplicationConfig(currentApplicationDetail.id, currentApplicationDetail.config.id);
+            }
+        }
 
         service.save = function () {
             var promise = newAppConfig ? CSService.addApplicationConfig(currentApplicationDetail) : CSService.updateApplicationConfig(currentApplicationDetail);

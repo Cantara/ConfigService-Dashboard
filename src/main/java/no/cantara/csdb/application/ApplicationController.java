@@ -2,12 +2,17 @@ package no.cantara.csdb.application;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
+import no.cantara.cs.dto.ApplicationConfig;
 import no.cantara.csdb.config.ConstantValue;
 
 import org.springframework.stereotype.Controller;
@@ -28,7 +33,7 @@ public class ApplicationController {
         String jsonResult;
         try {
             jsonResult = ApplicationSessionDao.instance.getAllApplications();
-            model.addAttribute(ConstantValue.JSON_DATA, jsonResult);
+            toResult(model, jsonResult);
         } catch (Exception e) {
           
         }
@@ -42,7 +47,7 @@ public class ApplicationController {
         String jsonResult;
         try {
             jsonResult = ApplicationSessionDao.instance.getConfigForApplication(applicationId);
-            model.addAttribute(ConstantValue.JSON_DATA, jsonResult);
+            toResult(model, jsonResult);
         } catch (Exception e) {
           
         }
@@ -56,12 +61,20 @@ public class ApplicationController {
         String jsonResult;
         try {
             jsonResult = ApplicationSessionDao.instance.getStatusForArtifactInstances(artifactId);
-            model.addAttribute(ConstantValue.JSON_DATA, jsonResult);
+            toResult(model, jsonResult);
         } catch (Exception e) {
           
         }
         return "json";
     }
+
+	private void toResult(Model model, String jsonResult) {
+		if(jsonResult!=null){
+        	model.addAttribute(ConstantValue.JSON_DATA, jsonResult);
+        } else {
+        	model.addAttribute(ConstantValue.JSON_DATA, "");
+        }
+	}
 	
 	@POST
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -70,7 +83,7 @@ public class ApplicationController {
         String jsonResult;
         try {
             jsonResult = ApplicationSessionDao.instance.createApplication(json);
-            model.addAttribute(ConstantValue.JSON_DATA, jsonResult);
+            toResult(model, jsonResult);
         } catch (Exception e) {
           
         }
@@ -84,7 +97,7 @@ public class ApplicationController {
         String jsonResult;
         try {
             jsonResult = ApplicationSessionDao.instance.createConfig(applicationId, json);
-            model.addAttribute(ConstantValue.JSON_DATA, jsonResult);
+            toResult(model, jsonResult);
         } catch (Exception e) {
           
         }
@@ -98,11 +111,28 @@ public class ApplicationController {
         String jsonResult;
         try {
             jsonResult = ApplicationSessionDao.instance.updateConfig(applicationId, configId, json);
-            model.addAttribute(ConstantValue.JSON_DATA, jsonResult);
+            toResult(model, jsonResult);
         } catch (Exception e) {
           
         }
         return "json";
     }
+	
+	@DELETE
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @RequestMapping(value = "/{applicationId}/config/{configId}", method = RequestMethod.DELETE)
+	public String deleteConfig(@PathVariable("applicationId") String applicationId, @PathVariable("configId") String configId, HttpServletRequest request, HttpServletResponse response, Model model) {
+        String jsonResult;
+        try {
+            jsonResult = ApplicationSessionDao.instance.deleteApplicationConfig(applicationId, configId);
+            toResult(model, jsonResult);
+        } catch (Exception e) {
+          
+        }
+        return "json";
+    }
+	
+	
+
 	
 }

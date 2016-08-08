@@ -3,11 +3,13 @@
 <div>
 <my-tabs>
     <my-pane title="Config">
+        <span class="pull-right glyphicon glyphicon-trash text-danger" title="Remove" ng-show="canRemoveThisConfig()" ng-confirm="removeApplicationConfig()" ng-confirm-message="Are you sure you want to delete this application.?"></span>
         <div><button class="btn btn-warning client-edit-btn" ng-click="setEdit()" ng-hide="editMode">Edit</button>
         <button class="btn btn-primary client-edit-btn" ng-click="update()" ng-show="editMode">Save</button>
         <button class="btn client-edit-btn" ng-click="setEdit()" ng-show="editMode">Cancel</button></div>
         <pre ng-hide="editMode">{{applicationDetail.configJsonContent}}</pre>
         <textarea ng-show="editMode" msd-elastic style="min-width:100%" id="app-config" placeholder="Edit application config here." ng-model="applicationDetail.configJsonContent" ></textarea>
+
     </my-pane>
     <my-pane title="Status">
         <pre>{{applicationDetail.status.display()}}</pre>
