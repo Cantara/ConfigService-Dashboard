@@ -14,4 +14,11 @@ A Dashboard and admin GUI for ConfigService
 2. java -jar cs-dashboard.jar
 3. Access http://localhost:8087/dashboard/
 
+## Some screenshots
 
+![Clients Overview](https://github.com/Cantara/ConfigService-Dashboard/raw/master/images/CS-clients.png "Clients Overview")
+![Clients Overview - Hover](https://github.com/Cantara/ConfigService-Dashboard/raw/master/images/CS-client-hover.png "Clients Overview - Hover")
+![Clients Config](https://github.com/Cantara/ConfigService-Dashboard/raw/master/images/CS-config.png "Clients Config")
+![Clients Environment](https://github.com/Cantara/ConfigService-Dashboard/raw/master/images/CS-environments.png "Clients Environment")
+![Clients Log](https://github.com/Cantara/ConfigService-Dashboard/raw/master/images/CS-logs.png "Clients Log")
+![Applications Overview](https://github.com/Cantara/ConfigService-Dashboard/raw/master/images/CS-applications.png "Applications Overview")
