@@ -22,3 +22,5 @@ A Dashboard and admin GUI for ConfigService
 ![Clients Environment](https://github.com/Cantara/ConfigService-Dashboard/raw/master/images/CS-environments.png "Clients Environment")
 ![Clients Log](https://github.com/Cantara/ConfigService-Dashboard/raw/master/images/CS-logs.png "Clients Log")
 ![Applications Overview](https://github.com/Cantara/ConfigService-Dashboard/raw/master/images/CS-applications.png "Applications Overview")
+![Application Status](https://github.com/Cantara/ConfigService-Dashboard/raw/master/images/CS-application-status.png "Application Status")
+
