@@ -109,6 +109,12 @@ angular.module('app')
                 return $http.delete("application/" + applicationId  + "/config/" + configId);
             }
 
+            service.removeApplication = function(applicationId){
+                return $http.delete("application/" + applicationId);
+            }
+
+
+
             return service;
         }];
 

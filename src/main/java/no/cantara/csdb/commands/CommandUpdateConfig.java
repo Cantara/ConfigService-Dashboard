@@ -25,4 +25,17 @@ public class CommandUpdateConfig extends BasePutCommand<String>{
 	protected String getTargetPath() {
 		return "application/" + applicationId + "/config/" + configId;
 	}
+	
+	@Override
+	protected String dealWithFailedResponse(String responseBody, int statusCode) {
+		if(statusCode==404){
+			return statusCode + ": Not found";	
+		}
+		return statusCode + ":" + responseBody;
+	}
+	
+	@Override
+	protected String dealWithResponse(String response) {
+		return "200" + ":" + super.dealWithResponse(response);
+	}
 }

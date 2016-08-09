@@ -44,21 +44,29 @@ angular.module('Application')
             $scope.submitted = true;
             if ($scope.applicationForm.$invalid) return;
 
-            ApplicationService.save().then(function (data) {
-
-                $scope.submitted = false;
-                init();
-                $scope.applicationForm.$setPristine();
-                toastr.success('Application was created successfully!');
+            ApplicationService.save().then(function (response) {
+                if(response.data.startsWith("200")) {
+                    $scope.submitted = false;
+                    init();
+                    $scope.applicationForm.$setPristine();
+                    toastr.success('Application was created successfully!');
+                } else {
+                    toastr.error('Creation failed: ' + response.data);
+                }
             });
         }
 
         $scope.update = function () {
 
-            ApplicationService.save().then(function (data) {
-                $scope.editMode = false;
-                $route.reload();
-                toastr.success('Update successfully');
+            ApplicationService.save().then(function (response) {
+
+                if(response.data.startsWith("200")) {
+                    $scope.editMode = false;
+                    $route.reload();
+                    toastr.success('Update successfully');
+                } else {
+                    toastr.error('Update failed: ' + response.data);
+                }
             });
         }
 
@@ -66,11 +74,17 @@ angular.module('Application')
             return ApplicationService.canRemoveThisConfig();
         }
         $scope.removeApplicationConfig = function () {
-            ApplicationService.removeApplicationConfig().then(function (data) {
-                $route.reload();
-                toastr.success('Delete successfully');
+            ApplicationService.removeApplicationConfig().then(function (response) {
+                if(response.data.startsWith("204")) {
+                    toastr.success('Delete successfully');
+                    $location.path('/applications/');
+
+                } else {
+                    toastr.error('Delete failed: ' + response.data);
+                }
             })
         }
+
 
         $scope.hasError = function (modelController, error) {
             return (modelController.$dirty || $scope.submitted) && error;

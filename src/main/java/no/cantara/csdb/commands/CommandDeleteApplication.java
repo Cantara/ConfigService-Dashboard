@@ -1,24 +1,26 @@
 package no.cantara.csdb.commands;
 
 
-public class CommandDeleteApplicationConfig extends BaseDeleteCommand<String>{
+public class CommandDeleteApplication extends BaseDeleteCommand<String>{
 	
 	private String json;
 	private String applicationId;
-	private String configId;
+
 	
-	public CommandDeleteApplicationConfig(String applicationId, String configId){
-		this.configId = configId;
+	public CommandDeleteApplication(String applicationId){
 		this.applicationId = applicationId;
 	}
 	
 	@Override
 	protected String getTargetPath() {
-		return "application/" + applicationId + "/config/" + configId;
+		return "application/" + applicationId;
 	}
 	
 	@Override
 	protected String dealWithFailedResponse(String responseBody, int statusCode) {
+		if(statusCode==404){
+			return statusCode + ": Aplication Not found";	
+		}
 		return statusCode + ":" + responseBody;
 	}
 	

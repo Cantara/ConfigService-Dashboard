@@ -25,15 +25,19 @@ angular.module('Application')
 
         service.canRemoveThisConfig = function(){
             if(currentApplicationDetail!=null) {
-                return typeof currentApplicationDetail.config.id != "undefined";
+                return typeof currentApplicationDetail.status.seenInTheLastHourCount === "undefined" ||
+                    (typeof currentApplicationDetail.status != "undefined" && currentApplicationDetail.status.seenInTheLastHourCount == 0);
+
             } else {
                 return false;
             }
         }
 
         service.removeApplicationConfig = function () {
-            if(service.canRemoveThisConfig()){
+            if(typeof currentApplicationDetail.config.id != "undefined" ){
                 return CSService.removeApplicationConfig(currentApplicationDetail.id, currentApplicationDetail.config.id);
+            } else {
+                return CSService.removeApplication(currentApplicationDetail.id);
             }
         }
 

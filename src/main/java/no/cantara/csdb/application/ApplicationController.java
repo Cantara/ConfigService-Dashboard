@@ -132,6 +132,20 @@ public class ApplicationController {
         return "json";
     }
 	
+	@DELETE
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @RequestMapping(value = "/{applicationId}", method = RequestMethod.DELETE)
+	public String deleteApp(@PathVariable("applicationId") String applicationId, HttpServletRequest request, HttpServletResponse response, Model model) {
+        String jsonResult;
+        try {
+            jsonResult = ApplicationSessionDao.instance.deleteApplication(applicationId);
+            toResult(model, jsonResult);
+        } catch (Exception e) {
+          
+        }
+        return "json";
+    }
+	
 	
 
 	

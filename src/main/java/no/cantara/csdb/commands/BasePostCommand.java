@@ -29,4 +29,6 @@ public abstract class BasePostCommand<T> extends BaseHttpPostHystrixCommand<T>{
 		request.contentType(HttpSender.APPLICATION_JSON);
 		return super.dealWithRequestBeforeSend(request);
 	}
+	
+	
 }
