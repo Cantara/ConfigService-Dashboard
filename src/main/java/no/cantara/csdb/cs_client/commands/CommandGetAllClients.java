@@ -13,7 +13,7 @@ public class CommandGetAllClients extends BaseGetCommand<String> {
 
 	@Override
 	protected String getTargetPath() {
-        return "cs_client/";
+        return "client/";
     }
 
 	

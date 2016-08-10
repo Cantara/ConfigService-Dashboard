@@ -16,7 +16,7 @@ public class CommandGetClientEvents extends BaseGetCommand<String> {
 
 	@Override
 	protected String getTargetPath() {
-        return "cs_client/" + clientId + "/events";
+        return "client/" + clientId + "/events";
     }
 
 	

@@ -16,12 +16,12 @@ public class CommandCreateApplicationConfig extends BasePostCommand<String> {
 	@Override
 	protected HttpRequest dealWithRequestBeforeSend(HttpRequest request) {
 		super.dealWithRequestBeforeSend(request);
-		request.contentType("cs_application/json").send(json);
+		request.contentType("application/json").send(json);
 		return request;
 	}
 	
 	@Override
 	protected String getTargetPath() {
-		return "cs_application/" + applicationId + "/config";
+		return "application/" + applicationId + "/config";
 	}
 }

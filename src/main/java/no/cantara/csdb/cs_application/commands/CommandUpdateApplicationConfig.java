@@ -18,13 +18,13 @@ public class CommandUpdateApplicationConfig extends BasePutCommand<String> {
 	@Override
 	protected HttpRequest dealWithRequestBeforeSend(HttpRequest request) {
 		super.dealWithRequestBeforeSend(request);
-		request.contentType("cs_application/json").send(json);
+		request.contentType("application/json").send(json);
 		return request;
 	}
 	
 	@Override
 	protected String getTargetPath() {
-		return "cs_application/" + applicationId + "/config/" + configId;
+		return "application/" + applicationId + "/config/" + configId;
 	}
 	
 	@Override

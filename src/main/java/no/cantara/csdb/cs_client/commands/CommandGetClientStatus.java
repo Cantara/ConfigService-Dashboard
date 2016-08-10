@@ -16,7 +16,7 @@ public class CommandGetClientStatus extends BaseGetCommand<String> {
 
 	@Override
 	protected String getTargetPath() {
-        return "cs_client/" + clientId + "/status";
+        return "client/" + clientId + "/status";
     }
 
 	

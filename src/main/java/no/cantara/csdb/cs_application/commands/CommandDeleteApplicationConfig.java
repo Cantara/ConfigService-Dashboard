@@ -16,7 +16,7 @@ public class CommandDeleteApplicationConfig extends BaseDeleteCommand<String> {
 	
 	@Override
 	protected String getTargetPath() {
-		return "cs_application/" + applicationId + "/config/" + configId;
+		return "application/" + applicationId + "/config/" + configId;
 	}
 	
 	@Override

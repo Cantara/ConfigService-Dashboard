@@ -5,6 +5,6 @@ import no.cantara.csdb.util.basecommands.BaseGetCommand;
 public class CommandGetAllApplications extends BaseGetCommand<String> {
 	@Override
 	protected String getTargetPath() {
-		return "cs_application/";
+		return "application/";
 	}
 }

@@ -12,7 +12,7 @@ public class CommandGetConfigForApplication extends BaseGetCommand<String> {
 	
 	@Override
 	protected String getTargetPath() {
-		return "cs_application/" + applicationId + "/config";
+		return "application/" + applicationId + "/config";
 	}
 
 	

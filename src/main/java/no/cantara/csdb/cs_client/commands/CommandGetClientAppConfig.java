@@ -17,7 +17,7 @@ public class CommandGetClientAppConfig extends BaseGetCommand<String> {
 
 	@Override
 	protected String getTargetPath() {
-        return "cs_client/" + clientId + "/config";
+        return "client/" + clientId + "/config";
     }
 
 	

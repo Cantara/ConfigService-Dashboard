@@ -16,7 +16,7 @@ public class CommandGetClientEnvironment extends BaseGetCommand<String> {
 
 	@Override
 	protected String getTargetPath() {
-        return "cs_client/" + clientId + "/env";
+        return "client/" + clientId + "/env";
     }
 
 	

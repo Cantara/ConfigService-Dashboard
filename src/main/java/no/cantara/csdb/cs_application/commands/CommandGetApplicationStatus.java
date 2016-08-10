@@ -12,7 +12,7 @@ public class CommandGetApplicationStatus extends BaseGetCommand<String> {
 	
 	@Override
 	protected String getTargetPath() {
-		return "cs_application/" + artifactId + "/status";
+		return "application/" + artifactId + "/status";
 	}
 
 	
