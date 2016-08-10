@@ -3,15 +3,17 @@
     <thead>
     <tr>
         <th>No</th>
-        <th>ArtifactId</th>
+        <th>ApplicationId</th>
+        <th>ApplicationConfigId</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="application in applications">
         <td>{{$index+1}}</td>
         <td>{{application.artifactId}}</td>
+        <td>Not Implemented Yet</td>
         <td>
-            <span class="glyphicon glyphicon-eye-open" title="View detail" ng-click="goto(application)" ></span>
+            <span class="glyphicon glyphicon-eye-open" title="View details" ng-click="goto(application)"></span>
         <td>
     </tr>
     </tbody>

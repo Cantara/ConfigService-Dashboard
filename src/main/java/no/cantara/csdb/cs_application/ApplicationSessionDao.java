@@ -15,7 +15,7 @@ public enum ApplicationSessionDao {
 	}
 
 	public String getConfigForApplication(String applicationId) {
-		String json = new CommandGetConfigForApplication(applicationId).execute();
+		String json = new CommandGetApplicationConfigsForApplication(applicationId).execute();
 		return json;
 	}
 

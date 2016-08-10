@@ -2,12 +2,12 @@ package no.cantara.csdb.cs_application.commands;
 
 import no.cantara.csdb.util.basecommands.BaseGetCommand;
 
-public class CommandGetConfigForApplication extends BaseGetCommand<String> {
+public class CommandGetApplicationConfigsForApplication extends BaseGetCommand<String> {
 
 	private String applicationId;
-	
-	public CommandGetConfigForApplication(String applicationId){
-		this.applicationId = applicationId;
+
+    public CommandGetApplicationConfigsForApplication(String applicationId) {
+        this.applicationId = applicationId;
 	}
 	
 	@Override
@@ -15,5 +15,5 @@ public class CommandGetConfigForApplication extends BaseGetCommand<String> {
 		return "application/" + applicationId + "/config";
 	}
 
-	
+
 }
