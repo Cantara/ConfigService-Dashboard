@@ -39,10 +39,10 @@ angular.module('app')
             this.status = 'red';
             var diff = Date.now() - new Date(this.latestClientHeartbeatData.timeOfContact);
             var lastSeen = diff/ 1000;
-            if(lastSeen<120) {
+            if(lastSeen<480) {
                 this.status = 'green';
                 this.color = '#A0CF89';
-            } else if(lastSeen > 120 && lastSeen <960) {
+            } else if(lastSeen > 480 && lastSeen <960) {
                 this.status = 'yellow';
                 this.color = '#FFFF75';
             } else {
