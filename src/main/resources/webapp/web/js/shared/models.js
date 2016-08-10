@@ -42,7 +42,7 @@ angular.module('app')
             if(lastSeen < 480) {
                 this.status = 'green';
                 this.color = '#A0CF89';
-            } else if(lastSeen > 480 && lastSeen < 60*60*24) {
+            } else if(lastSeen > 480 && lastSeen < 60*60*24*7) {
                 this.status = 'yellow';
                 this.color = '#FFFF75';
             } else {
