@@ -1,8 +1,9 @@
-package no.cantara.csdb.commands;
+package no.cantara.csdb.cs_application.commands;
 
 import com.github.kevinsawicki.http.HttpRequest;
+import no.cantara.csdb.util.basecommands.BasePostCommand;
 
-public class CommandCreateApplication extends BasePostCommand<String>{
+public class CommandCreateApplication extends BasePostCommand<String> {
 	
 	private String json;
 	
@@ -13,7 +14,7 @@ public class CommandCreateApplication extends BasePostCommand<String>{
 	@Override
 	protected HttpRequest dealWithRequestBeforeSend(HttpRequest request) {
 		super.dealWithRequestBeforeSend(request);
-		request.contentType("application/json").send(json);
+		request.contentType("cs_application/json").send(json);
 		return request;
 	}
 	
@@ -29,6 +30,6 @@ public class CommandCreateApplication extends BasePostCommand<String>{
 	
 	@Override
 	protected String getTargetPath() {
-		return "application/";
+		return "cs_application/";
 	}
 }

@@ -1,54 +1,54 @@
-package no.cantara.csdb.util;
-
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package no.cantara.csdb.util.basecommands;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandProperties;
 import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
+import no.cantara.csdb.util.HttpSender;
+import no.cantara.csdb.util.StringConv;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public abstract class BaseHttpPutHystrixCommand<R> extends HystrixCommand<R> {
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+
+public abstract class BaseHttpDeleteHystrixCommand<R> extends HystrixCommand<R> {
 
     protected Logger log;
     protected URI serviceUri;
     protected String TAG = "";
     protected HttpRequest request;
-    
-    protected BaseHttpPutHystrixCommand(URI serviceUri, String hystrixGroupKey, int hystrixExecutionTimeOut) {
-		super(HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)).
-				andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
-						.withExecutionTimeoutInMilliseconds(hystrixExecutionTimeOut)));
-		init(serviceUri, hystrixGroupKey);
-	}
+    private byte[] responseBody;
 
-	protected BaseHttpPutHystrixCommand(URI serviceUri, String hystrixGroupKey) {
-		super(HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)));
-		init(serviceUri, hystrixGroupKey);
-	}
-	
+    protected BaseHttpDeleteHystrixCommand(URI serviceUri, String hystrixGroupKey, int hystrixExecutionTimeOut) {
+        super(HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)).
+                andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
+                        .withExecutionTimeoutInMilliseconds(hystrixExecutionTimeOut)));
+        init(serviceUri, hystrixGroupKey);
+    }
 
-    private void init(URI serviceUri,  String hystrixGroupKey) {
+
+    protected BaseHttpDeleteHystrixCommand(URI serviceUri, String hystrixGroupKey) {
+        super(HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)));
+        init(serviceUri, hystrixGroupKey);
+    }
+
+    private void init(URI serviceUri, String hystrixGroupKey) {
         this.serviceUri = serviceUri;
-       
         this.TAG = this.getClass().getName() + ", pool :" + hystrixGroupKey;
         this.log = LoggerFactory.getLogger(TAG);
         HystrixRequestContext.initializeContext();
     }
 
-
     @Override
     protected R run() {
-        return doPutCommand();
+        return doDeleteCommand();
 
     }
 
-    protected R doPutCommand() {
+    protected R doDeleteCommand() {
         try {
             String uriString = serviceUri.toString();
             if (getTargetPath() != null) {
@@ -58,9 +58,9 @@ public abstract class BaseHttpPutHystrixCommand<R> extends HystrixCommand<R> {
             log.debug("TAG" + " - serviceUri={}", uriString);
 
             if (getQueryParameters() != null && getQueryParameters().length != 0) {
-                request = HttpRequest.put(uriString, true, getQueryParameters());
+                request = HttpRequest.delete(uriString, true, getQueryParameters());
             } else {
-                request = HttpRequest.put(uriString);
+                request = HttpRequest.delete(uriString);
             }
             request.trustAllCerts();
             request.trustAllHosts();
@@ -73,19 +73,19 @@ public abstract class BaseHttpPutHystrixCommand<R> extends HystrixCommand<R> {
             request = dealWithRequestBeforeSend(request);
 
             responseBody = request.bytes();
-			int statusCode = request.code();
-			String responseAsText = StringConv.UTF8(responseBody);
-			
-			switch (statusCode) {
-			case java.net.HttpURLConnection.HTTP_OK:
-				onCompleted(responseAsText);
-				return dealWithResponse(responseAsText);
-			default:
-				onFailed(responseAsText, statusCode);
-				return dealWithFailedResponse(responseAsText, statusCode);
-			}
-			
-			
+            int statusCode = request.code();
+            String responseAsText = StringConv.UTF8(responseBody);
+
+            switch (statusCode) {
+                case java.net.HttpURLConnection.HTTP_OK:
+                    onCompleted(responseAsText);
+                    return dealWithResponse(responseAsText);
+                default:
+                    onFailed(responseAsText, statusCode);
+                    return dealWithFailedResponse(responseAsText, statusCode);
+            }
+
+
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new RuntimeException("TAG" + " - Application authentication failed to execute");
@@ -97,19 +97,6 @@ public abstract class BaseHttpPutHystrixCommand<R> extends HystrixCommand<R> {
     }
 
     protected HttpRequest dealWithRequestBeforeSend(HttpRequest request) {
-        //CAN USE MULTIPART
-
-        //JUST EXAMPLE
-
-        //		HttpRequest request = HttpRequest.post("http://google.com");
-        //		request.part("status[body]", "Making a multipart request");
-        //		request.part("status[image]", new File("/home/kevin/Pictures/ide.png"));
-
-        //OR SEND SOME DATA
-
-        //request.send("name=huydo")
-        //or something like
-        //request.contentType("application/json").send(applicationJson);
 
         return request;
     }
@@ -139,12 +126,12 @@ public abstract class BaseHttpPutHystrixCommand<R> extends HystrixCommand<R> {
 
     @Override
     protected R getFallback() {
-        log.warn(TAG + " - fallback - ServiceUri={}", serviceUri.toString() + getTargetPath());
+        log.warn(TAG + " - fallback {}", serviceUri.toString() + getTargetPath());
         return null;
     }
-    private byte[] responseBody;
-	public byte[] getResponseBodyAsByteArray(){
-		return responseBody;
-	}
+
+    public byte[] getResponseBodyAsByteArray() {
+        return responseBody;
+    }
 }
 

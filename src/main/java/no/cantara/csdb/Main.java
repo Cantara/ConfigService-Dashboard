@@ -1,13 +1,6 @@
 package no.cantara.csdb;
 
-import javax.ws.rs.ext.RuntimeDelegate;
-
-
-
-
-
 import no.cantara.csdb.config.ConfigValue;
-
 import org.eclipse.jetty.http.security.Constraint;
 import org.eclipse.jetty.http.security.Password;
 import org.eclipse.jetty.security.ConstraintMapping;
@@ -17,6 +10,8 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.springframework.web.servlet.DispatcherServlet;
+
+import javax.ws.rs.ext.RuntimeDelegate;
 
 public class Main {
 
@@ -60,13 +55,13 @@ public class Main {
 		        
 		        ConstraintMapping adminRoleConstraintMapping = new ConstraintMapping();
 		        adminRoleConstraintMapping.setConstraint(adminRoleConstraint);
-		        adminRoleConstraintMapping.setPathSpec("/application/*");
-		        securityHandler.addConstraintMapping(adminRoleConstraintMapping);
+             adminRoleConstraintMapping.setPathSpec("/cs_application/*");
+             securityHandler.addConstraintMapping(adminRoleConstraintMapping);
 		        
 		        adminRoleConstraintMapping = new ConstraintMapping();
 		        adminRoleConstraintMapping.setConstraint(adminRoleConstraint);
-		        adminRoleConstraintMapping.setPathSpec("/client/*");
-		        securityHandler.addConstraintMapping(adminRoleConstraintMapping);
+             adminRoleConstraintMapping.setPathSpec("/cs_client/*");
+             securityHandler.addConstraintMapping(adminRoleConstraintMapping);
 
 		
 

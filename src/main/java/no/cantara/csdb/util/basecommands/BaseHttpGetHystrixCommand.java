@@ -1,17 +1,18 @@
-package no.cantara.csdb.util;
-
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package no.cantara.csdb.util.basecommands;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandProperties;
 import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
+import no.cantara.csdb.util.HttpSender;
+import no.cantara.csdb.util.StringConv;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class BaseHttpGetHystrixCommand<R> extends HystrixCommand<R>{
 
@@ -148,14 +149,14 @@ public abstract class BaseHttpGetHystrixCommand<R> extends HystrixCommand<R>{
 	@Override
 	protected R getFallback() {
 		log.warn(TAG + " - fallback - serviceUri={}", serviceUri.toString() + getTargetPath());
-		// TODO - this should return false for Boolean commands
+		// TODO - this should return false for Boolean basecommands
 		return null;
 	}
 
 
 	protected String getAcceptHeaderRequestValue(){
 		//CAN RETURN JSON (can be used in derived class)
-		//return "application/json";
+		//return "cs_application/json";
 		return "";
 		
 	}

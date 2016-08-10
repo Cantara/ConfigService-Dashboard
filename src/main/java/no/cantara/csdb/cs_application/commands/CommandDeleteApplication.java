@@ -1,7 +1,9 @@
-package no.cantara.csdb.commands;
+package no.cantara.csdb.cs_application.commands;
 
 
-public class CommandDeleteApplication extends BaseDeleteCommand<String>{
+import no.cantara.csdb.util.basecommands.BaseDeleteCommand;
+
+public class CommandDeleteApplication extends BaseDeleteCommand<String> {
 	
 	private String json;
 	private String applicationId;
@@ -13,7 +15,7 @@ public class CommandDeleteApplication extends BaseDeleteCommand<String>{
 	
 	@Override
 	protected String getTargetPath() {
-		return "application/" + applicationId;
+		return "cs_application/" + applicationId;
 	}
 	
 	@Override

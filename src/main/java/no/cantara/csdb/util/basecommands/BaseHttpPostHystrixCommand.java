@@ -1,17 +1,18 @@
-package no.cantara.csdb.util;
-
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package no.cantara.csdb.util.basecommands;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandProperties;
 import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
+import no.cantara.csdb.util.HttpSender;
+import no.cantara.csdb.util.StringConv;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R>{
@@ -110,7 +111,7 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R>{
 		
 		//request.send("name=huydo")
 		//or something like
-		//request.contentType("application/json").send(applicationJson);
+		//request.contentType("cs_application/json").send(applicationJson);
 		
 		return request;
 	}
