@@ -14,7 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Controller
-@RequestMapping("/application")
+@RequestMapping("/applications")
 public class ApplicationController {
 
 	@GET
