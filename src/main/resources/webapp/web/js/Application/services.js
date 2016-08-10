@@ -23,6 +23,23 @@ angular.module('Application')
             }
         };
 
+        service.canRemoveThisConfig = function(){
+            if(currentApplicationDetail!=null) {
+                return typeof currentApplicationDetail.status.seenInTheLastHourCount === "undefined" ||
+                    (typeof currentApplicationDetail.status != "undefined" && currentApplicationDetail.status.seenInTheLastHourCount == 0);
+
+            } else {
+                return false;
+            }
+        }
+
+        service.removeApplicationConfig = function () {
+            if(typeof currentApplicationDetail.config.id != "undefined" ){
+                return CSService.removeApplicationConfig(currentApplicationDetail.id, currentApplicationDetail.config.id);
+            } else {
+                return CSService.removeApplication(currentApplicationDetail.id);
+            }
+        }
 
         service.save = function () {
             var promise = newAppConfig ? CSService.addApplicationConfig(currentApplicationDetail) : CSService.updateApplicationConfig(currentApplicationDetail);

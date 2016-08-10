@@ -28,8 +28,7 @@
             <div class="navbar-brand">ConfigService Dashboard</div>
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li><a id="logout" href="logout">Log out <strong>${userName}</strong></a></li>
-            <!--<li><a ng-click="doLogout()" title="Logout">Logout</a></li>-->
+           <li><a id="logout" href="#/login">Log out</a></li>
         </ul>
     </div>
     <div id="top-nav-container" class="second-top-nav">
@@ -66,6 +65,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.carousel.js"></script>
 <script src="https://npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
 <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.js"></script>
+<script src="https://code.angularjs.org/1.2.13/angular-cookies.js"></script>
 
 <script src="js/vendor/smart-table.debug.js"></script>
 <script src="js/vendor/smart-table-directives.js"></script>
@@ -77,6 +77,8 @@
 <script src="js/Client/services.js"></script>
 <script src="js/Application/controllers.js"></script>
 <script src="js/Application/services.js"></script>
+<script src="js/Authentication/controllers.js"></script>
+<script src="js/Authentication/services.js"></script>
 <script src="js/shared/models.js"></script>
 <script src="js/shared/services.js"></script>
 <script src="js/config.js"></script>

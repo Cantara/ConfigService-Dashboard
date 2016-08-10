@@ -5,45 +5,60 @@ angular.module('app').config(function ($routeProvider, CSServiceProvider, $httpP
 
     CSServiceProvider.configure("something");
 
-    $routeProvider.when('/', {
-        redirectTo: '/clients'
-    });
-
-    $routeProvider.when('/clients', {
+    $routeProvider.when('/login', {
+        controller: 'LoginController',
+        templateUrl: 'partials/login.html',
+        hideMenus: true
+    }).when('/', {
         templateUrl: 'partials/clients.html',
         leftNav: 'partials/left-nav-main.html',
         topNav: 'partials/top-nav.html',
         controller: 'ClientListviewController'
-    });
-    $routeProvider.when('/clients/:id', {
+    }).when('/clients', {
+        templateUrl: 'partials/clients.html',
+        leftNav: 'partials/left-nav-main.html',
+        topNav: 'partials/top-nav.html',
+        controller: 'ClientListviewController'
+    }).when('/clients/:id', {
         templateUrl: 'partials/client.html',
         leftNav: 'partials/left-nav-main.html',
         topNav: 'partials/top-nav.html',
         controller: 'ClientDetailController'
-    });
-    $routeProvider.when('/applications', {
+    }).when('/applications', {
         templateUrl: 'partials/applications.html',
         leftNav: 'partials/left-nav-main.html',
         topNav: 'partials/top-nav.html',
         controller: 'ApplicationListviewController'
-    });
-    $routeProvider.when('/applications/:id/:artifactId', {
+    }).when('/applications/:id/:artifactId', {
         templateUrl: 'partials/application.html',
         leftNav: 'partials/left-nav-main.html',
         topNav: 'partials/top-nav.html',
         controller: 'ApplicationDetailController'
-    });
-    $routeProvider.when('/application/new', {
+    }).when('/application/new', {
         templateUrl: 'partials/application-edit.html',
         leftNav: 'partials/left-nav-main.html',
         topNav: 'partials/top-nav.html',
         controller: 'ApplicationDetailController'
-    });
-    $routeProvider.when('/application/edit/:id', {
+    }).when('/application/edit/:id', {
         templateUrl: 'partials/application-edit.html',
         leftNav: 'partials/left-nav-main.html',
         topNav: 'partials/top-nav.html',
         controller: 'ApplicationDetailController'
     });
 
-});
+
+}).run(['$rootScope', '$location', '$cookieStore', '$http',
+    function ($rootScope, $location, $cookieStore, $http) {
+        // keep user logged in after page refresh
+        $rootScope.globals = $cookieStore.get('globals') || {};
+        if ($rootScope.globals.currentUser) {
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+        }
+
+        $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            // redirect to login page if not logged in
+            if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
+                $location.path('/login');
+            }
+        });
+    }]);

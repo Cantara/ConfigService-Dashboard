@@ -1,24 +1,15 @@
 package no.cantara.csdb.commands;
 
-import com.github.kevinsawicki.http.HttpRequest;
 
-public class CommandUpdateConfig extends BasePutCommand<String>{
+public class CommandDeleteApplicationConfig extends BaseDeleteCommand<String>{
 	
 	private String json;
 	private String applicationId;
 	private String configId;
 	
-	public CommandUpdateConfig(String applicationId, String configId, String json){
-		this.json = json;
+	public CommandDeleteApplicationConfig(String applicationId, String configId){
 		this.configId = configId;
 		this.applicationId = applicationId;
-	}
-	
-	@Override
-	protected HttpRequest dealWithRequestBeforeSend(HttpRequest request) {
-		super.dealWithRequestBeforeSend(request);
-		request.contentType("application/json").send(json);
-		return request;
 	}
 	
 	@Override
@@ -28,9 +19,6 @@ public class CommandUpdateConfig extends BasePutCommand<String>{
 	
 	@Override
 	protected String dealWithFailedResponse(String responseBody, int statusCode) {
-		if(statusCode==404){
-			return statusCode + ": Not found";	
-		}
 		return statusCode + ":" + responseBody;
 	}
 	
@@ -38,4 +26,5 @@ public class CommandUpdateConfig extends BasePutCommand<String>{
 	protected String dealWithResponse(String response) {
 		return "200" + ":" + super.dealWithResponse(response);
 	}
+	
 }

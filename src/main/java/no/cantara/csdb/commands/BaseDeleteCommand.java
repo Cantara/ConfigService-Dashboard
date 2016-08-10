@@ -7,17 +7,19 @@ import com.github.kevinsawicki.http.HttpRequest;
 
 import no.cantara.csdb.config.ConfigValue;
 import no.cantara.csdb.config.ConstantValue;
+import no.cantara.csdb.util.BaseHttpDeleteHystrixCommand;
 import no.cantara.csdb.util.BaseHttpGetHystrixCommand;
 import no.cantara.csdb.util.BaseHttpPostHystrixCommand;
+import no.cantara.csdb.util.BaseHttpPutHystrixCommand;
 import no.cantara.csdb.util.HttpSender;
 
-public abstract class BasePostCommand<T> extends BaseHttpPostHystrixCommand<T>{
+public abstract class BaseDeleteCommand<T> extends BaseHttpDeleteHystrixCommand<T>{
 
-	public BasePostCommand(String hystrixGroupKey) {
+	public BaseDeleteCommand(String hystrixGroupKey) {
 		super(URI.create(ConfigValue.CONFIGSERVICE_URL), hystrixGroupKey, ConstantValue.COMMAND_TIMEOUT);
 	}
 	
-	public BasePostCommand() {
+	public BaseDeleteCommand() {
 		super(URI.create(ConfigValue.CONFIGSERVICE_URL), "command_group", ConstantValue.COMMAND_TIMEOUT);
 	}
 	
@@ -29,6 +31,4 @@ public abstract class BasePostCommand<T> extends BaseHttpPostHystrixCommand<T>{
 		request.contentType(HttpSender.APPLICATION_JSON);
 		return super.dealWithRequestBeforeSend(request);
 	}
-	
-	
 }

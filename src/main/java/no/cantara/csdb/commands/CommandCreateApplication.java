@@ -18,6 +18,16 @@ public class CommandCreateApplication extends BasePostCommand<String>{
 	}
 	
 	@Override
+	protected String dealWithFailedResponse(String responseBody, int statusCode) {
+		return statusCode + ":" + responseBody;
+	}
+	
+	@Override
+	protected String dealWithResponse(String response) {
+		return "200" + ":" + super.dealWithResponse(response);
+	}
+	
+	@Override
 	protected String getTargetPath() {
 		return "application/";
 	}
