@@ -10,11 +10,13 @@
     <button class="btn btn-danger pull-right client-edit-btn">Edit Client</button> -->
     <my-tabs>
 
+        <my-pane title="Configuration">
+            <a href="#/client/edit" class="btn btn-primary"><span class="glyphicon glyphicon-cog"></span> Edit
+                Configuration</a>
+            <pre>{{clientDetail.config.display()}}</pre>
+        </my-pane>
         <my-pane title="Environment">
             <pre>{{clientDetail.env.display()}}</pre>
-        </my-pane>
-        <my-pane title="Configuration">
-            <pre>{{clientDetail.config.display()}}</pre>
         </my-pane>
         <my-pane title="Events">
             <pre>{{clientDetail.events.display()}}</pre>
