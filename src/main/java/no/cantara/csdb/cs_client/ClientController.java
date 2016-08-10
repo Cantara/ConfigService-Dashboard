@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 
 
 @Controller
-@RequestMapping("/clients")
+@RequestMapping("/client")
 public class ClientController {
 
 	
