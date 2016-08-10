@@ -6,7 +6,12 @@ public class CommandGetClientEvents extends BaseGetCommand<String> {
 	public CommandGetClientEvents(String clientId){
 		this.clientId = clientId;
 	}
-	
+
+    @Override
+    protected String getCacheKey() {
+        return String.valueOf(clientId);
+    }
+
 	@Override
 	protected String getTargetPath() {
 		return "client/" + clientId + "/events";

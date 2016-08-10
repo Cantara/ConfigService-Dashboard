@@ -6,7 +6,12 @@ public class CommandGetClientEnvironment extends BaseGetCommand<String> {
 	public CommandGetClientEnvironment(String clientId){
 		this.clientId = clientId;
 	}
-	
+
+    @Override
+    protected String getCacheKey() {
+        return String.valueOf(clientId);
+    }
+
 	@Override
 	protected String getTargetPath() {
 		return "client/" + clientId + "/env";
