@@ -92,7 +92,21 @@ public class ClientController {
         }
         return "json";
     }
-	
-	
-	
+
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @RequestMapping(value = "/{clientId}/cloudwatchlog/", method = RequestMethod.GET)
+    public String getCloudWatchLog(@PathVariable("clientId") String clientId, HttpServletRequest request, HttpServletResponse response, Model model) {
+        String jsonResult;
+        try {
+            jsonResult = ClientSessionDao.instance.getClientCloudWatchLog(clientId);
+            model.addAttribute(ConstantValue.JSON_DATA, jsonResult);
+        } catch (Exception e) {
+
+        }
+        return "json";
+    }
+
+
 }

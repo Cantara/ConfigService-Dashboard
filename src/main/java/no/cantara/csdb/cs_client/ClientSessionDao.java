@@ -71,7 +71,11 @@ public enum ClientSessionDao {
 		String json = new CommandGetClientEvents(clientId).execute();
 		return json;
 	}
-	
-	
+
+	public String getClientCloudWatchLog(String clientId) {
+		String json = new CommandGetAWSCloudWatchLog(clientId).execute();
+		return json;
+	}
+
 	
 }
