@@ -1,17 +1,28 @@
 
-<table st-table="applications" class="table table-striped">
+<div id="showSpin" ng-if="dataLoading" style="padding: 10px; margin: auto; width: 50%; font-size:48px; background-color: #FFF; opacity: 0.9; filter: alpha(opacity=90);">
+    <i class="fa fa-spinner fa-spin"></i>
+</div>
+
+<table  st-table="displayedCollection" st-safe-src="applications" class="table table-striped" >
     <thead>
     <tr>
         <th>No</th>
         <th>ApplicationId</th>
         <th>ApplicationConfigId</th>
+        <th></th>
+    </tr>
+    <tr>
+        <th colspan="2">
+            <input st-search="artifactId" placeholder="search for application name" class="input-sm form-control" type="search"/>
+        </th>
+
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="application in applications">
+    <tr ng-repeat="application in displayedCollection">
         <td>{{$index+1}}</td>
         <td>{{application.artifactId}}</td>
-        <td>Not Implemented Yet</td>
+        <td>{{application.appConfig.id}}</td>
         <td>
             <span class="glyphicon glyphicon-eye-open" title="View details" ng-click="goto(application)"></span>
         <td>

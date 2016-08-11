@@ -47,11 +47,23 @@ angular.module('app')
                 return $http.get('application/')
                     .then(function (response) {
                         return response.data.map(function (app) {
+
                             return new Application(app);
+
+                            
                         });
                     });
 
             };
+
+
+            service.getApplicationConfig = function(applicationid){
+                return  $http.get('application/' + applicationid + "/config/").then(function (response) {
+                    return response.data;
+                });
+            }
+
+
 
             service.getApplicationDetail = function (id, artifactId){
 

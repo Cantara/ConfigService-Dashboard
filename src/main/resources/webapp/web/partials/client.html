@@ -1,4 +1,9 @@
 <div class="client-detail-container">
+
+<div id="showSpin" ng-if="dataLoading" style="padding: 10px; margin: auto; width: 50%; font-size:48px; background-color: #FFF; opacity: 0.9; filter: alpha(opacity=90);">
+     <i class="fa fa-spinner fa-spin"></i>
+</div>
+<div ng-hide="dataLoading">
 <div class="client-header" ng-style="{'background-color': clientDetail.status.color}">
     <div class="col-sm-4">{{clientDetail.status.client.clientId}} / {{clientDetail.status.latestClientHeartbeatData.artifactId}}</div>
     <div class="col-sm-2"><b>AppConfig:</b> {{clientDetail.config.name}}</div>
@@ -6,8 +11,6 @@
     <div class="col-sm-2"><b>LastSeen:</b> {{clientDetail.status.latestClientHeartbeatData.timeOfContact|date:'medium'}}</div>
 </div>
 <div>
-<!-- 
-    <button class="btn btn-danger pull-right cs_client-edit-btn">Edit Client</button> -->
     <my-tabs>
 
         <my-pane title="Configuration">
@@ -26,5 +29,6 @@
         </my-pane>
     </my-tabs>
 
+</div>
 </div>
 </div>

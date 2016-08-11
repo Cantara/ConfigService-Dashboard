@@ -37,9 +37,10 @@ public class MainController {
 		JSONObject obj = new JSONObject();
 		obj.put("success", false);
         try {
-        	
-            if(ApplicationSessionDao.instance.checkLogin(json)){
+        	String role = ApplicationSessionDao.instance.getLoginRole(json);
+            if(role !=null){
             	obj.put("success", true);
+            	obj.put("role", role);
             } else {
             	obj.put("message", "401, Unauthorized");
             }
@@ -55,3 +56,4 @@ public class MainController {
 	
 	
 }
+

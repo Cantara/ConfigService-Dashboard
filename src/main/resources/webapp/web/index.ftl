@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="css/main.css" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.carousel.css" rel="stylesheet" type="text/css" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.theme.min.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="https://npmcdn.com/angular-toastr/dist/angular-toastr.css" />
+    <link rel="stylesheet" href="https://npmcdn.com/angular-toastr/dist/angular-toastr.css" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <!--
 
 
@@ -49,7 +50,9 @@
             <div id="page-content" ng-view></div>
         </div>
         -->
+        <!--
          <label ng-if="routeHasError" class="alert alert-danger">{{routeError}}</label>
+         -->
          <div id="page-content" ng-view></div>
     </div>
 </div>

@@ -13,8 +13,8 @@ angular.module('Client')
 
         var init = function () {
 
-
-           
+            $scope.isAdmin=false;
+            $scope.dataLoading = true;
             CSService.getAllClientStatuses().then(function (data) {
 
                 $scope.green = 0;
@@ -22,7 +22,7 @@ angular.module('Client')
                 $scope.yellow = 0;
                 $scope.clock = Date.now();
                 $scope.clientStatuses = data;
-
+                $scope.dataLoading = false;
                 angular.forEach($scope.clientStatuses, function(value, key) {
                     var color = value.status;
                     if(color === 'green'){
@@ -49,9 +49,10 @@ angular.module('Client')
 
         var init = function () {
             if ($routeParams.id) {
-
+                $scope.dataLoading = true;
                 ClientService.getClientDetail($routeParams.id).then(function (data) {
                     $scope.clientDetail = data;
+                    $scope.dataLoading = false;
                 }, function () {
 
                 });

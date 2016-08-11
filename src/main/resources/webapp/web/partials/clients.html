@@ -1,4 +1,8 @@
-<div>
+
+<div id="showSpin" ng-if="dataLoading" style="padding: 10px; margin: auto; width: 50%; font-size:48px; background-color: #FFF; opacity: 0.9; filter: alpha(opacity=90);">
+    <i class="fa fa-spinner fa-spin"></i>
+</div>
+<div ng-hide="dataLoading">
 
     <div class="btn-group">
         <label>Config Service Statistics: </label>
@@ -14,13 +18,15 @@
         </label>
     </div>
 
-</div>
-<div id="client-list">
-    <div ng-repeat="clientStatus in clientStatuses | filter:search" ng-click="goto(clientStatus)">
+    <div id="client-list">
 
-        <div class="client-tile col-sm-1" ng-style="{'background-color': clientStatus.color}" popover-placement="right"
-             data-popover-template="'partials/template_clientpopup.html'" data-popover-trigger="mouseenter">
-            {{clientStatus.client.clientId}}
+        <div ng-repeat="clientStatus in clientStatuses | filter:search" ng-click="goto(clientStatus)">
+
+            <div class="client-tile col-sm-1" ng-style="{'background-color': clientStatus.color}" popover-placement="right"
+                 data-popover-template="'partials/template_clientpopup.html'" data-popover-trigger="mouseenter">
+                {{clientStatus.client.clientId}}
+            </div>
         </div>
     </div>
 </div>
+

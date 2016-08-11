@@ -114,16 +114,20 @@ angular.module('app')
 
 /* Model classes */
 angular.module('app')
-    .factory('Application', function () {
+    .factory('Application', ['ApplicationConfig', function (ApplicationConfig) {
         function Application(args) {
 
             this.id = args.id;
             this.artifactId = args.artifactId;
+            this.appConfig=null;
+        }
 
+        Application.prototype.setAppConfig= function (appConfig) {
+            this.appConfig= new ApplicationConfig(appConfig);
         }
 
         return Application;
-    });
+    }]);
 
 angular.module('app')
     .factory('ApplicationStatus', function () {

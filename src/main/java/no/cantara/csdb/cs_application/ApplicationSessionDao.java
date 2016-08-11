@@ -1,7 +1,15 @@
 package no.cantara.csdb.cs_application;
 
+import java.util.Arrays;
+import java.util.List;
+
+import no.cantara.cs.dto.Application;
+import no.cantara.cs.dto.Client;
+import no.cantara.csdb.Main;
 import no.cantara.csdb.config.ConfigValue;
 import no.cantara.csdb.cs_application.commands.*;
+
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -49,14 +57,16 @@ public enum ApplicationSessionDao {
 		return result;
 	}
 
-	public boolean checkLogin(String json) throws JSONException {
+	public String getLoginRole(String json) throws JSONException {
 		JSONObject obj = new JSONObject(json);
 		String username = obj.getString("username");
 		String password = obj.getString("password");
-		if(username.equals(ConfigValue.CONFIGSERVICE_USERNAME) && password.equals(ConfigValue.CONFIGSERVICE_PASSWORD)){
-			return true;
+		if(username.equals(ConfigValue.LOGIN_ADMIN_USERNAME) && password.equals(ConfigValue.LOGIN_ADMIN_PASSWORD)){
+			return Main.ADMIN_ROLE;
+		} else if(username.equals(ConfigValue.LOGIN_READ_USERNAME) && password.equals(ConfigValue.LOGIN_READ_PASSWORD)){
+			return Main.USER_ROLE;
 		} else {
-			return false;
+			return null;
 		}
 	}
 

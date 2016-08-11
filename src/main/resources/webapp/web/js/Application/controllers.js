@@ -2,7 +2,7 @@
  * Created by huy on 6/27/2016.
  */
 angular.module('Application')
-    .controller('ApplicationListviewController', ['$scope', 'CSService', '$location', function ($scope, CSService, $location) {
+    .controller('ApplicationListviewController', ['$scope', 'AuthenticationService', 'CSService', '$location', function ($scope, AuthenticationService, CSService, $location) {
 
 
 
@@ -10,13 +10,22 @@ angular.module('Application')
             $location.path('/applications/' + application.id + "/" + application.artifactId);
         }
 
-
+        $scope.applications = [];
+        $scope.displayedCollection = [];
+        
         var init = function () {
-
+            $scope.dataLoading = true;
             CSService.getAllApplications().then(function (data) {
 
                 $scope.applications = data;
+                $scope.displayedCollection = [].concat($scope.applications);
+                $scope.dataLoading = false;
 
+                angular.forEach($scope.displayedCollection, function(value, key) {
+                    CSService.getApplicationConfig(value.id).then(function(appConfig){
+                        value.setAppConfig(appConfig);
+                    });
+                });
 
             });
 
@@ -110,10 +119,11 @@ angular.module('Application')
 
         var init = function () {
 
-
+            $scope.dataLoading = true;
             ApplicationService.getApplicationDetail($routeParams.id, $routeParams.artifactId).then(function (data) {
                 $scope.applicationDetail = data;
                 $scope.clientStatuses = extractClientStatuses(data);
+                $scope.dataLoading = false;
             }, function () {
 
             });
