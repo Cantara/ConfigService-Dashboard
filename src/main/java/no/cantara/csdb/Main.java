@@ -60,12 +60,12 @@ public class Main {
 
 		ConstraintMapping adminRoleConstraintMapping = new ConstraintMapping();
 		adminRoleConstraintMapping.setConstraint(adminRoleConstraint);
-		adminRoleConstraintMapping.setPathSpec("/cs_application/*");
+		adminRoleConstraintMapping.setPathSpec("/application/*");
 		securityHandler.addConstraintMapping(adminRoleConstraintMapping);
 
 		adminRoleConstraintMapping = new ConstraintMapping();
 		adminRoleConstraintMapping.setConstraint(adminRoleConstraint);
-		adminRoleConstraintMapping.setPathSpec("/cs_client/*");
+		adminRoleConstraintMapping.setPathSpec("/client/*");
 		securityHandler.addConstraintMapping(adminRoleConstraintMapping);
 
 
