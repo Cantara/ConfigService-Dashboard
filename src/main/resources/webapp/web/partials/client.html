@@ -14,7 +14,8 @@
     <my-tabs>
 
         <my-pane title="Configuration">
-            <a href="#/client/edit" class="btn btn-primary"><span class="glyphicon glyphicon-cog"></span> Edit
+            <a href="#/client/edit" class="btn btn-primary" ng-if="globals.currentUser.isAdmin"><span
+                    class="glyphicon glyphicon-cog"></span> Edit
                 Configuration</a>
             <pre>{{clientDetail.config.display()}}</pre>
         </my-pane>
