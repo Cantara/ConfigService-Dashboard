@@ -9,29 +9,52 @@ angular.module('app')
     .provider("CSService", function () {
 
 
+
+
         this.configure = function (value) {
             //some initialization if required here
+
         }
 
-        this.$get = ['ClientStatus', 'ClientDetail', 'Application', 'ApplicationDetail', '$http', '$q', '$resource', '$location', '$rootScope', function (ClientStatus, ClientDetail, Application , ApplicationDetail, $http, $q, $resource, $location, $rootScope) {
+        this.$get = ['ClientStatus', 'ClientDetail', 'Application', 'ApplicationDetail', '$http', '$q', '$resource', '$location', '$rootScope', 'ConstantValues', 'CacheFactory', function (ClientStatus, ClientDetail, Application , ApplicationDetail, $http, $q, $resource, $location, $rootScope, ConstantValues, CacheFactory) {
+
+            var myAwesomeCache = CacheFactory('myAwesomeCache', {
+                maxAge: ConstantValues.cacheMaxAge, // Items added to this cache expire after 15 minutes.
+                cacheFlushInterval: ConstantValues.cacheAutoFlushInterval, // This cache will clear itself every hour.
+                deleteOnExpire: 'aggressive', // Items will be deleted from this cache right when they expire.
+                storageMode: 'localStorage' // This cache will use `localStorage`.
+            });
+
             var service = {
 
             };
             //fetch from the server
             service.getAllClientStatuses = function () {
 
-                    return $http.get('client/')
-                        .then(function (response) {
-                            return response.data.map(function (clientStatus) {
-                                return new ClientStatus(clientStatus);
-                            });
+                return $http.get('client/', {cache:myAwesomeCache})
+                    .then(function (response) {
+
+                        return response.data.map(function (clientStatus) {
+                            var result = new ClientStatus(clientStatus);
+                            return result;
                         });
+
+                    });
 
             };
 
+            service.clearCache_ClientList = function () {
+                myAwesomeCache.remove('client/');
+            }
+
+            service.clearCache_ApplicationStatusCache = function (artifactId) {
+                myAwesomeCache.remove('application/' + artifactId + "/status/");
+            }
+
+
             service.getClientDetail = function (clientId){
 
-                return $q.all([$http.get('client/' + clientId + "/status/"), $http.get('client/' + clientId + "/env/"), $http.get('client/' + clientId + "/config/"),  $http.get('client/' + clientId + "/events/")])
+                return $q.all([$http.get('client/' + clientId + "/status/",  {cache:myAwesomeCache}), $http.get('client/' + clientId + "/env/"), $http.get('client/' + clientId + "/config/"),  $http.get('client/' + clientId + "/events/")])
                     .then(function (response) {
                         var status = response[0].data;
                         var env = response[1].data;
@@ -62,8 +85,6 @@ angular.module('app')
                     return response.data;
                 });
             }
-
-
 
             service.getApplicationDetail = function (id, artifactId){
 
@@ -131,6 +152,7 @@ angular.module('app')
         }];
 
         var init = function () {
+
         };
 
         init();

@@ -1,6 +1,14 @@
 /**
  * Created by huy on 6/27/2016.
  */
+
+angular.module('app').constant('ConstantValues', {
+
+    cacheMaxAge: 4*60*1000, //cache is kept in 4 minutes
+    cacheAutoFlushInterval:60*60*1000, // This cache will clear itself every hour.
+    greenTimeOut: 5*60 *1000, //5 minutes
+    readTimeout: 10*60*1000, //10 minutes
+});
 angular.module('app').config(function ($routeProvider, CSServiceProvider, $httpProvider) {
 
     CSServiceProvider.configure("something");
@@ -62,3 +70,4 @@ angular.module('app').config(function ($routeProvider, CSServiceProvider, $httpP
             }
         });
     }]);
+

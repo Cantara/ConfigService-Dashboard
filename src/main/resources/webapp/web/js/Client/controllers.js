@@ -10,6 +10,12 @@ angular.module('Client')
             $location.path('/clients/' + clientStatus.client.clientId);
         }
 
+        $scope.refresh = function () {
+
+            CSService.clearCache_ClientList();
+            init();
+
+        }
 
         var init = function () {
 

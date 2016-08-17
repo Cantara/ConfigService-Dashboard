@@ -70,6 +70,8 @@
 <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.js"></script>
 <script src="https://code.angularjs.org/1.2.13/angular-cookies.js"></script>
 
+
+<script src="js/vendor/angular-cache.min.js"></script>
 <script src="js/vendor/smart-table.debug.js"></script>
 <script src="js/vendor/smart-table-directives.js"></script>
 <script src="js/vendor/elastic.js"></script>

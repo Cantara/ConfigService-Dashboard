@@ -37,10 +37,15 @@ angular.module('Application')
     }]);
 
 angular.module('Application')
-    .controller('ApplicationDetailController', ['$scope', '$route', 'ApplicationService', 'ClientStatus', '$routeParams', '$timeout', '$location', 'toastr', function ($scope, $route, ApplicationService, ClientStatus, $routeParams, $timeout, $location, toastr) {
+    .controller('ApplicationDetailController', ['$scope', '$route', 'ApplicationService', 'ClientStatus', '$routeParams', '$timeout', '$location', 'toastr', 'CSService', function ($scope, $route, ApplicationService, ClientStatus, $routeParams, $timeout, $location, toastr, CSService) {
+
+        $scope.refresh = function () {
+            CSService.clearCache_ApplicationStatusCache($routeParams.artifactId);
+            init();
+
+        }
 
         $scope.goto = function (clientStatus) {
-        	console.log(clientStatus);
             $location.path('/clients/' + clientStatus.client.clientId);
         }
 

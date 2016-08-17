@@ -2,6 +2,9 @@
 <div id="showSpin" ng-if="dataLoading" style="padding: 10px; margin: auto; width: 50%; font-size:48px; background-color: #FFF; opacity: 0.9; filter: alpha(opacity=90);">
     <i class="fa fa-spinner fa-spin"></i>
 </div>
+
+
+
 <div ng-hide="dataLoading">
 
     <div class="btn-group">
@@ -16,7 +19,12 @@
         </label>
         <label><input type="radio" name="searchFilter" ng-model="search.status" value="red">Dead Clients: {{red}}
         </label>
+
+
+
     </div>
+    <button class="btn btn-success client-edit-btn" ng-click="refresh()"> <span class="glyphicon glyphicon-refresh"></span></button>
+
 
     <div id="client-list">
 

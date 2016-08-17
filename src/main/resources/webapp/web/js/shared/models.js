@@ -32,17 +32,17 @@ angular.module('app')
 
 
 angular.module('app')
-    .factory('ClientStatus', ['Client', 'ClientHeartbeatData', function (Client, ClientHeartbeatData) {
+    .factory('ClientStatus', ['Client', 'ClientHeartbeatData', 'ConstantValues', function (Client, ClientHeartbeatData, ConstantValues) {
         function ClientStatus(args) {
             this.client = new Client(args.client);
             this.latestClientHeartbeatData = new ClientHeartbeatData(args.latestClientHeartbeatData);
             this.status = 'red';
             var diff = Date.now() - new Date(this.latestClientHeartbeatData.timeOfContact);
-            var lastSeen = diff / 1000;
-            if(lastSeen < 240) {
+            var lastSeen = diff;
+            if(lastSeen < ConstantValues.greenTimeOut) {
                 this.status = 'green';
                 this.color = '#A0CF89';
-            } else if(lastSeen > 240 && lastSeen < 604800 ) {
+            } else if(lastSeen > ConstantValues.greenTimeOut && lastSeen < ConstantValues.redTimeOut ) {
                 this.status = 'yellow';
                 this.color = '#FFFF75';
             } else {
@@ -76,8 +76,8 @@ angular.module('app')
         };
 
         ExtractedEventsStore.prototype.display = function () {
-            var logs = this.eventGroups['jau']['files']['logs/jau.log']['tags']['jau']['events'];
-            return JSON.stringify(logs, null, 2);
+            //var logs = this.eventGroups['jau']['files']['logs/jau.log']['tags']['jau']['events'];
+            return JSON.stringify(this.eventGroups, null, 2);
         }
 
         return ExtractedEventsStore;

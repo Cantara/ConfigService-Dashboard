@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('app',
-    ['smart-table',
+    [   'smart-table',
         'toastr',
         'monospaced.elastic',
         'ngRoute',
@@ -17,7 +17,7 @@ angular.module('app',
         'ngCookies',
         'Client',
         'Application',
-        'Authentication'
+        'Authentication', 'angular-cache'
     ]);
 
 angular.module('Client', []);
