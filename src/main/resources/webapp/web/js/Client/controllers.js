@@ -28,7 +28,7 @@ angular.module('Client')
             	console.log("start updating...");
             	CSService.clearCache_ClientList();
                 fetchClients(); //refresh clients automatically in 60 minutes
-                console.log("finished in " + (new Date().getTime() - startTime)/1000 + " seconds" );
+                console.log("finished in " + (new Date().getTime() - startTime) + " seconds" );
                 console.log("next update in "  + (ConstantValues.clientsAutoUpdateInterval/1000) +  " seconds");
 
             }.bind(this), ConstantValues.clientsAutoUpdateInterval);
