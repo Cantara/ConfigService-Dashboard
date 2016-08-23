@@ -16,14 +16,15 @@ angular.module('app')
 
         }
 
-        this.$get = ['ClientStatus', 'ClientDetail', 'Application', 'ApplicationDetail', '$http', '$q', '$resource', '$location', '$rootScope', 'ConstantValues', 'CacheFactory', function (ClientStatus, ClientDetail, Application , ApplicationDetail, $http, $q, $resource, $location, $rootScope, ConstantValues, CacheFactory) {
+        this.$get = ['ClientStatus', 'ClientDetail', 'Application', 'ApplicationDetail', '$http', '$q', '$resource', '$location', '$rootScope', 'ConstantValues', 'CacheFactory', 'browserDetectionService', function (ClientStatus, ClientDetail, Application , ApplicationDetail, $http, $q, $resource, $location, $rootScope, ConstantValues, CacheFactory,browserDetectionService) {
 
-            var myAwesomeCache = CacheFactory('myAwesomeCache', {
+            var clientCache = CacheFactory('clientCache', {
                 maxAge: ConstantValues.cacheMaxAge, // Items added to this cache expire after 15 minutes.
                 cacheFlushInterval: ConstantValues.cacheAutoFlushInterval, // This cache will clear itself every hour.
                 deleteOnExpire: 'aggressive', // Items will be deleted from this cache right when they expire.
                 storageMode: 'localStorage' // This cache will use `localStorage`.
             });
+
 
             var service = {
 
@@ -31,30 +32,45 @@ angular.module('app')
             //fetch from the server
             service.getAllClientStatuses = function () {
 
-                return $http.get('client/', {cache:myAwesomeCache})
-                    .then(function (response) {
+                if(browserDetectionService.isNotIE()) {
+                    return $http.get('client/', {cache: clientCache})
+                        .then(function (response) {
 
-                        return response.data.map(function (clientStatus) {
-                            var result = new ClientStatus(clientStatus);
-                            return result;
+                            return response.data.map(function (clientStatus) {
+                                if (clientStatus.client != null && clientStatus.latestClientHeartbeatData != null) {
+                                    var result = new ClientStatus(clientStatus);
+                                    return result;
+                                }
+                            });
+
                         });
+                } else {
+                    
+                    return $http.get('client/?random='+new Date().getTime(), {cache: clientCache})
+                        .then(function (response) {
 
-                    });
+                            return response.data.map(function (clientStatus) {
+                                if (clientStatus.client != null && clientStatus.latestClientHeartbeatData != null) {
+                                    var result = new ClientStatus(clientStatus);
+                                    return result;
+                                }
+                            });
+
+                        });
+                }
 
             };
 
             service.clearCache_ClientList = function () {
-                myAwesomeCache.remove('client/');
-            }
+                clientCache.remove('client/');
 
-            service.clearCache_ApplicationStatusCache = function (artifactId) {
-                myAwesomeCache.remove('application/' + artifactId + "/status/");
+
             }
 
 
             service.getClientDetail = function (clientId){
 
-                return $q.all([$http.get('client/' + clientId + "/status/",  {cache:myAwesomeCache}), $http.get('client/' + clientId + "/env/"), $http.get('client/' + clientId + "/config/"),  $http.get('client/' + clientId + "/events/")])
+                return $q.all([$http.get('client/' + clientId + "/status/"), $http.get('client/' + clientId + "/env/"), $http.get('client/' + clientId + "/config/"),  $http.get('client/' + clientId + "/events/")])
                     .then(function (response) {
                         var status = response[0].data;
                         var env = response[1].data;

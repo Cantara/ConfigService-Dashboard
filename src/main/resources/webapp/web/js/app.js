@@ -17,9 +17,10 @@ angular.module('app',
         'ngCookies',
         'Client',
         'Application',
-        'Authentication', 'angular-cache'
+        'Authentication', 'angular-cache', 'browserDetectionService'
     ]);
 
+angular.module('browserDetectionService',[]);
 angular.module('Client', []);
 angular.module('Application',[]);
 angular.module('Authentication',[]);

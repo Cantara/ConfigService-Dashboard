@@ -31,7 +31,9 @@ public enum ClientSessionDao {
 					String clientStatusJson = new CommandGetClientStatus(client.clientId).execute();
 					if(clientStatusJson!=null){
 						ClientStatus clientStatus = mapper.readValue(clientStatusJson, ClientStatus.class);
-						clientStatusList.add(clientStatus);
+						if(clientStatus.latestClientHeartbeatData!=null){
+							clientStatusList.add(clientStatus);
+						}
 					}
 				}
 				return  mapper.writeValueAsString(clientStatusList);

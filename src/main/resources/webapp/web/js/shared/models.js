@@ -18,13 +18,14 @@ angular.module('app')
 angular.module('app')
     .factory('ClientHeartbeatData', function () {
         function ClientHeartbeatData(args) {
-
-            this.artifactId = args.artifactId;
-            this.tags=args.tags;
-            this.clientName=args.clientName;
-            this.configLastChanged=args.configLastChanged;
-            this.applicationConfigId=args.applicationConfigId;
-            this.timeOfContact=args.timeOfContact;
+            if(args!=null) {
+                this.artifactId = args.artifactId;
+                this.tags = args.tags;
+                this.clientName = args.clientName;
+                this.configLastChanged = args.configLastChanged;
+                this.applicationConfigId = args.applicationConfigId;
+                this.timeOfContact = args.timeOfContact;
+            }
         }
 
         return ClientHeartbeatData;

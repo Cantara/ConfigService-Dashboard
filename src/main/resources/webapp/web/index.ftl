@@ -85,6 +85,7 @@
 <script src="js/Authentication/controllers.js"></script>
 <script src="js/Authentication/services.js"></script>
 <script src="js/shared/models.js"></script>
+<script src="js/shared/detectbrowser_services.js"></script>
 <script src="js/shared/services.js"></script>
 <script src="js/config.js"></script>
 

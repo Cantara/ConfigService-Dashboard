@@ -8,6 +8,8 @@ angular.module('app').constant('ConstantValues', {
     cacheAutoFlushInterval:60*60*1000, // This cache will clear itself every hour.
     greenTimeOut: 5*60 *1000, //5 minutes
     readTimeout: 10*60*1000, //10 minutes
+    clientsAutoUpdateInterval: 2*60*1000 //refresh cache in 2 minutes
+    
 });
 angular.module('app').config(function ($routeProvider, CSServiceProvider, $httpProvider) {
 
@@ -70,4 +72,5 @@ angular.module('app').config(function ($routeProvider, CSServiceProvider, $httpP
             }
         });
     }]);
+
 

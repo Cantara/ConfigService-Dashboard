@@ -2,7 +2,7 @@
  * Created by huy on 6/27/2016.
  */
 angular.module('Client')
-    .controller('ClientListviewController',['$scope', 'CSService', '$location', function ($scope, CSService, $location) {
+    .controller('ClientListviewController',['$scope', 'CSService', '$location', '$interval', 'ConstantValues', function ($scope, CSService, $location, $interval, ConstantValues) {
 
         var UpdateStatusIntervalPromise;
 
@@ -13,7 +13,7 @@ angular.module('Client')
         $scope.refresh = function () {
 
             CSService.clearCache_ClientList();
-            init();
+            fetchClients();
 
         }
 
@@ -21,6 +21,30 @@ angular.module('Client')
 
             $scope.isAdmin=false;
             $scope.dataLoading = true;
+            fetchClients();
+
+            theInterval = $interval(function(){
+            	var startTime = new Date().getTime();
+            	console.log("start updating...");
+            	CSService.clearCache_ClientList();
+                fetchClients(); //refresh clients automatically in 60 minutes
+                console.log("finished in " + (new Date().getTime() - startTime)/1000 + " seconds" );
+                console.log("next update in "  + (ConstantValues.clientsAutoUpdateInterval/1000) +  " seconds");
+
+            }.bind(this), ConstantValues.clientsAutoUpdateInterval);
+
+
+        }
+
+        var theInterval;
+
+        $scope.$on('$destroy', function () {
+            $interval.cancel(theInterval);
+        });
+
+
+        var fetchClients = function(){
+
             CSService.getAllClientStatuses().then(function (data) {
 
                 $scope.green = 0;
@@ -32,7 +56,7 @@ angular.module('Client')
                 angular.forEach($scope.clientStatuses, function(value, key) {
                     var color = value.status;
                     if(color === 'green'){
-                      $scope.green ++;
+                        $scope.green ++;
                     } else if(color === 'red'){
                         $scope.red ++;
                     } else if(color === 'yellow'){
@@ -41,8 +65,6 @@ angular.module('Client')
                 });
 
             });
-
-
         }
 
         init();
