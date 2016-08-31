@@ -25,6 +25,7 @@ angular.module('Application')
 
         service.canRemoveThisConfig = function(){
             if(currentApplicationDetail!=null) {
+
                 return typeof currentApplicationDetail.status.seenInTheLastHourCount === "undefined" ||
                     (typeof currentApplicationDetail.status != "undefined" && currentApplicationDetail.status.seenInTheLastHourCount == 0);
 

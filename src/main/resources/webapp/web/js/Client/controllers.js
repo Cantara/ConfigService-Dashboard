@@ -2,7 +2,7 @@
  * Created by huy on 6/27/2016.
  */
 angular.module('Client')
-    .controller('ClientListviewController',['$scope', 'CSService', '$location', '$interval', 'ConstantValues', function ($scope, CSService, $location, $interval, ConstantValues) {
+    .controller('ClientListviewController',['$scope', 'CSService', '$location', '$interval', 'ConstantValues', 'toastr', function ($scope, CSService, $location, $interval, ConstantValues, toastr) {
 
         var UpdateStatusIntervalPromise;
 
@@ -11,7 +11,7 @@ angular.module('Client')
         }
 
         $scope.refresh = function () {
-
+            toastr.success('Force updating clients...');
             CSService.clearCache_ClientList();
             fetchClients();
 
@@ -24,12 +24,10 @@ angular.module('Client')
             fetchClients();
 
             theInterval = $interval(function(){
-            	var startTime = new Date().getTime();
-            	console.log("start updating...");
+
             	CSService.clearCache_ClientList();
-                fetchClients(); //refresh clients automatically in 60 minutes
-                console.log("finished in " + (new Date().getTime() - startTime) + " seconds" );
-                console.log("next update in "  + (ConstantValues.clientsAutoUpdateInterval/1000) +  " seconds");
+                fetchClients(); //refresh clients automatically in 60 seconds
+
 
             }.bind(this), ConstantValues.clientsAutoUpdateInterval);
 
@@ -37,6 +35,7 @@ angular.module('Client')
         }
 
         var theInterval;
+        var startTime;
 
         $scope.$on('$destroy', function () {
             $interval.cancel(theInterval);
@@ -44,8 +43,14 @@ angular.module('Client')
 
 
         var fetchClients = function(){
-
+            startTime = new Date().getTime();
+            console.log("start updating...");
             CSService.getAllClientStatuses().then(function (data) {
+
+                var completeTime = new Date().getTime() - startTime;
+                //toastr.success('load completed in ' + (completeTime/1000) + " seconds");
+                console.log("finished in " + (completeTime/1000) + " seconds" );
+                console.log("next update in "  + (ConstantValues.clientsAutoUpdateInterval/1000) +  " seconds");
 
                 $scope.green = 0;
                 $scope.red = 0;

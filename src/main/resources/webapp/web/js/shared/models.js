@@ -7,7 +7,6 @@
 angular.module('app')
     .factory('Client', function () {
         function Client(args) {
-
             this.clientId = args.clientId;
             this.applicationConfigId = args.applicationConfigId;
             this.autoUpgrade = args.autoUpgrade;

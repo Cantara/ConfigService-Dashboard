@@ -36,12 +36,13 @@ angular.module('app')
                     return $http.get('client/', {cache: clientCache})
                         .then(function (response) {
 
-                            return response.data.map(function (clientStatus) {
-                                if (clientStatus.client != null && clientStatus.latestClientHeartbeatData != null) {
-                                    var result = new ClientStatus(clientStatus);
-                                    return result;
-                                }
-                            });
+                               return response.data.map(function (clientStatus) {
+                                   if (clientStatus.client != null && clientStatus.latestClientHeartbeatData != null) {
+                                       var result = new ClientStatus(clientStatus);
+                                       return result;
+                                   }
+                               });
+
 
                         });
                 } else {
@@ -55,6 +56,7 @@ angular.module('app')
                                     return result;
                                 }
                             });
+                            
 
                         });
                 }
@@ -64,6 +66,10 @@ angular.module('app')
             service.clearCache_ClientList = function () {
                 clientCache.remove('client/');
 
+            }
+
+            service.clearCache_ClientList_Of_OneApplication = function (artifactId) {
+                clientCache.remove('application/' + artifactId + "/status/");
 
             }
 
@@ -104,9 +110,26 @@ angular.module('app')
 
             service.getApplicationDetail = function (id, artifactId){
 
+                if(browserDetectionService.isNotIE()) {
+                    if(artifactId!=null && id!=null) {
+                        return $q.all([$http.get('application/' + artifactId + "/status/", {cache: clientCache}), $http.get('application/' + id + "/config/")]).then(function (response) {
+                            var status = response[0].data;
+                            var config = response[1].data;
+                            return new ApplicationDetail(id, artifactId, status, config);
+                        });
+                    }
+                } else {
 
+                    if(artifactId!=null && id!=null) {
+                        return $q.all([$http.get('application/' + artifactId + "/status/?random="+new Date().getTime(), {cache: clientCache}), $http.get('application/' + id + "/config/")]).then(function (response) {
+                            var status = response[0].data;
+                            var config = response[1].data;
+                            return new ApplicationDetail(id, artifactId, status, config);
+                        });
+                    }
+                }
 
-                if(artifactId!=null && id!=null) {
+               /* if(artifactId!=null && id!=null) {
                     return $q.all([$http.get('application/' + artifactId + "/status/"), $http.get('application/' + id + "/config/")]).then(function (response) {
                         var status = response[0].data;
                         var config = response[1].data;
@@ -117,7 +140,7 @@ angular.module('app')
                         var config = response[0].data;
                         return new ApplicationDetail(id, artifactId, null, config);
                     });
-                }
+                }*/
 
             };
 
