@@ -37,7 +37,7 @@ angular.module('Application')
     }]);
 
 angular.module('Application')
-    .controller('ApplicationDetailController', ['$scope', '$route', 'ApplicationService', 'ClientStatus', '$routeParams', '$timeout', '$location', 'toastr', 'CSService', '$interval', 'ConstantValues', function ($scope, $route, ApplicationService, ClientStatus, $routeParams, $timeout, $location, toastr, CSService, $interval, ConstantValues) {
+    .controller('ApplicationDetailController', ['$scope', '$route', 'ApplicationService', 'ClientStatus', '$routeParams', '$timeout', '$location', '$window', 'toastr', 'CSService', '$interval', 'ConstantValues', function ($scope, $route, ApplicationService, ClientStatus, $routeParams, $timeout, $location, $window, toastr, CSService, $interval, ConstantValues) {
 
         $scope.refresh = function () {
 
@@ -55,9 +55,21 @@ angular.module('Application')
             }.bind(this), ConstantValues.clientsAutoUpdateInterval);
         }
 
+
+        $scope.checkboxModel = {
+            value : false
+        };
+
         $scope.goto = function (clientStatus) {
-            $location.path('/clients/' + clientStatus.client.clientId);
+            if($scope.checkboxModel.value) {
+                var baseLen = $location.absUrl().length - $location.url().length;
+                var base = fullUrl.substring(baseLen);
+                $window.open(base+ "/clients/" + clientStatus.client.clientId, '_blank');
+            } else {
+                $location.path('/clients/' + clientStatus.client.clientId);
+            }
         }
+
 
         $scope.editMode = false;
         $scope.setEdit = function () {
@@ -156,7 +168,7 @@ angular.module('Application')
 
 
         var init = function () {
-
+            $scope.openNewTab = true;
             $scope.dataLoading = true;
 
             fetchClients();

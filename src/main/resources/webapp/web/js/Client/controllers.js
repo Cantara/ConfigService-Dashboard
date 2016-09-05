@@ -2,12 +2,21 @@
  * Created by huy on 6/27/2016.
  */
 angular.module('Client')
-    .controller('ClientListviewController',['$scope', 'CSService', '$location', '$interval', 'ConstantValues', 'toastr', function ($scope, CSService, $location, $interval, ConstantValues, toastr) {
+    .controller('ClientListviewController',['$scope', 'CSService', '$location', '$window', '$interval', 'ConstantValues', 'toastr', function ($scope, CSService, $location, $window, $interval, ConstantValues, toastr) {
 
         var UpdateStatusIntervalPromise;
 
+        $scope.checkboxModel = {
+            value : false
+        };
+
         $scope.goto = function (clientStatus) {
-            $location.path('/clients/' + clientStatus.client.clientId);
+            if($scope.checkboxModel.value) {
+
+                $window.open($location.absUrl() + "/" + clientStatus.client.clientId, '_blank');
+            } else {
+                $location.path('/clients/' + clientStatus.client.clientId);
+            }
         }
 
         $scope.refresh = function () {
@@ -27,7 +36,6 @@ angular.module('Client')
         }
 
         var init = function () {
-
             $scope.isAdmin=false;
             $scope.dataLoading = true;
             fetchClients();
