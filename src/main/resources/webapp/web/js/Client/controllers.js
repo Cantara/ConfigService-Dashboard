@@ -14,7 +14,16 @@ angular.module('Client')
             toastr.success('Force updating clients...');
             CSService.clearCache_ClientList();
             fetchClients();
+            
+            //do again
+            $interval.cancel(theInterval);
+            theInterval = $interval(function(){
 
+            	CSService.clearCache_ClientList();
+                fetchClients(); //refresh clients automatically in 60 seconds
+
+            }.bind(this), ConstantValues.clientsAutoUpdateInterval);
+            
         }
 
         var init = function () {
@@ -77,7 +86,35 @@ angular.module('Client')
     }]);
 
 angular.module('Client')
-    .controller('ClientDetailController', ['$scope', 'ClientService',  '$routeParams', '$timeout', function ($scope, ClientService, $routeParams, $timeout) {
+    .controller('ClientDetailController', ['$scope', 'ClientService',  '$routeParams', '$timeout', 'toastr', function ($scope, ClientService, $routeParams, $timeout, toastr) {
+
+        $scope.editMode = false;
+
+        var aliasBeforeEdit;
+        $scope.toggleEdit=function(){
+
+            if($scope.editMode === true) {
+                $scope.clientDetail.status.client.alias = aliasBeforeEdit;
+            } else {
+                aliasBeforeEdit =  $scope.clientDetail.status.client.alias;
+            }
+
+            $scope.editMode = !$scope.editMode;
+        }
+
+        $scope.saveEdit=function(alias){
+
+            ClientService.saveAlias(alias).then(function (response) {
+
+                if(response.data.success) {
+                    $scope.editMode = false;
+                    toastr.success('Update successfully');
+                } else {
+                    toastr.error('Update failed: ' + response.message);
+                }
+            });
+
+        }
 
 
         var init = function () {

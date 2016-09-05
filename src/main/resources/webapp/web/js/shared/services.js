@@ -10,13 +10,15 @@ angular.module('app')
 
 
 
-
-        this.configure = function (value) {
+   this.configure = function (value) {
             //some initialization if required here
 
         }
 
+
         this.$get = ['ClientStatus', 'ClientDetail', 'Application', 'ApplicationDetail', '$http', '$q', '$resource', '$location', '$rootScope', 'ConstantValues', 'CacheFactory', 'browserDetectionService', function (ClientStatus, ClientDetail, Application , ApplicationDetail, $http, $q, $resource, $location, $rootScope, ConstantValues, CacheFactory,browserDetectionService) {
+
+            var aliasmap;
 
             var clientCache = CacheFactory('clientCache', {
                 maxAge: ConstantValues.cacheMaxAge, // Items added to this cache expire after 15 minutes.
@@ -39,6 +41,7 @@ angular.module('app')
                                return response.data.map(function (clientStatus) {
                                    if (clientStatus.client != null && clientStatus.latestClientHeartbeatData != null) {
                                        var result = new ClientStatus(clientStatus);
+                                       service.applyFriendlyName(result.client);
                                        return result;
                                    }
                                });
@@ -53,6 +56,7 @@ angular.module('app')
                             return response.data.map(function (clientStatus) {
                                 if (clientStatus.client != null && clientStatus.latestClientHeartbeatData != null) {
                                     var result = new ClientStatus(clientStatus);
+                                    service.applyFriendlyName(result.client);
                                     return result;
                                 }
                             });
@@ -82,7 +86,10 @@ angular.module('app')
                         var env = response[1].data;
                         var config = response[2].data;
                         var events = response[3].data;
-                        return new ClientDetail(status, env, config, events);
+                        var result = new ClientDetail(status, env, config, events);
+                        service.applyFriendlyName(result.status.client);
+                        return result;
+
                     });
 
             };
@@ -151,10 +158,10 @@ angular.module('app')
                     return $http.post('application/', {'artifactId' : appConfigToSave.artifactId}).then(function (response) {
                     	if(appConfigToSave.configJsonContent!=null){
 	                        return $http.post('application/' +  response.data.id + "/config/", appConfigToSave.configJsonContent).then(function (response2) {
-	                            return response2.data;
+	                            return response2;
 	                        });
                     	} else {
-                    		return response.data;
+                    		return response;
                     	}
                     });
                 }
@@ -163,14 +170,14 @@ angular.module('app')
             service.updateApplicationConfig = function (applicationDetail) {
                 if (applicationDetail.id) {
                     var appConfigToSave = angular.copy(applicationDetail);
-                    console.log(appConfigToSave);
+                    
                     if(typeof appConfigToSave.config.id != "undefined"){
                     	 return $http.put('application/' + applicationDetail.id + "/config/" +  applicationDetail.config.id , appConfigToSave.configJsonContent).then(function (response) {
-                             return applicationDetail;
+                             return response;
                          });
                     } else {
                     	return $http.post('application/' +  applicationDetail.id+ "/config/", appConfigToSave.configJsonContent).then(function (response2) {
-                            return response2.data;
+                            return response2;
                         });
                     }
                    
@@ -185,12 +192,42 @@ angular.module('app')
                 return $http.delete("application/" + applicationId);
             }
 
+            service.saveAlias = function (clientid, alias) {
+                return $http.post('client/alias/' + clientid + "/" +  alias,{}).then(function (response) {
+                    if(response.data.success) {
+                        //save to the map
+                        aliasmap[clientid] = alias;
+                    }
 
+                    return response;
+                });
+            }
+
+            service.applyFriendlyName=function(client){
+
+                if(aliasmap!=null){
+                    if(client.clientId in aliasmap) {
+                        client.alias = aliasmap[client.clientId];
+                    }
+                } else {
+                    return $http.get('client/aliasmap')
+                        .then(function (response) {
+                            aliasmap = response.data;
+                            if(client.clientId in aliasmap) {
+                                client.alias = aliasmap[client.clientId];
+                            }
+                        });
+                }
+
+            }
 
             return service;
         }];
 
         var init = function () {
+
+
+
 
         };
 

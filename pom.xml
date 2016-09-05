@@ -49,10 +49,11 @@
 
     <properties>
         <service.name>ConfigService-Dashboard</service.name>
-        <whydah-sdk-version>2.2-alpha-17</whydah-sdk-version>
+        <whydah-sdk-version>2.2-alpha-17</whydah-sdk-version>       
         <jersey.version>1.19</jersey.version>
         <spring.version>3.0.7.RELEASE</spring.version>
-        <jetty.version>7.3.0.v20110203</jetty.version>
+        <jetty.version>7.3.0.v20110203</jetty.version>        
+        
     </properties>
 
     <repositories>
@@ -190,13 +191,19 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+    
         <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk</artifactId>
-            <version>1.8.6</version>
+            <groupId>org.mapdb</groupId>
+            <artifactId>mapdb</artifactId>
+            <version>1.0.8</version>
         </dependency>
-       
+       <!--  <jackson.version>2.4.4</jackson.version>
+       <dependency>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-databind</artifactId>
+    		<version>${jackson.version}</version>
+  		</dependency>
+   -->
     </dependencies>
 
     

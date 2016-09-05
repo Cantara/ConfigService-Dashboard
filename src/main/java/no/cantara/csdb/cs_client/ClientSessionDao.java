@@ -3,21 +3,35 @@ package no.cantara.csdb.cs_client;
 
 import no.cantara.cs.dto.Client;
 import no.cantara.cs.dto.ClientStatus;
+import no.cantara.csdb.config.ConfigValue;
 import no.cantara.csdb.cs_client.commands.*;
+
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.mapdb.DB;
+import org.mapdb.DBMaker;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public enum ClientSessionDao {
 
 	instance;
+	
+	private final Map<String, String> aliasMap;
+	private DB db;
+
+	
 	private ClientSessionDao(){
-		
+		File mapDbPathFile = new File(ConfigValue.CLIENT_ALIAS_DBFILE);
+		mapDbPathFile.getParentFile().mkdirs();
+		db = DBMaker.newFileDB(mapDbPathFile).make();
+		this.aliasMap = db.getHashMap("aliasMap");
 	}
 	
 	public String getAllClientStatuses(){
@@ -52,7 +66,15 @@ public enum ClientSessionDao {
 		return "";
 	}
 	
+	public Map<String, String> getAliasMap(){
+		return aliasMap;
+	}
 
+	public void saveAlias(String clientId, String alias){
+		aliasMap.put(clientId, alias);
+		db.commit();
+	}
+	
 	public String getClientEnvironment(String clientId) {
 		String json = new CommandGetClientEnvironment(clientId).execute();
 		return json;

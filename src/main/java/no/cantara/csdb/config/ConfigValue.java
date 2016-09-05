@@ -14,6 +14,7 @@ public class ConfigValue {
 	
 	public static int SERVICE_PORT=8087;
 	public static String SERVICE_CONTEXT="/dashboard";
+	public static String CLIENT_ALIAS_DBFILE="";
 	
 	static {
 		CONFIGSERVICE_PASSWORD = Configuration.getString("configservice.password");
@@ -25,5 +26,7 @@ public class ConfigValue {
 		
 		CONFIGSERVICE_URL = Configuration.getString("configservice.url");
 		SERVICE_PORT = Configuration.getInt("service.port", 8087);
+		CLIENT_ALIAS_DBFILE = Configuration.getString("mapdb.path");
+		
 	}
 }

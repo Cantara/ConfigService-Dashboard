@@ -45,6 +45,14 @@ angular.module('Application')
             CSService.clearCache_ClientList_Of_OneApplication($routeParams.artifactId);
             fetchClients();
 
+            $interval.cancel(theInterval);
+            theInterval = $interval(function(){
+
+                CSService.clearCache_ClientList_Of_OneApplication($routeParams.artifactId);
+                fetchClients(); //refresh clients automatically in 60 seconds
+
+
+            }.bind(this), ConstantValues.clientsAutoUpdateInterval);
         }
 
         $scope.goto = function (clientStatus) {
@@ -75,7 +83,7 @@ angular.module('Application')
         $scope.update = function () {
 
             ApplicationService.save().then(function (response) {
-
+                console.log(response);
                 if(response.data.startsWith("200")) {
                     $scope.editMode = false;
                     $route.reload();
@@ -118,9 +126,11 @@ angular.module('Application')
                 for (var k in allClientHeartbeatData) {
                     if (typeof allClientHeartbeatData[k] !== 'function') {
                         var clientStatus = new ClientStatus({
-                            "client": {"clientId": k, "applicationConfigId": applicationConfigId},
+                            "client": {"clientId": k, "alias" : k, "applicationConfigId": applicationConfigId},
                             "latestClientHeartbeatData": allClientHeartbeatData[k]
                         });
+
+                        CSService.applyFriendlyName(clientStatus.client);
 
                         var color = clientStatus.status;
                         if(color === 'green'){

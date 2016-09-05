@@ -9,6 +9,11 @@ angular.module('Client')
         var service = {};
         var currentClientId;
 
+        service.saveAlias = function (alias) {
+            if(currentClientId) {
+                return CSService.saveAlias(currentClientId, alias);
+            }
+        }
         service.getClientDetail = function (clientId) {
             if (clientId) {
                 currentClientId = clientId;
