@@ -30,13 +30,15 @@
 
 
     <div id="client-list">
-
-        <div ng-repeat="clientStatus in clientStatuses | filter:search | orderBy: '-latestClientHeartbeatData.timeOfContact'" ng-click="goto(clientStatus)">
+        <div ng-repeat="clientStatus in clientStatuses | filter:search | filter: clientStatus : clientStatus.client.ignored=false | orderBy: '-latestClientHeartbeatData.timeOfContact'" >
 
             <div class="client-tile col-sm-1" ng-style="{'background-color': clientStatus.color}" popover-placement="right"
-                 data-popover-template="'partials/template_clientpopup.html'" data-popover-trigger="mouseenter">
+                 data-popover-template="'partials/template_clientpopup.html'" data-popover-trigger="mouseenter" ng-click="goto(clientStatus)">
                 {{clientStatus.client.alias}}
             </div>
+
+
+
         </div>
     </div>
 </div>

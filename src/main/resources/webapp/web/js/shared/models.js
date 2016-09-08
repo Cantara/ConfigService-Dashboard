@@ -11,6 +11,7 @@ angular.module('app')
             this.alias = args.clientId;
             this.applicationConfigId = args.applicationConfigId;
             this.autoUpgrade = args.autoUpgrade;
+            this.ignored = false;
         }
 
         return Client;

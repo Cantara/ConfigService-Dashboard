@@ -144,7 +144,7 @@ public class ClientController {
 
 	}
 
-	
+
 	@POST
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/alias/{clientId}/{alias}", method = RequestMethod.POST)
@@ -165,8 +165,43 @@ public class ClientController {
 		toResult(model, obj.toString());
 		return "json";
 	}
-		
 
+	@POST
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	@RequestMapping(value = "/ignore/{clientId}", method = RequestMethod.POST)
+	public String ignoreClient(@PathVariable("clientId") String clientId, @RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) throws JSONException {
+
+		JSONObject obj = new JSONObject();
+		obj.put("success", false);
+		if(Main.isAdmin(request)){
+			try {
+				ClientSessionDao.instance.ignoreClient(clientId);
+				obj.put("success", true);
+			}  catch (Exception e) {
+				obj.put("message", "500, Internal Server Error");
+			}	
+		} else {
+			obj.put("message", "401, Unauthorized");
+		}
+		toResult(model, obj.toString());
+		return "json";
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/ignoredClients", method = RequestMethod.GET)
+	public String getIgnoredClients(HttpServletRequest request, HttpServletResponse response, Model model) {
+		String jsonResult;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			jsonResult = mapper.writeValueAsString(ClientSessionDao.instance.getIngoredClients());
+			toResult(model, jsonResult);
+		} catch (Exception e) {
+
+		}
+		return "json";
 
 	}
-		
+
+}
+

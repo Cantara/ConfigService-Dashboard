@@ -95,7 +95,6 @@ angular.module('Application')
         $scope.update = function () {
 
             ApplicationService.save().then(function (response) {
-                console.log(response);
                 if(response.data.startsWith("200")) {
                     $scope.editMode = false;
                     $route.reload();
@@ -127,37 +126,57 @@ angular.module('Application')
         };
 
         var extractClientStatuses = function (appStatus) {
-            var clientStatuses = [];
-            if (appStatus.status != null) {
-                var applicationConfigId = appStatus.config.id;
-                var allClientHeartbeatData = appStatus.status.allClientHeartbeatData;
-                $scope.green = 0;
-                $scope.red = 0;
-                $scope.yellow = 0;
 
-                for (var k in allClientHeartbeatData) {
-                    if (typeof allClientHeartbeatData[k] !== 'function') {
-                        var clientStatus = new ClientStatus({
-                            "client": {"clientId": k, "alias" : k, "applicationConfigId": applicationConfigId},
-                            "latestClientHeartbeatData": allClientHeartbeatData[k]
-                        });
+            CSService.getIgnoreList().then(function (ignoreList) {
 
-                        CSService.applyFriendlyName(clientStatus.client);
+                var clientStatuses = [];
+                if (appStatus.status != null) {
+                    var applicationConfigId = appStatus.config.id;
+                    var allClientHeartbeatData = appStatus.status.allClientHeartbeatData;
+                    $scope.green = 0;
+                    $scope.red = 0;
+                    $scope.yellow = 0;
 
-                        var color = clientStatus.status;
-                        if(color === 'green'){
-                            $scope.green ++;
-                        } else if(color === 'red'){
-                            $scope.red ++;
-                        } else if(color === 'yellow'){
-                            $scope.yellow ++;
+                    for (var k in allClientHeartbeatData) {
+
+
+                        if(ignoreList.indexOf(k) == -1) {
+
+                            if (typeof allClientHeartbeatData[k] !== 'function') {
+                                var clientStatus = new ClientStatus({
+                                    "client": {
+                                        "clientId": k,
+                                        "alias": k,
+                                        "applicationConfigId": applicationConfigId,
+                                        "ignored": false
+                                    },
+                                    "latestClientHeartbeatData": allClientHeartbeatData[k]
+                                });
+                                CSService.applyFriendlyName(clientStatus.client);
+                                var color = clientStatus.status;
+                                if (color === 'green') {
+                                    $scope.green++;
+                                } else if (color === 'red') {
+                                    $scope.red++;
+                                } else if (color === 'yellow') {
+                                    $scope.yellow++;
+                                }
+                                clientStatuses.push(clientStatus);
+                            }
                         }
-                        clientStatuses.push(clientStatus);
                     }
+
                 }
 
-            }
-            return clientStatuses;
+                $scope.clientStatuses = clientStatuses;
+
+            });
+
+
+
+
+
+
         }
 
         var theInterval;
@@ -170,7 +189,6 @@ angular.module('Application')
         var init = function () {
             $scope.openNewTab = true;
             $scope.dataLoading = true;
-
             fetchClients();
 
             theInterval = $interval(function(){
@@ -198,7 +216,7 @@ angular.module('Application')
 
                 //some results
                 $scope.applicationDetail = data;
-                $scope.clientStatuses = extractClientStatuses(data);
+                extractClientStatuses(data);
                 $scope.dataLoading = false;
 
 

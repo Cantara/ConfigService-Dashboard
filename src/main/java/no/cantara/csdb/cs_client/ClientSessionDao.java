@@ -18,12 +18,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableSet;
+import java.util.TreeSet;
+import java.util.concurrent.BlockingQueue;
 
 public enum ClientSessionDao {
 
 	instance;
 	
 	private final Map<String, String> aliasMap;
+	private final NavigableSet<String> ignoreClientList;
 	private DB db;
 
 	
@@ -32,6 +36,7 @@ public enum ClientSessionDao {
 		mapDbPathFile.getParentFile().mkdirs();
 		db = DBMaker.newFileDB(mapDbPathFile).make();
 		this.aliasMap = db.getHashMap("aliasMap");
+		this.ignoreClientList = db.getTreeSet("ignoreClientList");
 	}
 	
 	public String getAllClientStatuses(){
@@ -46,7 +51,9 @@ public enum ClientSessionDao {
 					if(clientStatusJson!=null){
 						ClientStatus clientStatus = mapper.readValue(clientStatusJson, ClientStatus.class);
 						if(clientStatus.latestClientHeartbeatData!=null){
-							clientStatusList.add(clientStatus);
+							if(!ignoreClientList.contains(client.clientId)){
+								clientStatusList.add(clientStatus);
+							}
 						}
 					}
 				}
@@ -99,6 +106,15 @@ public enum ClientSessionDao {
 	public String getClientCloudWatchLog(String clientId) {
 		String json = new CommandGetAWSCloudWatchLog(clientId).execute();
 		return json;
+	}
+
+	public void ignoreClient(String clientId) {
+		ignoreClientList.add(clientId);
+		db.commit();
+	}
+	
+	public String[] getIngoredClients(){
+		return ignoreClientList.toArray(new String[0]);
 	}
 
 	

@@ -59,6 +59,13 @@ angular.module('Client')
         });
 
 
+        $scope.clientCountModel = {
+            green : 0,
+            red: 0,
+            yellow:0,
+            total: 0
+        };
+
         var fetchClients = function(){
             startTime = new Date().getTime();
             console.log("start updating...");
@@ -68,23 +75,24 @@ angular.module('Client')
                 //toastr.success('load completed in ' + (completeTime/1000) + " seconds");
                 console.log("finished in " + (completeTime/1000) + " seconds" );
                 console.log("next update in "  + (ConstantValues.clientsAutoUpdateInterval/1000) +  " seconds");
-
                 $scope.green = 0;
                 $scope.red = 0;
                 $scope.yellow = 0;
-                $scope.clock = Date.now();
                 $scope.clientStatuses = data;
                 $scope.dataLoading = false;
                 angular.forEach($scope.clientStatuses, function(value, key) {
-                    var color = value.status;
-                    if(color === 'green'){
-                        $scope.green ++;
-                    } else if(color === 'red'){
-                        $scope.red ++;
-                    } else if(color === 'yellow'){
-                        $scope.yellow ++;
+                    if(!value.client.ignored) {
+                        var color = value.status;
+                         if(color === 'green'){
+                        	$scope.green ++;
+                    	} else if(color === 'red'){
+                        	$scope.red ++;
+                    	} else if(color === 'yellow'){
+                        	$scope.yellow ++;
+                    	}
                     }
                 });
+
 
             });
         }
@@ -94,7 +102,7 @@ angular.module('Client')
     }]);
 
 angular.module('Client')
-    .controller('ClientDetailController', ['$scope', 'ClientService',  '$routeParams', '$timeout', 'toastr', function ($scope, ClientService, $routeParams, $timeout, toastr) {
+    .controller('ClientDetailController', ['$scope', 'CSService', 'ClientService',  '$routeParams', '$timeout', 'toastr', function ($scope, CSService, ClientService, $routeParams, $timeout, toastr) {
 
         $scope.editMode = false;
 
@@ -111,7 +119,7 @@ angular.module('Client')
         }
 
         $scope.saveEdit=function(alias){
-
+            if (alias==='') return;
             ClientService.saveAlias(alias).then(function (response) {
 
                 if(response.data.success) {
@@ -124,6 +132,17 @@ angular.module('Client')
 
         }
 
+        $scope.ignoreMe = function(){
+            ClientService.ignoreClient().then(function (response) {
+
+                if(response.data.success) {
+                    toastr.success('Client was removed successfully');
+                    $location.path('/clients');
+                } else {
+                    toastr.error('Request failed: ' + response.message);
+                }
+            });
+        }
 
         var init = function () {
             if ($routeParams.id) {

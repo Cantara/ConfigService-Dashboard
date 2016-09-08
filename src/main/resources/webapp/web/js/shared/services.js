@@ -6,19 +6,19 @@
 /* Services */
 
 angular.module('app')
-    .provider("CSService", function () {
+    .provider("CSService",  function () {
 
 
 
-   this.configure = function (value) {
+       this.configure = function (value) {
             //some initialization if required here
 
         }
 
-
         this.$get = ['ClientStatus', 'ClientDetail', 'Application', 'ApplicationDetail', '$http', '$q', '$resource', '$location', '$rootScope', 'ConstantValues', 'CacheFactory', 'browserDetectionService', function (ClientStatus, ClientDetail, Application , ApplicationDetail, $http, $q, $resource, $location, $rootScope, ConstantValues, CacheFactory,browserDetectionService) {
 
-            var aliasmap;
+            var aliasmap=null;
+
 
             var clientCache = CacheFactory('clientCache', {
                 maxAge: ConstantValues.cacheMaxAge, // Items added to this cache expire after 15 minutes.
@@ -27,39 +27,38 @@ angular.module('app')
                 storageMode: 'localStorage' // This cache will use `localStorage`.
             });
 
-
             var service = {
 
+
             };
+
             //fetch from the server
             service.getAllClientStatuses = function () {
 
+                function handleClientResponse(clientStatus) {
+                    if (clientStatus.client != null && clientStatus.latestClientHeartbeatData != null) {
+                        var result = new ClientStatus(clientStatus);
+                        service.applyFriendlyName(result.client);
+                        return result;
+                    }
+                }
+
+
                 if(browserDetectionService.isNotIE()) {
+
                     return $http.get('client/', {cache: clientCache})
                         .then(function (response) {
-
-                               return response.data.map(function (clientStatus) {
-                                   if (clientStatus.client != null && clientStatus.latestClientHeartbeatData != null) {
-                                       var result = new ClientStatus(clientStatus);
-                                       service.applyFriendlyName(result.client);
-                                       return result;
-                                   }
-                               });
-
-
+                            var a = response.data.map(handleClientResponse);
+                            return a.filter(function(item, index, array){
+                                return item;
+                            });
                         });
                 } else {
                     
                     return $http.get('client/?random='+new Date().getTime(), {cache: clientCache})
                         .then(function (response) {
 
-                            return response.data.map(function (clientStatus) {
-                                if (clientStatus.client != null && clientStatus.latestClientHeartbeatData != null) {
-                                    var result = new ClientStatus(clientStatus);
-                                    service.applyFriendlyName(result.client);
-                                    return result;
-                                }
-                            });
+                            return response.data.map(handleClientResponse);
                             
 
                         });
@@ -76,7 +75,6 @@ angular.module('app')
                 clientCache.remove('application/' + artifactId + "/status/");
 
             }
-
 
             service.getClientDetail = function (clientId){
 
@@ -107,7 +105,6 @@ angular.module('app')
                     });
 
             };
-
 
             service.getApplicationConfig = function(applicationid){
                 return  $http.get('application/' + applicationid + "/config/").then(function (response) {
@@ -206,30 +203,45 @@ angular.module('app')
             service.applyFriendlyName=function(client){
 
                 if(aliasmap!=null){
+
                     if(client.clientId in aliasmap) {
                         client.alias = aliasmap[client.clientId];
                     }
+
                 } else {
-                    return $http.get('client/aliasmap')
+                    $http.get('client/aliasmap')
                         .then(function (response) {
                             aliasmap = response.data;
                             if(client.clientId in aliasmap) {
                                 client.alias = aliasmap[client.clientId];
-                            }
-                        });
+                            }});
+
                 }
 
+
             }
+
+            service.getIgnoreList=function(client){
+
+                    return $http.get('client/ignoredClients')
+                        .then(function (response) {
+                            return response.data;
+                        });
+
+
+            }
+
+            service.ignoreClient = function (clientid) {
+                return $http.post('client/ignore/' + clientid,{}).then(function (response) {
+
+                    return response;
+                });
+            }
+
+
 
             return service;
         }];
 
-        var init = function () {
 
-
-
-
-        };
-
-        init();
     });

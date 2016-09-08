@@ -14,6 +14,13 @@ angular.module('Client')
                 return CSService.saveAlias(currentClientId, alias);
             }
         }
+
+        service.ignoreClient = function () {
+            if(currentClientId) {
+                return CSService.ignoreClient(currentClientId);
+            }
+        }
+
         service.getClientDetail = function (clientId) {
             if (clientId) {
                 currentClientId = clientId;
