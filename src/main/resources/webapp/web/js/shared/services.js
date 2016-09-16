@@ -66,6 +66,11 @@ angular.module('app')
 
             };
 
+            service.clearAllCache= function () {
+                clientCache.removeAll();
+
+            }
+
             service.clearCache_ClientList = function () {
                 clientCache.remove('client/');
 
