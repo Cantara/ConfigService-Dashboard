@@ -13,7 +13,9 @@ angular.module('Client')
         $scope.goto = function (clientStatus) {
             if($scope.checkboxModel.value) {
 
-                $window.open($location.absUrl() + "/" + clientStatus.client.clientId, '_blank');
+                var baseLen = $location.absUrl().length - $location.url().length;
+                var base = $location.absUrl().substr(0, baseLen);
+                $window.open(base+ "/clients/" + clientStatus.client.clientId, '_blank');
             } else {
                 $location.path('/clients/' + clientStatus.client.clientId);
             }

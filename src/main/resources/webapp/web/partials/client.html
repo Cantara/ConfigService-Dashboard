@@ -6,8 +6,8 @@
 <div ng-hide="dataLoading">
 <div class="client-header" ng-style="{'background-color': clientDetail.status.color}">
     <div class="col-sm-4">
-        <b>Client Id:</b> <span  ng-hide="editMode">{{clientDetail.status.client.alias}}</span>
-
+        <b>Client Id:</b> {{clientDetail.status.client.clientId}}<br/>
+        <b>Display Name:</b> <span  ng-hide="editMode">{{clientDetail.status.client.alias}}</span>
         <input type="text" name="alias"  id="alias" placeholder="Enter an alias name." ng-show="editMode"  id="alias"  ng-model="clientDetail.status.client.alias"  />
         <a ng-click="toggleEdit()"  ng-hide="editMode" ng-if="globals.currentUser.isAdmin"><span class="glyphicon glyphicon-pencil"></span></a>
         <a ng-click="saveEdit(clientDetail.status.client.alias)"  ng-show="editMode" ng-if="globals.currentUser.isAdmin"><span class="glyphicon glyphicon-ok"></span></a>
@@ -26,7 +26,7 @@
 </div>
 
 
-<button ng-if="globals.currentUser.isAdmin && clientDetail.status.status=='red'" class="pull-right btn btn-warning glyphicon glyphicon-trash client-edit-btn" title="Remove" ng-confirm="ignoreMe()" ng-confirm-message="Are you sure you want to ignore this client?"></button>
+<button ng-if="globals.currentUser.isAdmin && clientDetail.status.status=='red'" class="pull-right btn btn-warning glyphicon glyphicon-trash client-edit-btn" title="Ignore/hide from the list" ng-confirm="ignoreMe()" ng-confirm-message="Are you sure you want to ignore/hide this client?"></button>
 
 <div>
     <my-tabs>

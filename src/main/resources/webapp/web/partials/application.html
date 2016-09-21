@@ -6,6 +6,9 @@
 
 
 <div ng-hide="dataLoading"><h1>{{applicationDetail.artifactId}}</h1>
+    <div ng-show="globals.currentUser.isAdmin">
+    <button class="pull-right btn btn-warning glyphicon glyphicon-trash client-edit-btn" title="Remove" ng-show="canRemoveThisConfig()" ng-confirm="removeApplicationConfig()" ng-confirm-message="Are you sure you want to delete this application.?"></button>
+     </div>
 <my-tabs>
     <my-pane title="Clients">
         <div ng-include="'partials/clients.html'"></div>
@@ -15,8 +18,6 @@
     </my-pane>
     <my-pane title="Configuration">
     	<div ng-show="globals.currentUser.isAdmin">
-
-        <button class="pull-right btn btn-warning glyphicon glyphicon-trash client-edit-btn" title="Remove" ng-show="canRemoveThisConfig()" ng-confirm="removeApplicationConfig()" ng-confirm-message="Are you sure you want to delete this application.?"></button>
         <div><button class="btn btn-warning client-edit-btn" ng-click="setEdit()" ng-hide="editMode">Edit</button>
         <button class="btn btn-primary client-edit-btn" ng-click="update()" ng-show="editMode">Save</button>
         <button class="btn client-edit-btn" ng-click="setEdit()" ng-show="editMode">Cancel</button></div>
