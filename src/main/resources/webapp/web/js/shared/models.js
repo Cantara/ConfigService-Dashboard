@@ -44,7 +44,7 @@ angular.module('app')
             if(lastSeen < ConstantValues.greenTimeOut) {
                 this.status = 'green';
                 this.color = '#A0CF89';
-            } else if(lastSeen > ConstantValues.greenTimeOut && lastSeen < ConstantValues.redTimeOut ) {
+            } else if(lastSeen > ConstantValues.greenTimeOut && lastSeen < ConstantValues.redTimeout) {
                 this.status = 'yellow';
                 this.color = '#FFFF75';
             } else {
