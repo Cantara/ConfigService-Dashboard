@@ -4,10 +4,10 @@
 
 angular.module('app').constant('ConstantValues', {
 
-    cacheMaxAge: 10*60*1000, //cache is kept in 10 mins
+    cacheMaxAge: 5*60*1000, //cache is kept in 5 mins
     cacheAutoFlushInterval:60*60*1000, // This cache will clear itself every hour.
-    greenTimeOut: 15*60 *1000, // 15 mins
-    redTimeout: 20*60*1000, //yellow before 20 mins, after which comes the red
+    greenTimeOut: 15*60 *1000, // 15 mins gets yellow
+    redTimeout: 2*24*60*60*1000, //yellow before 2 days, after which comes the red
     clientsAutoUpdateInterval: 5*60*1000 //clear cache and auto fetch occurs each 5 minutes
 
 });
