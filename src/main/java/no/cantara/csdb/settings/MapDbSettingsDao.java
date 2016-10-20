@@ -19,7 +19,7 @@ public class MapDbSettingsDao implements SettingsDao {
     private final Set<String> ignoredClients;
 
     public MapDbSettingsDao() {
-        File mapDbPathFile = new File(ConfigValue.CLIENT_ALIAS_DBFILE);
+        File mapDbPathFile = new File(ConfigValue.MAPDB_PATH);
         mapDbPathFile.getParentFile().mkdirs();
         db = DBMaker.newFileDB(mapDbPathFile).make();
         aliases = db.getHashMap("aliasMap");

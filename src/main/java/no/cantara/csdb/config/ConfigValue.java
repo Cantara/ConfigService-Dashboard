@@ -3,30 +3,14 @@ package no.cantara.csdb.config;
 import no.cantara.csdb.util.Configuration;
 
 public class ConfigValue {
-	public static String CONFIGSERVICE_URL ="";
-	public static String CONFIGSERVICE_USERNAME ="";
-	public static String CONFIGSERVICE_PASSWORD ="";
-	public static String LOGIN_READ_USERNAME ="";
-	public static String LOGIN_READ_PASSWORD ="";
-	public static String LOGIN_ADMIN_USERNAME ="";
-	public static String LOGIN_ADMIN_PASSWORD ="";
-	
-	
-	public static int SERVICE_PORT=8087;
-	public static String SERVICE_CONTEXT="/dashboard";
-	public static String CLIENT_ALIAS_DBFILE="";
-	
-	static {
-		CONFIGSERVICE_PASSWORD = Configuration.getString("configservice.password");
-		CONFIGSERVICE_USERNAME = Configuration.getString("configservice.username");
-		LOGIN_READ_USERNAME = Configuration.getString("login.user");
-		LOGIN_READ_PASSWORD = Configuration.getString("login.password");
-		LOGIN_ADMIN_USERNAME = Configuration.getString("login.admin.user");
-		LOGIN_ADMIN_PASSWORD = Configuration.getString("login.admin.password");
-		
-		CONFIGSERVICE_URL = Configuration.getString("configservice.url");
-		SERVICE_PORT = Configuration.getInt("service.port", 8087);
-		CLIENT_ALIAS_DBFILE = Configuration.getString("mapdb.path");
-		
-	}
+    public final static String CONFIGSERVICE_URL = Configuration.getString("configservice.url");
+    public final static String CONFIGSERVICE_USERNAME = Configuration.getString("configservice.username");
+    public final static String CONFIGSERVICE_PASSWORD = Configuration.getString("configservice.password");
+    public final static String LOGIN_READ_USERNAME = Configuration.getString("login.user");
+    public final static String LOGIN_READ_PASSWORD = Configuration.getString("login.password");
+    public final static String LOGIN_ADMIN_USERNAME = Configuration.getString("login.admin.user");
+    public final static String LOGIN_ADMIN_PASSWORD = Configuration.getString("login.admin.password");
+    public final static String MAPDB_PATH = Configuration.getString("mapdb.path");
+    public final static String SERVICE_CONTEXT = "/dashboard";
+    public final static int SERVICE_PORT = Configuration.getInt("service.port", 8087);
 }
