@@ -2,6 +2,7 @@ package no.cantara.csdb.cs_client;
 
 import no.cantara.csdb.Main;
 import no.cantara.csdb.config.ConstantValue;
+import no.cantara.csdb.settings.SettingsDao;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -27,10 +28,12 @@ import javax.ws.rs.core.MediaType;
 public class ClientController {
 
     private final ClientSessionDao clientSessionDao;
+    private final SettingsDao settingsDao;
 
     @Autowired
-    public ClientController(ClientSessionDao clientSessionDao) {
+    public ClientController(ClientSessionDao clientSessionDao, SettingsDao settingsDao) {
         this.clientSessionDao = clientSessionDao;
+        this.settingsDao = settingsDao;
     }
 
     @Produces(MediaType.APPLICATION_JSON)
@@ -39,7 +42,7 @@ public class ClientController {
 
 		String jsonResult;
 		try {
-			jsonResult = clientSessionDao.getAllClientStatuses();
+			jsonResult = clientSessionDao.getAllClientStatuses(settingsDao.getIgnoredClients());
 			toResult(model, jsonResult);
 		} catch (Exception e) {
 
@@ -137,7 +140,7 @@ public class ClientController {
 		String jsonResult;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			jsonResult = mapper.writeValueAsString(clientSessionDao.getAliasMap());
+			jsonResult = mapper.writeValueAsString(settingsDao.getAliases());
 			toResult(model, jsonResult);
 		} catch (Exception e) {
 
@@ -156,7 +159,7 @@ public class ClientController {
 		obj.put("success", false);
 		if(isAdmin(request)){
 			try {
-				clientSessionDao.saveAlias(clientId, alias);
+				settingsDao.addAlias(clientId, alias);
 				obj.put("success", true);
 			}  catch (Exception e) {
 				obj.put("message", "500, Internal Server Error");
@@ -177,7 +180,7 @@ public class ClientController {
 		obj.put("success", false);
 		if(isAdmin(request)){
 			try {
-				clientSessionDao.ignoreClient(clientId);
+				settingsDao.addIgnoredClient(clientId);
 				obj.put("success", true);
 			}  catch (Exception e) {
 				obj.put("message", "500, Internal Server Error");
@@ -196,7 +199,7 @@ public class ClientController {
 		String jsonResult;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			jsonResult = mapper.writeValueAsString(clientSessionDao.getIgnoredClients());
+			jsonResult = mapper.writeValueAsString(settingsDao.getIgnoredClients());
 			toResult(model, jsonResult);
 		} catch (Exception e) {
 
@@ -208,5 +211,6 @@ public class ClientController {
     private boolean isAdmin(HttpServletRequest request) {
         return request.isUserInRole(Main.ADMIN_ROLE);
     }
+
 }
 
