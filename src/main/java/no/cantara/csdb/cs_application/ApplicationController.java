@@ -1,5 +1,6 @@
 package no.cantara.csdb.cs_application;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DELETE;
@@ -12,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import no.cantara.csdb.Main;
 import no.cantara.csdb.config.ConstantValue;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,13 +25,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/application")
 public class ApplicationController {
 
-	@GET
+    private final ApplicationSessionDao applicationSessionDao;
+
+    @Autowired
+    public ApplicationController(ApplicationSessionDao applicationSessionDao) {
+        this.applicationSessionDao = applicationSessionDao;
+    }
+
+    @GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String getAllApplications(HttpServletRequest request, HttpServletResponse response, Model model) {
 		String jsonResult;
 		try {
-			jsonResult = ApplicationSessionDao.instance.getAllApplications();
+			jsonResult = applicationSessionDao.getAllApplications();
 			toResult(model, jsonResult);
 		} catch (Exception e) {
 
@@ -43,7 +52,7 @@ public class ApplicationController {
 	public String getConfigForApplication(@PathVariable("applicationId") String applicationId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String jsonResult;
 		try {
-			jsonResult = ApplicationSessionDao.instance.getConfigForApplication(applicationId);
+			jsonResult = applicationSessionDao.getConfigForApplication(applicationId);
 			toResult(model, jsonResult);
 		} catch (Exception e) {
 
@@ -57,7 +66,7 @@ public class ApplicationController {
 	public String getStatusForArtifactInstances(@PathVariable("artifactId") String artifactId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String jsonResult;
 		try {
-			jsonResult = ApplicationSessionDao.instance.getStatusForArtifactInstances(artifactId);
+			jsonResult = applicationSessionDao.getStatusForArtifactInstances(artifactId);
 			toResult(model, jsonResult);
 		} catch (Exception e) {
 
@@ -79,7 +88,7 @@ public class ApplicationController {
 	public String createApplication(@RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String jsonResult;
 		try {
-			jsonResult = ApplicationSessionDao.instance.createApplication(json);
+			jsonResult = applicationSessionDao.createApplication(json);
 			toResult(model, jsonResult);
 		} catch (Exception e) {
 
@@ -90,12 +99,12 @@ public class ApplicationController {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/{applicationId}/config/", method = RequestMethod.POST)
-	public String createConfig(@PathVariable("applicationId") String applicationId, @RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String createConfig(@PathVariable("applicationId") String applicationId, @RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String jsonResult =null;
-		if(Main.isAdmin(request)){
+		if(isAdmin(request)){
 
 			try {
-				jsonResult = ApplicationSessionDao.instance.createConfig(applicationId, json);
+				jsonResult = applicationSessionDao.createConfig(applicationId, json);
 
 			} catch (Exception e) {
 
@@ -105,14 +114,14 @@ public class ApplicationController {
 		return "json";
 	}
 
-	@PUT
+    @PUT
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/{applicationId}/config/{configId}", method = RequestMethod.PUT)
 	public String updateConfig(@PathVariable("applicationId") String applicationId, @PathVariable("configId") String configId, @RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String jsonResult=null;
-		if(Main.isAdmin(request)){
+		if(isAdmin(request)){
 			try {
-				jsonResult = ApplicationSessionDao.instance.updateConfig(applicationId, configId, json);
+				jsonResult = applicationSessionDao.updateConfig(applicationId, configId, json);
 
 			} catch (Exception e) {
 
@@ -127,9 +136,9 @@ public class ApplicationController {
 	@RequestMapping(value = "/{applicationId}/config/{configId}", method = RequestMethod.DELETE)
 	public String deleteConfig(@PathVariable("applicationId") String applicationId, @PathVariable("configId") String configId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String jsonResult=null;
-		if(Main.isAdmin(request)){
+		if(isAdmin(request)){
 			try {
-				jsonResult = ApplicationSessionDao.instance.deleteApplicationConfig(applicationId, configId);
+				jsonResult = applicationSessionDao.deleteApplicationConfig(applicationId, configId);
 
 			} catch (Exception e) {
 
@@ -144,12 +153,11 @@ public class ApplicationController {
 	@RequestMapping(value = "/{applicationId}", method = RequestMethod.DELETE)
 	public String deleteApp(@PathVariable("applicationId") String applicationId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String jsonResult=null;
-		
-		
-		if(Main.isAdmin(request)){
+
+		if(isAdmin(request)){
 			try {
-				jsonResult = ApplicationSessionDao.instance.deleteApplication(applicationId);
-				
+				jsonResult = applicationSessionDao.deleteApplication(applicationId);
+
 			} catch (Exception e) {
 
 			}
@@ -157,8 +165,8 @@ public class ApplicationController {
 		toResult(model, jsonResult);
 		return "json";
 	}
-	
-	
 
-	
+    private boolean isAdmin(HttpServletRequest request) {
+        return request.isUserInRole(Main.ADMIN_ROLE);
+    }
 }

@@ -1,13 +1,11 @@
 package no.cantara.csdb.cs_client;
 
-import java.util.Map;
-
 import no.cantara.csdb.Main;
 import no.cantara.csdb.config.ConstantValue;
-import no.cantara.csdb.cs_application.ApplicationSessionDao;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,23 +19,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
 
 @Controller
 @RequestMapping("/client")
 public class ClientController {
 
+    private final ClientSessionDao clientSessionDao;
 
-	@Produces(MediaType.APPLICATION_JSON)
+    @Autowired
+    public ClientController(ClientSessionDao clientSessionDao) {
+        this.clientSessionDao = clientSessionDao;
+    }
+
+    @Produces(MediaType.APPLICATION_JSON)
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String getAllClientStatuses(HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		String jsonResult;
 		try {
-			jsonResult = ClientSessionDao.instance.getAllClientStatuses();
+			jsonResult = clientSessionDao.getAllClientStatuses();
 			toResult(model, jsonResult);
 		} catch (Exception e) {
 
@@ -52,7 +54,7 @@ public class ClientController {
 	public String getClientEnvironment(@PathVariable("clientId") String clientId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String jsonResult;
 		try {
-			jsonResult = ClientSessionDao.instance.getClientEnvironment(clientId);
+			jsonResult = clientSessionDao.getClientEnvironment(clientId);
 			toResult(model, jsonResult);
 		} catch (Exception e) {
 
@@ -67,7 +69,7 @@ public class ClientController {
 	public String getClientStatus(@PathVariable("clientId") String clientId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String jsonResult;
 		try {
-			jsonResult = ClientSessionDao.instance.getClientStatus(clientId);
+			jsonResult = clientSessionDao.getClientStatus(clientId);
 			toResult(model, jsonResult);
 		} catch (Exception e) {
 
@@ -83,7 +85,7 @@ public class ClientController {
 	public String getClientAppConfig(@PathVariable("clientId") String clientId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String jsonResult;
 		try {
-			jsonResult = ClientSessionDao.instance.getClientAppConfig(clientId);
+			jsonResult = clientSessionDao.getClientAppConfig(clientId);
 			toResult(model, jsonResult);
 		} catch (Exception e) {
 
@@ -97,7 +99,7 @@ public class ClientController {
 	public String getClientEvents(@PathVariable("clientId") String clientId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String jsonResult;
 		try {
-			jsonResult = ClientSessionDao.instance.getClientEvents(clientId);
+			jsonResult = clientSessionDao.getClientEvents(clientId);
 			toResult(model, jsonResult);
 		} catch (Exception e) {
 
@@ -112,7 +114,7 @@ public class ClientController {
 	public String getCloudWatchLog(@PathVariable("clientId") String clientId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String jsonResult;
 		try {
-			jsonResult = ClientSessionDao.instance.getClientCloudWatchLog(clientId);
+			jsonResult = clientSessionDao.getClientCloudWatchLog(clientId);
 			toResult(model, jsonResult);
 		} catch (Exception e) {
 
@@ -135,7 +137,7 @@ public class ClientController {
 		String jsonResult;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			jsonResult = mapper.writeValueAsString(ClientSessionDao.instance.getAliasMap());
+			jsonResult = mapper.writeValueAsString(clientSessionDao.getAliasMap());
 			toResult(model, jsonResult);
 		} catch (Exception e) {
 
@@ -152,9 +154,9 @@ public class ClientController {
 
 		JSONObject obj = new JSONObject();
 		obj.put("success", false);
-		if(Main.isAdmin(request)){
+		if(isAdmin(request)){
 			try {
-				ClientSessionDao.instance.saveAlias(clientId, alias);
+				clientSessionDao.saveAlias(clientId, alias);
 				obj.put("success", true);
 			}  catch (Exception e) {
 				obj.put("message", "500, Internal Server Error");
@@ -166,20 +168,20 @@ public class ClientController {
 		return "json";
 	}
 
-	@POST
+    @POST
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/ignore/{clientId}", method = RequestMethod.POST)
 	public String ignoreClient(@PathVariable("clientId") String clientId, @RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) throws JSONException {
 
 		JSONObject obj = new JSONObject();
 		obj.put("success", false);
-		if(Main.isAdmin(request)){
+		if(isAdmin(request)){
 			try {
-				ClientSessionDao.instance.ignoreClient(clientId);
+				clientSessionDao.ignoreClient(clientId);
 				obj.put("success", true);
 			}  catch (Exception e) {
 				obj.put("message", "500, Internal Server Error");
-			}	
+			}
 		} else {
 			obj.put("message", "401, Unauthorized");
 		}
@@ -194,7 +196,7 @@ public class ClientController {
 		String jsonResult;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			jsonResult = mapper.writeValueAsString(ClientSessionDao.instance.getIngoredClients());
+			jsonResult = mapper.writeValueAsString(clientSessionDao.getIgnoredClients());
 			toResult(model, jsonResult);
 		} catch (Exception e) {
 
@@ -203,5 +205,8 @@ public class ClientController {
 
 	}
 
+    private boolean isAdmin(HttpServletRequest request) {
+        return request.isUserInRole(Main.ADMIN_ROLE);
+    }
 }
 

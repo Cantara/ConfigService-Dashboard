@@ -11,6 +11,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,103 +20,91 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
-import java.util.TreeSet;
-import java.util.concurrent.BlockingQueue;
 
-public enum ClientSessionDao {
+@Service
+public class ClientSessionDao {
 
-	instance;
-	
-	private final Map<String, String> aliasMap;
-	private final NavigableSet<String> ignoreClientList;
-	private DB db;
+    private final Map<String, String> aliasMap;
+    private final NavigableSet<String> ignoreClientList;
+    private DB db;
 
-	
-	private ClientSessionDao(){
-		File mapDbPathFile = new File(ConfigValue.CLIENT_ALIAS_DBFILE);
-		mapDbPathFile.getParentFile().mkdirs();
-		db = DBMaker.newFileDB(mapDbPathFile).make();
-		this.aliasMap = db.getHashMap("aliasMap");
-		this.ignoreClientList = db.getTreeSet("ignoreClientList");
-	}
-	
-	public String getAllClientStatuses(){
-		String clientsJson = new CommandGetAllClients().execute();
-		if(clientsJson!=null){
-			ObjectMapper mapper = new ObjectMapper();
-			List<ClientStatus> clientStatusList = new ArrayList<ClientStatus>();
-			try {
-				List<Client> clients = Arrays.asList(mapper.readValue(clientsJson, Client[].class));
-				for(Client client: clients){
-					String clientStatusJson = new CommandGetClientStatus(client.clientId).execute();
-					if(clientStatusJson!=null){
-						ClientStatus clientStatus = mapper.readValue(clientStatusJson, ClientStatus.class);
-						if(clientStatus.latestClientHeartbeatData!=null){
-							if(!ignoreClientList.contains(client.clientId)){
-								clientStatusList.add(clientStatus);
-							}
-						}
-					}
-				}
-				return  mapper.writeValueAsString(clientStatusList);
+    private ClientSessionDao() {
+        File mapDbPathFile = new File(ConfigValue.CLIENT_ALIAS_DBFILE);
+        mapDbPathFile.getParentFile().mkdirs();
+        db = DBMaker.newFileDB(mapDbPathFile).make();
+        this.aliasMap = db.getHashMap("aliasMap");
+        this.ignoreClientList = db.getTreeSet("ignoreClientList");
+    }
 
-			} catch (JsonParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return "";
-	}
-	
-	public Map<String, String> getAliasMap(){
-		return aliasMap;
-	}
+    public String getAllClientStatuses() {
+        String clientsJson = new CommandGetAllClients().execute();
+        if (clientsJson != null) {
+            ObjectMapper mapper = new ObjectMapper();
+            List<ClientStatus> clientStatusList = new ArrayList<ClientStatus>();
+            try {
+                List<Client> clients = Arrays.asList(mapper.readValue(clientsJson, Client[].class));
+                for (Client client : clients) {
+                    String clientStatusJson = new CommandGetClientStatus(client.clientId).execute();
+                    if (clientStatusJson != null) {
+                        ClientStatus clientStatus = mapper.readValue(clientStatusJson, ClientStatus.class);
+                        if (clientStatus.latestClientHeartbeatData != null) {
+                            if (!ignoreClientList.contains(client.clientId)) {
+                                clientStatusList.add(clientStatus);
+                            }
+                        }
+                    }
+                }
+                return mapper.writeValueAsString(clientStatusList);
 
-	public void saveAlias(String clientId, String alias){
-		aliasMap.put(clientId, alias);
-		db.commit();
-	}
-	
-	public String getClientEnvironment(String clientId) {
-		String json = new CommandGetClientEnvironment(clientId).execute();
-		return json;
-	}
+            } catch (JsonParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
 
-	public String getClientStatus(String clientId) {
-		String json = new CommandGetClientStatus(clientId).execute();
-		return json;
-	}
+    public Map<String, String> getAliasMap() {
+        return aliasMap;
+    }
 
-	public String getClientAppConfig(String clientId) {
-		String json = new CommandGetClientAppConfig(clientId).execute();
-		return json;
-		
-	}
+    public void saveAlias(String clientId, String alias) {
+        aliasMap.put(clientId, alias);
+        db.commit();
+    }
 
-	public String getClientEvents(String clientId) {
-		String json = new CommandGetClientEvents(clientId).execute();
-		return json;
-	}
+    public String getClientEnvironment(String clientId) {
+        return new CommandGetClientEnvironment(clientId).execute();
+    }
 
-	public String getClientCloudWatchLog(String clientId) {
-		String json = new CommandGetAWSCloudWatchLog(clientId).execute();
-		return json;
-	}
+    public String getClientStatus(String clientId) {
+        return new CommandGetClientStatus(clientId).execute();
+    }
 
-	public void ignoreClient(String clientId) {
-		ignoreClientList.add(clientId);
-		db.commit();
-	}
-	
-	public String[] getIngoredClients(){
-		return ignoreClientList.toArray(new String[0]);
-	}
+    public String getClientAppConfig(String clientId) {
+        return new CommandGetClientAppConfig(clientId).execute();
+    }
 
-	
+    public String getClientEvents(String clientId) {
+        return new CommandGetClientEvents(clientId).execute();
+    }
+
+    public String getClientCloudWatchLog(String clientId) {
+        return new CommandGetAWSCloudWatchLog(clientId).execute();
+    }
+
+    public void ignoreClient(String clientId) {
+        ignoreClientList.add(clientId);
+        db.commit();
+    }
+
+    public String[] getIgnoredClients() {
+        return ignoreClientList.toArray(new String[0]);
+    }
 }

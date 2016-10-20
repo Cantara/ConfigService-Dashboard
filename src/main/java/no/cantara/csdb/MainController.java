@@ -5,6 +5,7 @@ import no.cantara.csdb.config.ConstantValue;
 import no.cantara.csdb.cs_application.ApplicationSessionDao;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +21,14 @@ import javax.ws.rs.core.MediaType;
 @Controller
 public class MainController {
 
-	@Produces(MediaType.TEXT_HTML + ";charset=utf-8")
+    private final ApplicationSessionDao applicationSessionDao;
+
+    @Autowired
+    public MainController(ApplicationSessionDao applicationSessionDao) {
+        this.applicationSessionDao = applicationSessionDao;
+    }
+
+    @Produces(MediaType.TEXT_HTML + ";charset=utf-8")
 	@RequestMapping("/")
 	public String myapp(HttpServletRequest request, HttpServletResponse response, Model model) {
 		response.setContentType(ConstantValue.HTML_CONTENT_TYPE);
@@ -37,7 +45,7 @@ public class MainController {
 		JSONObject obj = new JSONObject();
 		obj.put("success", false);
         try {
-        	String role = ApplicationSessionDao.instance.getLoginRole(json);
+        	String role = applicationSessionDao.getLoginRole(json);
             if(role !=null){
             	obj.put("success", true);
             	obj.put("role", role);
