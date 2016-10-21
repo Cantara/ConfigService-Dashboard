@@ -147,22 +147,27 @@ div[ng-view] {
 }
 div[ng-view].ng-enter,
 div[ng-view].ng-leave {
-    -webkit-transition: all 1s ease;
-    -moz-transition: all 1s ease;
-    -o-transition: all 1s ease;
-    transition: all 1s ease;
+    -webkit-transition: all 0.25s ease;
+    -moz-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    transition: all 0.25s ease;
 }
 div[ng-view].ng-enter {
-    left: 100%; /*initial css for view transition in*/
+    /*initial css for view transition in*/
+    opacity: 0;
 }
+
 div[ng-view].ng-leave {
-    left: 0; /*initial css for view transition out*/
+    /*initial css for view transition out*/
+    opacity: 1;
 }
 div[ng-view].ng-enter-active {
-    left: 0; /*final css for view transition in*/
+    /*final css for view transition in*/
+    opacity: 1;
 }
 div[ng-view].ng-leave-active {
-    left: -100%; /*final css for view transition out*/
+    /*final css for view transition out*/
+    opacity: 0;
 }
 
 .animate-show {
