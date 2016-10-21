@@ -43,16 +43,18 @@ angular.module('app')
             var lastSeen = diff;
             if(lastSeen < ConstantValues.greenTimeOut) {
                 this.status = 'green';
-                this.color = '#A0CF89';
+                this.bgcolor = '#4CAF50';
+                this.fgcolor = '#191919';
             } else if(lastSeen > ConstantValues.greenTimeOut && lastSeen < ConstantValues.redTimeout) {
                 this.status = 'yellow';
-                this.color = '#FFFF75';
+                this.bgcolor = '#FDD835';
+                this.fgcolor = '#191919';
             } else {
                 this.status = 'red';
-                this.color = '#FF572E';
+                this.bgcolor = '#FF5722';
+                this.fgcolor = 'white';
             }
         };
-
 
         return ClientStatus;
 }]);

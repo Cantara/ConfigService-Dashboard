@@ -96,7 +96,6 @@ input[type="checkbox"].input-validation-error {
 .client-tile {
     width: 120px;
     height: 80px;
-    color: white;
     padding:2px;
     margin-bottom:5px;
     font-size: 10pt;

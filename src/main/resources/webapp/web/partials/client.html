@@ -4,7 +4,7 @@
      <i class="fa fa-spinner fa-spin"></i>
 </div>
 <div ng-hide="dataLoading">
-<div class="client-header" ng-style="{'background-color': clientDetail.status.color}">
+<div class="client-header" ng-style="{'background-color': clientDetail.status.bgcolor, 'color': clientDetail.status.fgcolor}">
     <div class="col-sm-4">
         <b>Client Id:</b> {{clientDetail.status.client.clientId}}<br/>
         <b>Display Name:</b> <span  ng-hide="editMode">{{clientDetail.status.client.alias}}</span>
