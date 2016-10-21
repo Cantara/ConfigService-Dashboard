@@ -124,7 +124,7 @@ input[type="checkbox"].input-validation-error {
     height: 65px;
     color:black;
     vertical-align: middle;
-    padding-top: 5px;
+    padding-top: 12px;
     /*background-color: cornsilk;*/
     align-content: center;
     margin-bottom: 10px;

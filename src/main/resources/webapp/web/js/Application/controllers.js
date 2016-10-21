@@ -41,7 +41,7 @@ angular.module('Application')
 
         $scope.refresh = function () {
 
-            toastr.success('Force updating clients...');
+            toastr.success('Refreshing clients...');
             CSService.clearCache_ClientList_Of_OneApplication($routeParams.artifactId);
             fetchClients();
 

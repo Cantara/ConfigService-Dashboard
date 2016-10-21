@@ -22,7 +22,7 @@ angular.module('Client')
         }
 
         $scope.refresh = function () {
-            toastr.success('Force updating clients...');
+            toastr.success('Refreshing clients...');
             CSService.clearCache_ClientList();
             fetchClients();
             

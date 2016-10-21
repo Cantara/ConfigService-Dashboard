@@ -1,7 +1,20 @@
-<ul>
-    <li><b>ClientId:</b> {{clientStatus.client.clientId}}</li>
-    <li><b>ArtifactId:</b> {{clientStatus.latestClientHeartbeatData.artifactId}}</li>
-    <li><b>ApplicationConfigId:</b> {{clientStatus.latestClientHeartbeatData.applicationConfigId}}</li>
-    <li><b>ConfigLastChanged:</b> {{clientStatus.latestClientHeartbeatData.configLastChanged|date:'medium'}}</li>
-    <li><b>LastSeen:</b> {{clientStatus.latestClientHeartbeatData.timeOfContact|date:'medium'}}</li>
-</ul>
+<p>
+    <b>Client ID</b><br>
+    {{clientStatus.client.clientId}}
+</p>
+<p>
+    <b>Artifact ID:</b><br>
+    {{clientStatus.latestClientHeartbeatData.artifactId}}
+</p>
+<p>
+    <b>Application Config ID:</b><br>
+    {{clientStatus.latestClientHeartbeatData.applicationConfigId}}
+</p>
+<p>
+    <b>Config Last Changed:</b><br>
+    {{clientStatus.latestClientHeartbeatData.configLastChanged|date:'yyyy-MM-dd hh:mm:ssZ'}}
+</p>
+<p>
+    <b>Last Seen:</b><br>
+    {{clientStatus.latestClientHeartbeatData.configLastChanged|date:'yyyy-MM-dd hh:mm:ssZ'}}
+</p>

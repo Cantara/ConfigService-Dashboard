@@ -6,7 +6,7 @@
 <div ng-hide="dataLoading">
 <div class="client-header" ng-style="{'background-color': clientDetail.status.bgcolor, 'color': clientDetail.status.fgcolor}">
     <div class="col-sm-4">
-        <b>Client Id:</b> {{clientDetail.status.client.clientId}}<br/>
+        <b>Client ID:</b> {{clientDetail.status.client.clientId}}<br/>
         <b>Display Name:</b> <span  ng-hide="editMode">{{clientDetail.status.client.alias}}</span>
         <input type="text" name="alias"  id="alias" placeholder="Enter an alias name." ng-show="editMode"  id="alias"  ng-model="clientDetail.status.client.alias"  />
         <a ng-click="toggleEdit()"  ng-hide="editMode" ng-if="globals.currentUser.isAdmin"><span class="glyphicon glyphicon-pencil"></span></a>
@@ -15,13 +15,13 @@
 
     </div>
     <div class="col-sm-4">
-        <b>Artifact Id: </b> {{clientDetail.status.latestClientHeartbeatData.artifactId}}<br/>
-        <b>AppConfig:</b> {{clientDetail.config.name}} <br/>
+        <b>Artifact ID: </b> {{clientDetail.status.latestClientHeartbeatData.artifactId}}<br/>
+        <b>App Config:</b> {{clientDetail.config.name}} <br/>
 
     </div>
     <div class="col-sm-4">
-    <b>ConfigLastChanged:</b> {{clientDetail.status.latestClientHeartbeatData.configLastChanged|date:'medium'}} <br/>
-    <b>LastSeen:</b> {{clientDetail.status.latestClientHeartbeatData.timeOfContact|date:'medium'}} <br/>
+    <b>Config Last Changed:</b> {{clientDetail.status.latestClientHeartbeatData.configLastChanged|date:'yyyy-MM-dd hh:mm:ssZ'}} <br/>
+    <b>Last Seen:</b> {{clientDetail.status.latestClientHeartbeatData.timeOfContact|date:'yyyy-MM-dd hh:mm:ssZ'}} <br/>
     </div>
 </div>
 
