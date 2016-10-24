@@ -24,7 +24,9 @@
         <td>{{application.artifactId}}</td>
         <td>{{application.appConfig.id}}</td>
         <td>
-            <span class="glyphicon glyphicon-eye-open" title="View details" ng-click="goto(application)"></span>
+            <div ng-click="goto(application)" class="clickable">
+                <span class="glyphicon glyphicon-eye-open" title="View details"></span>&nbsp;View details
+            </div>
         <td>
     </tr>
     </tbody>

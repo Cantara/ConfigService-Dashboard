@@ -29,6 +29,10 @@ textarea {
     max-width: 280px;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 /* styles for validation helpers - start*/
 .field-validation-error {
     color: #b94a48;

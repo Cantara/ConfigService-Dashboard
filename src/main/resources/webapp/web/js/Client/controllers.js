@@ -138,7 +138,7 @@ angular.module('Client')
             ClientService.ignoreClient().then(function (response) {
 
                 if(response.data.success) {
-                    toastr.success('Client was removed successfully');
+                    toastr.success('Client was hidden successfully');
                     $location.path('/clients');
                 } else {
                     toastr.error('Request failed: ' + response.message);

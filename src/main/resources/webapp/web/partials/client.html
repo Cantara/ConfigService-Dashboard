@@ -25,8 +25,10 @@
     </div>
 </div>
 
-
-<button ng-if="globals.currentUser.isAdmin && clientDetail.status.status=='red'" class="pull-right btn btn-warning glyphicon glyphicon-trash client-edit-btn" title="Ignore/hide from the list" ng-confirm="ignoreMe()" ng-confirm-message="Are you sure you want to ignore/hide this client?"></button>
+<button ng-if="globals.currentUser.isAdmin && clientDetail.status.status=='red'"
+        class="pull-right btn client-edit-btn" title="Hide this client" ng-confirm="ignoreMe()" ng-confirm-message="Are you sure you want to hide this client?">
+    <span class="glyphicon glyphicon-eye-close"></span>&nbsp;Hide
+</button>
 
 <div>
     <my-tabs>

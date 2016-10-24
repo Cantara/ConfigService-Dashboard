@@ -22,19 +22,17 @@
             <label for="open-in-new-tab">Open new tab for each client</label>
         </span>
 
-        <button class="btn btn-small clients-refresh-btn" ng-click="refresh()"> <span class="glyphicon glyphicon-refresh"></span>&nbsp;Refresh</button>
+        <button class="btn clients-refresh-btn" ng-click="refresh()"> <span class="glyphicon glyphicon-refresh"></span>&nbsp;Refresh</button>
 
     </div>
 
     <div id="client-list">
         <div ng-repeat="clientStatus in clientStatuses | filter:search | filter: clientStatus : clientStatus.client.ignored=false | orderBy: '-latestClientHeartbeatData.timeOfContact'" >
 
-            <div class="client-tile col-sm-1" ng-style="{'background-color': clientStatus.bgcolor, 'color': clientStatus.fgcolor}" popover-placement="right"
+            <div class="client-tile clickable col-sm-1" ng-style="{'background-color': clientStatus.bgcolor, 'color': clientStatus.fgcolor}" popover-placement="right"
                  data-popover-template="'partials/template_clientpopup.html'" data-popover-trigger="mouseenter" ng-click="goto(clientStatus)">
                 {{clientStatus.client.alias}}
             </div>
-
-
 
         </div>
     </div>
