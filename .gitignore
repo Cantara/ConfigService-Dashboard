@@ -16,3 +16,5 @@ hs_err_pid*
 /.idea/
 /db/
 /logs/
+
+dependency-reduced-pom.xml
