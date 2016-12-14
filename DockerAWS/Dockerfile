@@ -11,7 +11,8 @@ RUN apk add --update \
 
 ENV USER=appuser \
     HOME=/home/appuser
-ARG DOCKER_TAG=ConfigService-Dashboard-0.4.2
+#Builds latest by default, which means it downloads latest jar/snapshot from mvnrepo
+ARG DOCKER_TAG=latest
 RUN adduser -S $USER
 
 COPY config_override/* $HOME/config_override/
