@@ -37,7 +37,7 @@ if [ "$AWS_CLOUDWATCH_LOGGING_ENABLED" = "true" ]; then
     ' CHLD EXIT
 
     /usr/bin/java $JAVA_PARAMS $JAVA_PARAMS_OVERRIDE -jar $APP & java_pid+=$!
-    aws logs push --region=eu-west-1 --config-file aws-cloudwatch.conf & awslogs_pid+=$!
+    aws logs push --region=$AWS_CLOUDWATCH_REGION --config-file aws-cloudwatch.conf & awslogs_pid+=$!
     set -m
     wait
     set +m
