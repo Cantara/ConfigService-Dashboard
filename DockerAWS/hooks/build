@@ -1,8 +1,2 @@
 #!/usr/bin/env sh
-
-echo "------ HOOK START - BUILD -------"
-printenv
-
 docker build --build-arg DOCKER_TAG=$DOCKER_TAG -t $IMAGE_NAME .
-
-echo "------ HOOK END - BUILD -------"
