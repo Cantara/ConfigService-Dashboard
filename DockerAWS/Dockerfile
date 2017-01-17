@@ -26,7 +26,8 @@ RUN if [ $DOCKER_TAG = "latest" ]; then \
 ## Configure permissions
 RUN mkdir -p $HOME/logs && \
     chmod 755 $HOME/*.sh && \
-    chown -R $USER $HOME
+    chown -R $USER $HOME && \
+    ln -s /usr/local/java/bin/java /usr/bin/java
 
 ## Map data volume container?
 VOLUME ["$HOME/config_override", "$HOME/logs"]
