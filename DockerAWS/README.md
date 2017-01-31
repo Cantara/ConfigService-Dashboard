@@ -2,12 +2,13 @@ Docker image for running ConfigService-Dashboard on Amazon ECS.
 =======================================================================
 This image will by default pack the latest ConfigService-Dashboard-jar (SNAPSHOT).
 --build-arg DOCKER_TAG=ConfigService-Dashboard-0.5.1 may be used to pack a specific release-version. The format matches the git tag format.
+The curl logic may be replaced by simple copies to get local jar-files into the image locally.
 The configuration can be overridden by passing a file with the `--env-file` command when running the image.
 E.g:
 ```
 --env-file application_override.properties
 ```
-Alternatively, the properties can be overridden by passing them seperately
+Alternatively, the properties can be overridden by passing them one by one.
 E.g:
 ```
 -e configservice.username=admin -e configservice.password=configservice
@@ -18,7 +19,7 @@ E.g:
 
 ####Credentials
 Task-roles should be used, but you may also pass in the Access key id and access key through env-variables.
-For application/logging to CW
+For application/logging to CW and/or DynamoDB as configuration store.
 * AWS_ACCESS_KEY_ID
 * AWS_SECRET_ACCESS_KEY
 
@@ -27,7 +28,6 @@ Where to put logs. See aws-cloudwatch.conf and config_override/logback.xml
 * AWS_CLOUDWATCH_LOGGING_ENABLED default to false. Set to "true" if you wish to enable
 * AWS_CLOUDWATCH_REGION (region the logs should be sent to, e.g. eu-west-1):
 * AWS_LOG_GROUP (Log group to create log stream for app-log)
-* AWS_INOUT_LOG_GROUP (Log group to create inout-log stream)
 * LOGBACK_CANTARA_LEVEL (Loglevel of no.cantara logs. Defaults to info if not set)
 
 ####Configservice

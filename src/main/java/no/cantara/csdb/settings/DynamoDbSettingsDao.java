@@ -48,11 +48,14 @@ public class DynamoDbSettingsDao implements SettingsDao {
     public DynamoDbSettingsDao() {
         tableName = Configuration.getString("dynamodb.table");
         String region = Configuration.getString("dynamodb.region");
+        boolean autocreateTable = Configuration.getBoolean("dynamodb.createTableIfNecessary");
 
         AmazonDynamoDBClient client = new AmazonDynamoDBClient().withRegion(Regions.fromName(region));
         dynamo = new DynamoDB(client);
 
-        createTableIfNecessary();
+        if (autocreateTable) {
+            createTableIfNecessary();
+        }
         table = dynamo.getTable(tableName);
 
         readTable();
