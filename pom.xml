@@ -49,7 +49,6 @@
 
     <properties>
         <service.name>ConfigService-Dashboard</service.name>
-        <whydah-sdk-version>2.2-alpha-17</whydah-sdk-version>       
         <jersey.version>1.19</jersey.version>
         <spring.version>3.0.7.RELEASE</spring.version>
         <jetty.version>7.3.0.v20110203</jetty.version>        
@@ -75,7 +74,7 @@
         <dependency>
             <groupId>no.cantara.jau</groupId>
             <artifactId>configservice-sdk</artifactId>
-            <version>0.13</version>
+            <version>0.14</version>
         </dependency>
         
         <dependency>
