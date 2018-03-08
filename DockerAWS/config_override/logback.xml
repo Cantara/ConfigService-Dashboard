@@ -3,6 +3,12 @@
     <property name="LOG_DIR" value="logs/"/>
     <property name="appName" value="ConfigService-Dashboard"/>
 
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
     <appender name="logfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/${appName}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -23,5 +29,6 @@
 
     <root level="info">
         <appender-ref ref="logfile"/>
+        <appender-ref ref="STDOUT" level=""/>
     </root>
 </configuration>
