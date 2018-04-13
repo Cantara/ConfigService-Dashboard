@@ -51,7 +51,7 @@
         <service.name>ConfigService-Dashboard</service.name>
         <jersey.version>1.19</jersey.version>
         <spring.version>5.0.5.RELEASE</spring.version>
-        <jetty.version>7.3.0.v20110203</jetty.version>        
+        <jetty.version>9.4.9.v20180320</jetty.version>
         <aws.version>1.11.261</aws.version>
     </properties>
 

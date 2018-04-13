@@ -4,14 +4,15 @@ import javax.ws.rs.ext.RuntimeDelegate;
 
 import no.cantara.csdb.config.ConfigValue;
 
-import org.eclipse.jetty.http.security.Constraint;
-import org.eclipse.jetty.http.security.Password;
 import org.eclipse.jetty.security.ConstraintMapping;
 import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.security.HashLoginService;
+import org.eclipse.jetty.security.UserStore;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.security.Constraint;
+import org.eclipse.jetty.util.security.Credential;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import com.sun.jersey.server.impl.provider.RuntimeDelegateImpl;
@@ -41,6 +42,7 @@ public class Main {
 	}
 
 	private static ConstraintSecurityHandler buildSecurityHandler() {
+
 		Constraint roleConstraint = new Constraint();
 		roleConstraint.setName(Constraint.__BASIC_AUTH);
 		roleConstraint.setRoles(new String[]{USER_ROLE, ADMIN_ROLE});
@@ -58,15 +60,17 @@ public class Main {
 		roleConstraintMapping.setPathSpec("/client/*");
 		securityHandler.addConstraintMapping(roleConstraintMapping);
 
-		HashLoginService loginService = new HashLoginService("ConfigService");
+        HashLoginService loginService = new HashLoginService("ConfigService");
 
-		String userName = ConfigValue.LOGIN_ADMIN_USERNAME;
-		String password = ConfigValue.LOGIN_ADMIN_PASSWORD;
-		loginService.putUser(userName, new Password(password), new String[]{ADMIN_ROLE});
+        String clientUsername =  ConfigValue.LOGIN_READ_USERNAME;
+        String clientPassword = ConfigValue.LOGIN_READ_PASSWORD;
+        UserStore userStore = new UserStore();
+        userStore.addUser(clientUsername, Credential.getCredential(clientPassword), new String[]{USER_ROLE});
 
-		userName = ConfigValue.LOGIN_READ_USERNAME;
-		password = ConfigValue.LOGIN_READ_PASSWORD;
-		loginService.putUser(userName, new Password(password), new String[]{USER_ROLE});
+        String adminUsername = ConfigValue.LOGIN_ADMIN_USERNAME;
+        String adminPassword = ConfigValue.LOGIN_ADMIN_PASSWORD;
+        userStore.addUser(adminUsername, Credential.getCredential(adminPassword), new String[]{ADMIN_ROLE});
+        loginService.setUserStore(userStore);
 
 		securityHandler.setLoginService(loginService);
 		return securityHandler;
