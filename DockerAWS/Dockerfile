@@ -6,7 +6,7 @@ RUN apk add --update \
     python-dev \
     py-pip \
     bash \
-  && pip install awscli-cwlogs \
+  && pip install awscli awscli-cwlogs boto3 \
   && rm -rf /var/cache/apk/*
 
 ENV USER=appuser \
