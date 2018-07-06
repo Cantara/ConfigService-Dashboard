@@ -34,7 +34,7 @@
     <parent>
         <groupId>no.cantara.emi</groupId>
         <artifactId>parent</artifactId>
-        <version>5</version>
+        <version>8</version>
     </parent>
 
     <scm>
@@ -233,31 +233,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <mainClass>no.cantara.csdb.Main</mainClass>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <Main-Class>no.cantara.csdb.Main</Main-Class>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
