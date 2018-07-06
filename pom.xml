@@ -71,6 +71,18 @@
             <groupId>no.cantara.jau</groupId>
             <artifactId>configservice-sdk</artifactId>
             <version>0.15</version>
+            <exclusions>
+                <!-- exclude because ut overlaps with spring-aop from spring-context -->
+                <exclusion>
+                    <groupId>org.glassfish.hk2.external</groupId>
+                    <artifactId>aopalliance-repackaged</artifactId>
+                </exclusion>
+                <!-- exclude because ut overlaps with org.glassfish.jersey.containers:jersey-container-servlet -->
+                <exclusion>
+                    <groupId>org.glassfish.hk2.external</groupId>
+                    <artifactId>javax.inject</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
