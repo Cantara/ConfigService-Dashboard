@@ -38,13 +38,9 @@
     </parent>
 
     <scm>
-    
-     <developerConnection>scm:git:ssh://git@github.com/Cantara/ConfigService-Dashboard.git</developerConnection>
-     <connection>scm:git:https://github.com/Cantara/ConfigService-Dashboard.git</connection>
-     <url>https://github.com/Cantara/ConfigService-Dashboard</url>
-     <tag>HEAD</tag>
-      
-      
+        <developerConnection>scm:git:ssh://git@github.com/Cantara/ConfigService-Dashboard.git</developerConnection>
+        <connection>scm:git:https://github.com/Cantara/ConfigService-Dashboard.git</connection>
+        <url>https://github.com/Cantara/ConfigService-Dashboard</url>
     </scm>
 
     <properties>
@@ -76,7 +72,7 @@
             <artifactId>configservice-sdk</artifactId>
             <version>0.15</version>
         </dependency>
-        
+
         <dependency>
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
@@ -182,7 +178,7 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.constretto</groupId>
             <artifactId>constretto-spring</artifactId>
@@ -207,7 +203,7 @@
 
             </exclusions>
         </dependency>
-        
+
         <dependency>
             <groupId>com.github.kevinsawicki</groupId>
             <artifactId>http-request</artifactId>
@@ -225,16 +221,16 @@
                 </exclusion>
             </exclusions>
         </dependency>
-    
+
         <dependency>
             <groupId>org.mapdb</groupId>
             <artifactId>mapdb</artifactId>
             <version>1.0.8</version>
         </dependency>
-     
+
     </dependencies>
 
-    
+
     <build>
         <plugins>
             <plugin>
