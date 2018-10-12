@@ -46,9 +46,9 @@
     <properties>
         <service.name>ConfigService-Dashboard</service.name>
         <jersey.version>1.19</jersey.version>
-        <spring.version>5.0.7.RELEASE</spring.version>
-        <jetty.version>9.4.11.v20180605</jetty.version>
-        <aws.version>1.11.396</aws.version>
+        <spring.version>5.0.9.RELEASE</spring.version>
+        <jetty.version>9.4.12.v20180830</jetty.version>
+        <aws.version>1.11.424</aws.version>
         <slf4j.version>1.7.25</slf4j.version>
     </properties>
 
@@ -70,7 +70,7 @@
         <dependency>
             <groupId>no.cantara.jau</groupId>
             <artifactId>configservice-sdk</artifactId>
-            <version>0.15</version>
+            <version>0.16.1</version>
             <exclusions>
                 <!-- exclude because ut overlaps with spring-aop from spring-context -->
                 <exclusion>
