@@ -49,7 +49,7 @@
         <jersey.version>1.19</jersey.version>
         <spring.version>5.1.1.RELEASE</spring.version>
         <jetty.version>9.4.12.v20180830</jetty.version>
-        <aws.version>1.11.428</aws.version>
+        <aws.version>1.11.470</aws.version>
         <slf4j.version>1.7.25</slf4j.version>
     </properties>
 
