@@ -7,17 +7,21 @@
 <div class="client-header" ng-style="{'background-color': clientDetail.status.bgcolor, 'color': clientDetail.status.fgcolor}">
     <div class="col-sm-4">
         <b>Client ID:</b> {{clientDetail.status.client.clientId}}<br/>
-        <b>Display Name:</b> <span  ng-hide="editMode">{{clientDetail.status.client.alias}}</span>
+        <b>Display Name:</b> <span editable-text="clientDetail.status.client.alias"  e-form="aliasEditableText" onbeforesave="saveEdit($data)">{{ clientDetail.status.client.alias || 'empty' }}</span>
+        <span class="glyphicon glyphicon-pencil" ng-click="aliasEditableText.$show()" ng-hide="aliasEditableText.$visible" ng-if="globals.currentUser.isAdmin"></span>
+        <!-- 
+        
+        <span  ng-hide="editMode">{{clientDetail.status.client.alias}}</span>
         <input type="text" name="alias"  id="alias" placeholder="Enter an alias name." ng-show="editMode"  id="alias"  ng-model="clientDetail.status.client.alias"  />
         <a ng-click="toggleEdit()"  ng-hide="editMode" ng-if="globals.currentUser.isAdmin"><span class="glyphicon glyphicon-pencil"></span></a>
         <a ng-click="saveEdit(clientDetail.status.client.alias)"  ng-show="editMode" ng-if="globals.currentUser.isAdmin"><span class="glyphicon glyphicon-ok"></span></a>
         <a ng-click="toggleEdit()"  ng-show="editMode" ng-if="globals.currentUser.isAdmin"><span class="glyphicon glyphicon-remove"></span></a>
-
+ 		-->
     </div>
     <div class="col-sm-4">
         <b>Artifact ID of Client:</b> {{clientDetail.status.latestClientHeartbeatData.artifactId}}<br/>
         <b>App Config:</b> <span editable-select="clientDetail.config.id" e-form="configEditableText" onshow="loadAllConfigs()" e-ng-options="g.id as g.name for g in applicationConfigs"  onbeforesave="moveToConfig($data)" onaftersave="refresh()">{{ clientDetail.config.name || 'empty' }}</span>
-		  <span class="glyphicon glyphicon-pencil"  ng-click="configEditableText.$show()" ng-hide="configEditableText.$visible"></span>
+		  <span class="glyphicon glyphicon-pencil"  ng-click="configEditableText.$show()" ng-hide="configEditableText.$visible" ng-if="globals.currentUser.isAdmin"></span>
   
 
     </div>

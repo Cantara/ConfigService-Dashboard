@@ -106,10 +106,10 @@ angular.module('Client')
 angular.module('Client')
     .controller('ClientDetailController', ['$scope', 'CSService', 'ClientService',  '$routeParams', '$timeout',  'ConstantValues', 'toastr', '$interval', '$filter', '$q', function ($scope, CSService, ClientService, $routeParams, $timeout, ConstantValues, toastr, $interval,  $filter, $q) {
 
+    	$scope.applicationConfigs = [];
+    	
+    	/*
         $scope.editMode = false;
-
-        $scope.applicationConfigs = [];
-        
         var aliasBeforeEdit;
         $scope.toggleEdit=function(){
 
@@ -120,19 +120,31 @@ angular.module('Client')
             }
 
             $scope.editMode = !$scope.editMode;
-        }
+        }*/
 
         $scope.saveEdit=function(alias){
-            if (alias==='') return;
-            ClientService.saveAlias(alias).then(function (response) {
+        	var d = $q.defer();
+            if (alias==='') {
+            	d.resolve('The display name shoud not be empty')
+            } else {
+            	 ClientService.saveAlias(alias).then(function (response) {
 
-                if(response.data.success) {
-                    $scope.editMode = false;
-                    toastr.success('Update successfully');
-                } else {
-                    toastr.error('Update failed: ' + response.message);
-                }
-            });
+                     if(response.data.success) {
+                         toastr.success('Update successfully');
+                         d.resolve();
+                     } else {
+                         toastr.error('Update failed: ' + response.message);
+                         d.reject('Server error!');
+                     }
+                 }, function(error){
+                	 if(error.statusText){
+                		 d.reject(error.statusText);
+                	 } else {
+                		 d.reject('Server error!');
+                	 }
+                 });
+            }
+            return d.promise;
 
         }
         
