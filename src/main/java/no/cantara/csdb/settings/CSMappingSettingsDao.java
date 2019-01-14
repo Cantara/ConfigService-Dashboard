@@ -25,8 +25,8 @@ import no.cantara.csdb.util.CommandResponseHandler;
 
 public class CSMappingSettingsDao implements SettingsDao {
 
-	private Map<String, String> aliases = null;
-	private Set<String> ignoredClients = null;
+	private Map<String, String> aliases = new HashMap<>();
+	private Set<String> ignoredClients = new HashSet<String>();
 	    
 	@Override
 	public Map<String, String> getAliases() {

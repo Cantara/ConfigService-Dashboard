@@ -14,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.http.entity.ContentType;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jettison.json.JSONException;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.cantara.cs.dto.Client;
@@ -56,53 +58,40 @@ public class ClientController {
         this.settingsDao = settingsDao;
     }
 
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String getAllClientStatuses(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String getAllClientStatuses(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 
-		String jsonResult;
-		try {
-			jsonResult = getAllClientStatuses(settingsDao.getIgnoredClients());
-			toResult(model, jsonResult);
-		} catch (Exception e) {
-
-		}
-		return "json";
+    	String jsonResult;
+    	jsonResult = getAllClientStatuses(settingsDao.getIgnoredClients());
+    	return toResult(model, response, jsonResult);
+		
 
 	}
     
-    String getAllClientStatuses(Set<String> ignoredClients) {
+    String getAllClientStatuses(Set<String> ignoredClients) throws Exception {
         String clientsJson = new CommandGetAllClients().execute();
-        if (clientsJson != null) {
-            ObjectMapper mapper = new ObjectMapper();
-            List<ClientStatus> clientStatusList = new ArrayList<>();
-            try {
-                List<Client> clients = Arrays.asList(mapper.readValue(clientsJson, Client[].class));
-                for (Client client : clients) {
-                    String clientStatusJson = new CommandGetClientStatus(client.clientId).execute();
-                    if (clientStatusJson != null) {
-                        ClientStatus clientStatus = mapper.readValue(clientStatusJson, ClientStatus.class);
-                        if (clientStatus.latestClientHeartbeatData != null) {
-                            if (!ignoredClients.contains(client.clientId)) {
-                                clientStatusList.add(clientStatus);
-                            }
-                        }
-                    }
-                }
-                return mapper.writeValueAsString(clientStatusList);
-
-            } catch (JsonParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (JsonMappingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+        ObjectMapper mapper = new ObjectMapper();
+        List<ClientStatus> clientStatusList = new ArrayList<>();
+        if (clientsJson != null) {      
+        	List<Client> clients = Arrays.asList(mapper.readValue(clientsJson, Client[].class));
+        	for (Client client : clients) {
+        		try {
+        			String clientStatusJson = new CommandGetClientStatus(client.clientId).execute();
+        			if (clientStatusJson != null) {
+        				ClientStatus clientStatus = mapper.readValue(clientStatusJson, ClientStatus.class);
+        				if (clientStatus.latestClientHeartbeatData != null) {
+        					if (!ignoredClients.contains(client.clientId)) {
+        						clientStatusList.add(clientStatus);
+        					}
+        				}
+        			}}catch(Exception ex) {
+        				ex.printStackTrace();
+        			}
+        	}         
         }
-        return "";
+        return mapper.writeValueAsString(clientStatusList);
     }
 
  
@@ -150,28 +139,24 @@ public class ClientController {
 		return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
 	}
 
-	private void toResult(Model model, String jsonResult) {
+	private String toResult(Model model, HttpServletResponse response, String jsonResult) {
 		if(jsonResult!=null){
 			model.addAttribute(ConstantValue.JSON_DATA, jsonResult);
 		} else {
 			model.addAttribute(ConstantValue.JSON_DATA, "");
 		}
+		response.setContentType(ContentType.APPLICATION_JSON.toString());
+		return "json";
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@RequestMapping(value = "/aliasmap", method = RequestMethod.GET)
-	public String getAliasMap(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String getAliasMap(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		String jsonResult;
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			jsonResult = mapper.writeValueAsString(settingsDao.getAliases());
-			toResult(model, jsonResult);
-		} catch (Exception e) {
-
-		}
-		return "json";
-
+		ObjectMapper mapper = new ObjectMapper();
+		jsonResult = mapper.writeValueAsString(settingsDao.getAliases());
+		return toResult(model, response, jsonResult);
 	}
 
 
@@ -192,8 +177,8 @@ public class ClientController {
 		} else {
 			obj.put("message", "401, Unauthorized");
 		}
-		toResult(model, obj.toString());
-		return "json";
+		return toResult(model, response, obj.toString());
+	
 	}
 
     @POST
@@ -213,23 +198,20 @@ public class ClientController {
 		} else {
 			obj.put("message", "401, Unauthorized");
 		}
-		toResult(model, obj.toString());
-		return "json";
+		return toResult(model, response, obj.toString());
+		
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@RequestMapping(value = "/ignoredClients", method = RequestMethod.GET)
-	public String getIgnoredClients(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String getIgnoredClients(HttpServletRequest request, HttpServletResponse response, Model model) throws JsonProcessingException {
 		String jsonResult;
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			jsonResult = mapper.writeValueAsString(settingsDao.getIgnoredClients());
-			toResult(model, jsonResult);
-		} catch (Exception e) {
 
-		}
-		return "json";
+		ObjectMapper mapper = new ObjectMapper();
+		jsonResult = mapper.writeValueAsString(settingsDao.getIgnoredClients());
+		return toResult(model, response, jsonResult);
+
 
 	}
 
