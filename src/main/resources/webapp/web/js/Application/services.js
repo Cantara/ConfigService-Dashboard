@@ -23,6 +23,9 @@ angular.module('Application')
             }
         };
 
+        /* This is renamed to service.canRemoveThisApp()
+         * 
+         * 
         service.canRemoveThisConfig = function(){
             if(currentApplicationDetail!=null) {
 
@@ -32,18 +35,37 @@ angular.module('Application')
             } else {
                 return false;
             }
+        }*/
+        
+        service.canRemoveThisApp = function(){
+            if(currentApplicationDetail!=null) {
+
+                return typeof currentApplicationDetail.status === "undefined" ||
+                    (typeof currentApplicationDetail.status != "undefined" && currentApplicationDetail.status.seenInTheLastHourCount == 0);
+
+            } else {
+                return false;
+            }
         }
 
+        /* This is renamed to service.removeApplication()
+         * removeApplicationConfig() is to delete a particular configuration (which can be implemented in the future)
+         * 
+         * 
         service.removeApplicationConfig = function () {
             if(typeof currentApplicationDetail.config.id != "undefined" ){
                 return CSService.removeApplicationConfig(currentApplicationDetail.id, currentApplicationDetail.config.id);
             } else {
                 return CSService.removeApplication(currentApplicationDetail.id);
             }
-        }
+        }*/
 
+        service.removeApplication = function () { 
+             return CSService.removeApplication(currentApplicationDetail.id);
+        }
+        
         service.save = function () {
-            var promise = newAppConfig ? CSService.addApplicationConfig(currentApplicationDetail) : CSService.updateApplicationConfig(currentApplicationDetail);
+            var promise = newAppConfig ? CSService.addApplication(currentApplicationDetail) : CSService.updateApplicationConfig(currentApplicationDetail);
             promise.then(function (data) {
                 newAppConfig = false;
             });

@@ -15,7 +15,7 @@ angular.module('app')
 
         }
 
-        this.$get = ['ClientStatus', 'ClientDetail', 'Application', 'ApplicationDetail', '$http', '$q', '$resource', '$location', '$rootScope', 'ConstantValues', 'CacheFactory', 'browserDetectionService', function (ClientStatus, ClientDetail, Application , ApplicationDetail, $http, $q, $resource, $location, $rootScope, ConstantValues, CacheFactory,browserDetectionService) {
+        this.$get = ['ClientStatus', 'ClientDetail', 'Application', 'ApplicationConfig', 'ApplicationDetail', '$http', '$q', '$resource', '$location', '$rootScope', 'ConstantValues', 'CacheFactory', 'browserDetectionService', function (ClientStatus, ClientDetail, Application , ApplicationConfig, ApplicationDetail, $http, $q, $resource, $location, $rootScope, ConstantValues, CacheFactory,browserDetectionService) {
 
             var aliasmap=null;
 
@@ -101,6 +101,7 @@ angular.module('app')
 
                 return $http.get('application/')
                     .then(function (response) {
+                    	console.log(response.data);
                         return response.data.map(function (app) {
 
                             return new Application(app);
@@ -119,12 +120,21 @@ angular.module('app')
 
             service.getApplicationDetail = function (id, artifactId){
 
+            
+            	
                 if(browserDetectionService.isNotIE()) {
                     if(artifactId!=null && id!=null) {
+                    	
+                    	
                         return $q.all([$http.get('application/' + artifactId + "/status/", {cache: clientCache}), $http.get('application/' + id + "/config/")]).then(function (response) {
                             var status = response[0].data;
                             var config = response[1].data;
                             return new ApplicationDetail(id, artifactId, status, config);
+                        }, function(re){
+                        	 return $http.get('application/' + artifactId + "/status/", {cache: clientCache}).then(function (response) {
+                        		  return new ApplicationDetail(id, artifactId, response.data, null);                            
+                            });
+                        	
                         });
                     }
                 } else {
@@ -134,9 +144,15 @@ angular.module('app')
                             var status = response[0].data;
                             var config = response[1].data;
                             return new ApplicationDetail(id, artifactId, status, config);
-                        });
+                        },  function(re){
+                       	 	return $http.get('application/' + artifactId + "/status/", {cache: clientCache}).then(function (response) {
+                       	 		return new ApplicationDetail(id, artifactId, response.data, null);                            
+                       	 });
+                   	
+                   });
                     }
                 }
+                
 
                /* if(artifactId!=null && id!=null) {
                     return $q.all([$http.get('application/' + artifactId + "/status/"), $http.get('application/' + id + "/config/")]).then(function (response) {
@@ -153,11 +169,11 @@ angular.module('app')
 
             };
 
-            service.addApplicationConfig = function(applicationDetail){
+            service.addApplication = function(applicationDetail){
                 if(applicationDetail.artifactId){
-                    var appConfigToSave = angular.copy(applicationDetail);
-                    
+                    var appConfigToSave = angular.copy(applicationDetail);                    
                     return $http.post('application/', {'artifactId' : appConfigToSave.artifactId}).then(function (response) {
+                    	//conveniently add the first configuration for this application
                     	if(appConfigToSave.configJsonContent!=null){
 	                        return $http.post('application/' +  response.data.id + "/config/", appConfigToSave.configJsonContent).then(function (response2) {
 	                            return response2;
@@ -173,7 +189,7 @@ angular.module('app')
                 if (applicationDetail.id) {
                     var appConfigToSave = angular.copy(applicationDetail);
                     
-                    if(typeof appConfigToSave.config.id != "undefined"){
+                    if(typeof appConfigToSave.config != "undefined" && typeof appConfigToSave.config.id != "undefined" ){
                     	 return $http.put('application/' + applicationDetail.id + "/config/" +  applicationDetail.config.id , appConfigToSave.configJsonContent).then(function (response) {
                              return response;
                          });
@@ -186,9 +202,12 @@ angular.module('app')
                 }
             }
 
+            /* Check this later, not in use now
+             * 
+             * 
             service.removeApplicationConfig = function(applicationId, configId){
                 return $http.delete("application/" + applicationId  + "/config/" + configId);
-            }
+            }*/
 
             service.removeApplication = function(applicationId){
                 return $http.delete("application/" + applicationId);
@@ -237,13 +256,36 @@ angular.module('app')
             }
 
             service.ignoreClient = function (clientid) {
-                return $http.post('client/ignore/' + clientid,{}).then(function (response) {
+                return $http.post('client/ignore/' + clientid,{"ignore":"true"}).then(function (response) {
 
                     return response;
                 });
             }
+            
 
+            service.getAllConfigs = function(){
+            	 return $http.get('application/config')
+                 .then(function (response) {
+                	 console.log(response.data);
+                     return response.data.map(function (config) {
 
+                         return new ApplicationConfig(config);
+
+                         
+                     });
+                 });
+ 
+            }
+            
+            service.updateClient = function(client) {
+            	  if (client) {
+                      
+                 	  return $http.put('client/' + client.clientId, client).then(function (response) {
+                          return response;
+                      });
+                     
+                  }
+            }
 
             return service;
         }];

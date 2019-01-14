@@ -38,6 +38,9 @@ angular.module('app')
         function ClientStatus(args) {
             this.client = new Client(args.client);
             this.latestClientHeartbeatData = new ClientHeartbeatData(args.latestClientHeartbeatData);
+            if(this.latestClientHeartbeatData){
+            	 this.client.alias = this.latestClientHeartbeatData.clientName;
+            }
             this.status = 'red';
             var diff = Date.now() - new Date(this.latestClientHeartbeatData.timeOfContact);
             var lastSeen = diff;

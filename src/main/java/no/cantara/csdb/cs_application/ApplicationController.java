@@ -12,6 +12,19 @@ import javax.ws.rs.core.MediaType;
 
 import no.cantara.csdb.Main;
 import no.cantara.csdb.config.ConstantValue;
+import no.cantara.csdb.cs_application.commands.CommandCreateApplication;
+import no.cantara.csdb.cs_application.commands.CommandCreateApplicationConfig;
+import no.cantara.csdb.cs_application.commands.CommandDeleteApplication;
+import no.cantara.csdb.cs_application.commands.CommandDeleteApplicationConfig;
+import no.cantara.csdb.cs_application.commands.CommandGetAllApplicationConfigs;
+import no.cantara.csdb.cs_application.commands.CommandGetAllApplications;
+import no.cantara.csdb.cs_application.commands.CommandGetApplicationConfigsForApplication;
+import no.cantara.csdb.cs_application.commands.CommandGetApplicationStatus;
+import no.cantara.csdb.cs_application.commands.CommandUpdateApplicationConfig;
+import no.cantara.csdb.errorhandling.AppException;
+import no.cantara.csdb.errorhandling.AppExceptionCode;
+import no.cantara.csdb.util.CommandResponseHandler;
+import no.cantara.csdb.util.basecommands.BaseGetCommand;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,148 +38,110 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/application")
 public class ApplicationController {
 
-    private final ApplicationSessionDao applicationSessionDao;
 
-    @Autowired
-    public ApplicationController(ApplicationSessionDao applicationSessionDao) {
-        this.applicationSessionDao = applicationSessionDao;
-    }
+	@Autowired
+	public ApplicationController() {
 
-    @GET
+	}
+
+	@GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String getAllApplications(HttpServletRequest request, HttpServletResponse response, Model model) {
-		String jsonResult;
-		try {
-			jsonResult = applicationSessionDao.getAllApplications();
-			toResult(model, jsonResult);
-		} catch (Exception e) {
-
-		}
-		return "json";
+	public String getAllApplications(HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {
+		CommandGetAllApplications cmd = new CommandGetAllApplications();
+		return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	@RequestMapping(value = "/config", method = RequestMethod.GET)
+	public String getAllApplicationConfigs(HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {
+		CommandGetAllApplicationConfigs cmd = new CommandGetAllApplicationConfigs();
+		return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/{applicationId}/config/", method = RequestMethod.GET)
-	public String getConfigForApplication(@PathVariable("applicationId") String applicationId, HttpServletRequest request, HttpServletResponse response, Model model) {
-		String jsonResult;
-		try {
-			jsonResult = applicationSessionDao.getConfigForApplication(applicationId);
-			toResult(model, jsonResult);
-		} catch (Exception e) {
-
-		}
-		return "json";
+	public String getConfigForApplication(@PathVariable("applicationId") String applicationId, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {		
+		CommandGetApplicationConfigsForApplication cmd = new CommandGetApplicationConfigsForApplication(applicationId);
+		return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/{artifactId}/status/", method = RequestMethod.GET)
-	public String getStatusForArtifactInstances(@PathVariable("artifactId") String artifactId, HttpServletRequest request, HttpServletResponse response, Model model) {
-		String jsonResult;
-		try {
-			jsonResult = applicationSessionDao.getStatusForArtifactInstances(artifactId);
-			toResult(model, jsonResult);
-		} catch (Exception e) {
-
-		}
-		return "json";
-	}
-
-	private void toResult(Model model, String jsonResult) {
-		if(jsonResult!=null){
-			model.addAttribute(ConstantValue.JSON_DATA, jsonResult);
-		} else {
-			model.addAttribute(ConstantValue.JSON_DATA, "");
-		}
+	public String getStatusForArtifactInstances(@PathVariable("artifactId") String artifactId, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {
+		CommandGetApplicationStatus cmd = new CommandGetApplicationStatus(artifactId);
+		return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
 	}
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public String createApplication(@RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) {
-		String jsonResult;
-		try {
-			jsonResult = applicationSessionDao.createApplication(json);
-			toResult(model, jsonResult);
-		} catch (Exception e) {
-
-		}
-		return "json";
+	public String createApplication(@RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {
+		
+		CommandCreateApplication cmd = new CommandCreateApplication(json);
+		return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
 	}
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/{applicationId}/config/", method = RequestMethod.POST)
-    public String createConfig(@PathVariable("applicationId") String applicationId, @RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) {
-		String jsonResult =null;
+	public String createConfig(@PathVariable("applicationId") String applicationId, @RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {
+		
 		if(isAdmin(request)){
+			CommandCreateApplicationConfig cmd = new CommandCreateApplicationConfig(applicationId, json);
+			return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
 
-			try {
-				jsonResult = applicationSessionDao.createConfig(applicationId, json);
-
-			} catch (Exception e) {
-
-			}
+		} else {
+			throw AppExceptionCode.USER_UNAUTHORIZED_6000;
 		}
-		toResult(model, jsonResult);
-		return "json";
 	}
 
-    @PUT
+	@PUT
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/{applicationId}/config/{configId}", method = RequestMethod.PUT)
-	public String updateConfig(@PathVariable("applicationId") String applicationId, @PathVariable("configId") String configId, @RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) {
-		String jsonResult=null;
+	public String updateConfig(@PathVariable("applicationId") String applicationId, @PathVariable("configId") String configId, @RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {
 		if(isAdmin(request)){
-			try {
-				jsonResult = applicationSessionDao.updateConfig(applicationId, configId, json);
+			CommandUpdateApplicationConfig cmd = new CommandUpdateApplicationConfig(applicationId, configId, json);
+			return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
 
-			} catch (Exception e) {
-
-			}
+		} else {
+			throw AppExceptionCode.USER_UNAUTHORIZED_6000;
 		}
-		toResult(model, jsonResult);
-		return "json";
 	}
 
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/{applicationId}/config/{configId}", method = RequestMethod.DELETE)
-	public String deleteConfig(@PathVariable("applicationId") String applicationId, @PathVariable("configId") String configId, HttpServletRequest request, HttpServletResponse response, Model model) {
-		String jsonResult=null;
+	public String deleteConfig(@PathVariable("applicationId") String applicationId, @PathVariable("configId") String configId, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {
 		if(isAdmin(request)){
-			try {
-				jsonResult = applicationSessionDao.deleteApplicationConfig(applicationId, configId);
-
-			} catch (Exception e) {
-
-			}
+			CommandDeleteApplicationConfig cmd = new CommandDeleteApplicationConfig(applicationId, configId);
+			return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
+		} else {
+			throw AppExceptionCode.USER_UNAUTHORIZED_6000;
 		}
-		toResult(model, jsonResult);
-		return "json";
 	}
 
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/{applicationId}", method = RequestMethod.DELETE)
-	public String deleteApp(@PathVariable("applicationId") String applicationId, HttpServletRequest request, HttpServletResponse response, Model model) {
-		String jsonResult=null;
-
+	public String deleteApp(@PathVariable("applicationId") String applicationId, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {		
 		if(isAdmin(request)){
-			try {
-				jsonResult = applicationSessionDao.deleteApplication(applicationId);
+			CommandDeleteApplication cmd = new CommandDeleteApplication(applicationId);
+			return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
 
-			} catch (Exception e) {
-
-			}
+		} else {
+			throw AppExceptionCode.USER_UNAUTHORIZED_6000;
 		}
-		toResult(model, jsonResult);
-		return "json";
 	}
 
-    private boolean isAdmin(HttpServletRequest request) {
-        return request.isUserInRole(Main.ADMIN_ROLE);
-    }
+	
+	
+	private boolean isAdmin(HttpServletRequest request) {
+		return request.isUserInRole(Main.ADMIN_ROLE);
+	}
+
+	
 }

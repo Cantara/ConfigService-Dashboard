@@ -12,6 +12,7 @@ import no.cantara.csdb.config.ConfigValue;
 /**
  * @author Sindre Mehus
  */
+@Deprecated
 public class MapDbSettingsDao implements SettingsDao {
 
     private final DB db;
@@ -32,9 +33,10 @@ public class MapDbSettingsDao implements SettingsDao {
     }
 
     @Override
-    public void addAlias(String clientId, String alias) {
+    public boolean addAlias(String clientId, String alias) {
         aliases.put(clientId, alias);
         db.commit();
+        return true;
     }
 
     @Override
@@ -42,9 +44,14 @@ public class MapDbSettingsDao implements SettingsDao {
         return ignoredClients;
     }
 
-    @Override
-    public void addIgnoredClient(String clientId) {
-        ignoredClients.add(clientId);
-        db.commit();
-    }
+	@Override
+	public boolean setIgnoredFlag(String clientId, boolean ignore) {
+		if(ignore) {
+			 ignoredClients.add(clientId);
+		} else {
+			ignoredClients.remove(clientId);
+		}
+		db.commit();
+		return true;
+	}
 }

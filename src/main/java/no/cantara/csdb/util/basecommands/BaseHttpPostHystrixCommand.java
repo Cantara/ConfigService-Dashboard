@@ -21,6 +21,7 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R>{
 	protected URI serviceUri;
 	protected String TAG="";
 	protected HttpRequest request;
+	protected int statusCode;
 	
 	protected BaseHttpPostHystrixCommand(URI serviceUri, String hystrixGroupKey, int hystrixExecutionTimeOut) {
 		super(HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)).
@@ -43,7 +44,10 @@ public abstract class BaseHttpPostHystrixCommand<R> extends HystrixCommand<R>{
 	}
 
 
-	
+	public int getStatusCode() {
+		return statusCode;
+	}
+
 
 	
 	@Override

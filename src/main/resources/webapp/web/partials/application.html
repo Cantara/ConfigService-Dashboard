@@ -7,8 +7,8 @@
 
 <div ng-hide="dataLoading"><h1>{{applicationDetail.artifactId}}</h1>
     <div ng-show="globals.currentUser.isAdmin">
-        <button class="pull-right btn btn-warning client-edit-btn" title="Remove" ng-show="canRemoveThisConfig()"
-                ng-confirm="removeApplicationConfig()" ng-confirm-message="Are you sure you want to delete this application.?">
+        <button class="pull-right btn btn-warning client-edit-btn" title="Remove" ng-show="canRemoveThisApp()"
+                ng-confirm="removeApplication()" ng-confirm-message="Are you sure you want to delete this application.?">
             <span class="glyphicon glyphicon-trash"></span>&nbsp;Delete application
         </button>
     </div>

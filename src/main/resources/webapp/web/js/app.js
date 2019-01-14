@@ -17,10 +17,16 @@ angular.module('app',
         'ngCookies',
         'Client',
         'Application',
-        'Authentication', 'angular-cache', 'browserDetectionService'
+        'Authentication', 'angular-cache', 'browserDetectionService', 'xeditable'
     ]);
 
 angular.module('browserDetectionService',[]);
 angular.module('Client', []);
 angular.module('Application',[]);
 angular.module('Authentication',[]);
+
+angular.module('app').run(function(editableOptions, editableThemes) {
+	 editableThemes.bs3.inputClass = 'input-sm';
+	  editableThemes.bs3.buttonsClass = 'btn-sm';
+	  editableOptions.theme = 'bs3';
+});

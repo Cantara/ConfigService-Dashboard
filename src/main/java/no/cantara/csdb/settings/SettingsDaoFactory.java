@@ -21,7 +21,7 @@ public class SettingsDaoFactory {
             LOG.info("Using DynamoDB");
             return new DynamoDbSettingsDao();
         }
-        LOG.info("Using MapDB");
-        return new MapDbSettingsDao();
+        LOG.info("Using CSMApping");
+        return new CSMappingSettingsDao();
     }
 }

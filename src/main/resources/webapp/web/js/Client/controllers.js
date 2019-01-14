@@ -104,10 +104,12 @@ angular.module('Client')
     }]);
 
 angular.module('Client')
-    .controller('ClientDetailController', ['$scope', 'CSService', 'ClientService',  '$routeParams', '$timeout', 'toastr', function ($scope, CSService, ClientService, $routeParams, $timeout, toastr) {
+    .controller('ClientDetailController', ['$scope', 'CSService', 'ClientService',  '$routeParams', '$timeout',  'ConstantValues', 'toastr', '$interval', '$filter', '$q', function ($scope, CSService, ClientService, $routeParams, $timeout, ConstantValues, toastr, $interval,  $filter, $q) {
 
         $scope.editMode = false;
 
+        $scope.applicationConfigs = [];
+        
         var aliasBeforeEdit;
         $scope.toggleEdit=function(){
 
@@ -133,6 +135,54 @@ angular.module('Client')
             });
 
         }
+        
+         $scope.loadAllConfigs = function() {
+        	 return $scope.applicationConfigs.length ? null : CSService.getAllConfigs().then(function (data) {
+        		
+                  $scope.applicationConfigs = data;
+                  console.log($scope.applicationConfigs);
+                  console.log($scope.clientDetail.config);
+              });
+          };
+          
+          $scope.moveToConfig = function(configId){
+        	  
+        	    var d = $q.defer();
+        	    
+        	    var clientToSave = angular.copy($scope.clientDetail.status.client);
+        	    if (clientToSave) {
+        	    	clientToSave.applicationConfigId = configId; //move to the new config id
+                    delete clientToSave.alias;
+                    delete clientToSave.ignored;
+          	  }
+        	    
+        	    ClientService.updateClient(clientToSave).then(function(res){
+        	    	d.resolve();
+        	    }, function(err){
+        	    	if(err.statusText){
+        	    		d.resolve(err.statusText)
+        	    	} else {
+        	    		d.reject('Server error!');
+        	    	}
+        	    	
+        	    });
+        	    return d.promise;
+        	 
+          }
+          
+          $scope.refresh = function(){
+        	  updateClientStatus();
+          }
+          
+          
+          /*
+          $scope.$watch('clientDetail.config.id', function(newVal, oldVal) {
+            if (newVal !== oldVal) {
+              var selected = $filter('filter')($scope.applicationConfigs, {id: $scope.clientDetail.config.id});
+              $scope.clientDetail.config.name = selected.length ? selected[0].name : null;
+            }
+          });*/
+       
 
         $scope.ignoreMe = function(){
             ClientService.ignoreClient().then(function (response) {
@@ -146,17 +196,42 @@ angular.module('Client')
             });
         }
 
+        var theInterval;
+        var startTime;
+
+        $scope.$on('$destroy', function () {
+            $interval.cancel(theInterval);
+        });
+
+
+        
         var init = function () {
             if ($routeParams.id) {
                 $scope.dataLoading = true;
-                ClientService.getClientDetail($routeParams.id).then(function (data) {
-                    $scope.clientDetail = data;
-                    $scope.dataLoading = false;
-                }, function () {
-
-                });
-
+                updateClientStatus();
+               
+                theInterval = $interval(function(){               	
+                	updateClientStatus(); //refresh clients automatically in 30 seconds
+                }.bind(this), ConstantValues.clientAutoUpdateInterval);
             }
+        }
+        
+        var updateClientStatus = function(){
+            startTime = new Date().getTime();
+            console.log("start updating...");
+            ClientService.getClientDetail($routeParams.id).then(function (data) {
+                $scope.clientDetail = data;
+                $scope.dataLoading = false;
+                console.log("client status updated...");
+                //toastr.success('client status updated...');
+                
+            }, function (response) {
+            	if(response.statusText){
+            		toastr.error(statusText);
+            	} else {
+            		toastr.error('Server error! We can not retrieve the client status!');
+            	}
+            });
         }
 
         init();

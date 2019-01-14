@@ -10,6 +10,7 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.0/animate.min.css" rel="stylesheet" />
     <link href="//fonts.googleapis.com/css?family=Open+Sans:100,300,400,600,700" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/xeditable.css" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.carousel.css" rel="stylesheet" type="text/css" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.theme.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://unpkg.com/angular-toastr/dist/angular-toastr.css" />
@@ -70,6 +71,7 @@
 <script src="js/vendor/smart-table.debug.js"></script>
 <script src="js/vendor/smart-table-directives.js"></script>
 <script src="js/vendor/elastic.js"></script>
+<script src="js/vendor/xeditable.js"></script>
 <script src="js/app.js"></script>
 <script src="js/root.js"></script>
 <script src="js/shared/directives.js"></script>

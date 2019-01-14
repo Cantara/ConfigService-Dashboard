@@ -15,8 +15,10 @@
 
     </div>
     <div class="col-sm-4">
-        <b>Artifact ID: </b> {{clientDetail.status.latestClientHeartbeatData.artifactId}}<br/>
-        <b>App Config:</b> {{clientDetail.config.name}} <br/>
+        <b>Artifact ID of Client:</b> {{clientDetail.status.latestClientHeartbeatData.artifactId}}<br/>
+        <b>App Config:</b> <span editable-select="clientDetail.config.id" e-form="configEditableText" onshow="loadAllConfigs()" e-ng-options="g.id as g.name for g in applicationConfigs"  onbeforesave="moveToConfig($data)" onaftersave="refresh()">{{ clientDetail.config.name || 'empty' }}</span>
+		  <span class="glyphicon glyphicon-pencil"  ng-click="configEditableText.$show()" ng-hide="configEditableText.$visible"></span>
+  
 
     </div>
     <div class="col-sm-4">

@@ -31,6 +31,17 @@ angular.module('Client')
                 return null;
             }
         };
+        
+        service.getAllConfigs = function (){
+        	return CSService.getAllConfigs().then(function (json){
+        		return json;
+        	});
+        }
+        
+        service.updateClient = function (client){
+        	  
+        	return CSService.updateClient(client);
+        }
 
         return service;
     }]);

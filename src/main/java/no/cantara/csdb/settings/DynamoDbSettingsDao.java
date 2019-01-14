@@ -91,30 +91,21 @@ public class DynamoDbSettingsDao implements SettingsDao {
     }
 
     @Override
-    public void addAlias(String clientId, String alias) {
+    public boolean addAlias(String clientId, String alias) {
         aliases.put(clientId, alias);
         try {
             table.putItem(new Item().withPrimaryKey(ATTRIBUTE_KEY, KEY_ALIASES)
                                     .withString(ATTRIBUTE_VALUE, objectMapper.writeValueAsString(aliases)));
+            return true;
         } catch (Exception e) {
             LOG.error("Failed to persist aliases to DynamoDB", e);
+            return false;
         }
     }
 
     @Override
     public Set<String> getIgnoredClients() {
         return ignoredClients;
-    }
-
-    @Override
-    public void addIgnoredClient(String clientId) {
-        ignoredClients.add(clientId);
-        try {
-            table.putItem(new Item().withPrimaryKey(ATTRIBUTE_KEY, KEY_IGNORED_CLIENTS)
-                                    .withString(ATTRIBUTE_VALUE, objectMapper.writeValueAsString(ignoredClients)));
-        } catch (Exception e) {
-            LOG.error("Failed to persist ignored clients to DynamoDB", e);
-        }
     }
 
     private void createTableIfNecessary() {
@@ -138,4 +129,25 @@ public class DynamoDbSettingsDao implements SettingsDao {
 
         LOG.info("Table {} created with status {}", tableName, table.getDescription().getTableStatus());
     }
+
+	@Override
+	public boolean setIgnoredFlag(String clientId, boolean ignore) {
+		if(ignore) {
+			if(!ignoredClients.contains(clientId)) {
+				ignoredClients.add(clientId);
+			}
+		} else {
+			ignoredClients.remove(clientId);
+		}
+		
+		try {
+			table.putItem(new Item().withPrimaryKey(ATTRIBUTE_KEY, KEY_IGNORED_CLIENTS)
+					.withString(ATTRIBUTE_VALUE, objectMapper.writeValueAsString(ignoredClients)));
+			return true;
+		} catch (Exception e) {
+			LOG.error("Failed to persist ignored clients to DynamoDB", e);
+			return false;
+		}
+		
+	}
 }

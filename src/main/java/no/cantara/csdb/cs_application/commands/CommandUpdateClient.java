@@ -3,16 +3,14 @@ package no.cantara.csdb.cs_application.commands;
 import com.github.kevinsawicki.http.HttpRequest;
 import no.cantara.csdb.util.basecommands.BasePutCommand;
 
-public class CommandUpdateApplicationConfig extends BasePutCommand<String> {
+public class CommandUpdateClient extends BasePutCommand<String> {
 	
 	private String json;
-	private String applicationId;
-	private String configId;
+	private String clientId;
 
-	public CommandUpdateApplicationConfig(String applicationId, String configId, String json) {
+	public CommandUpdateClient(String clientId, String json) {
 		this.json = json;
-		this.configId = configId;
-		this.applicationId = applicationId;
+		this.clientId= clientId;
 	}
 	
 	@Override
@@ -24,7 +22,7 @@ public class CommandUpdateApplicationConfig extends BasePutCommand<String> {
 	
 	@Override
 	protected String getTargetPath() {
-		return "application/" + applicationId + "/config/" + configId;
+		return "client/" + clientId;
 	}
 	
 

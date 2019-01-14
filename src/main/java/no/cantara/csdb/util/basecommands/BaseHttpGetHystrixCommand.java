@@ -20,6 +20,7 @@ public abstract class BaseHttpGetHystrixCommand<R> extends HystrixCommand<R>{
 	protected URI serviceUri;
 	protected String TAG="";
 	protected HttpRequest request;
+	protected int statusCode;
 	
 	protected BaseHttpGetHystrixCommand(URI serviceUri, String hystrixGroupKey, int hystrixExecutionTimeOut) {
 		super(HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)).
@@ -84,7 +85,7 @@ public abstract class BaseHttpGetHystrixCommand<R> extends HystrixCommand<R>{
 			
 			
 			responseBody = request.bytes();
-			int statusCode = request.code();
+			statusCode = request.code();
 			String responseAsText = StringConv.UTF8(responseBody);
 			
 			switch (statusCode) {
@@ -165,4 +166,10 @@ public abstract class BaseHttpGetHystrixCommand<R> extends HystrixCommand<R>{
 	public byte[] getResponseBodyAsByteArray(){
 		return responseBody;
 	}
+
+
+	public int getStatusCode() {
+		return statusCode;
+	}
+
 }

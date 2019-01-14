@@ -21,6 +21,7 @@ public abstract class BaseHttpDeleteHystrixCommand<R> extends HystrixCommand<R> 
     protected String TAG = "";
     protected HttpRequest request;
     private byte[] responseBody;
+    private int statusCode;
 
     protected BaseHttpDeleteHystrixCommand(URI serviceUri, String hystrixGroupKey, int hystrixExecutionTimeOut) {
         super(HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(hystrixGroupKey)).
@@ -73,7 +74,7 @@ public abstract class BaseHttpDeleteHystrixCommand<R> extends HystrixCommand<R> 
             request = dealWithRequestBeforeSend(request);
 
             responseBody = request.bytes();
-            int statusCode = request.code();
+            statusCode = request.code();
             String responseAsText = StringConv.UTF8(responseBody);
 
             switch (statusCode) {
@@ -133,5 +134,11 @@ public abstract class BaseHttpDeleteHystrixCommand<R> extends HystrixCommand<R> 
     public byte[] getResponseBodyAsByteArray() {
         return responseBody;
     }
+
+
+	public int getStatusCode() {
+		return statusCode;
+	}
+
 }
 

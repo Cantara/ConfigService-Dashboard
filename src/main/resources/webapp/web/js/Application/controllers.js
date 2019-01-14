@@ -81,7 +81,8 @@ angular.module('Application')
             if ($scope.applicationForm.$invalid) return;
 
             ApplicationService.save().then(function (response) {
-                if(response.data.startsWith("200")) {
+            	
+                if(response.status === 200) {
                     $scope.submitted = false;
                     init();
                     $scope.applicationForm.$setPristine();
@@ -95,7 +96,8 @@ angular.module('Application')
         $scope.update = function () {
 
             ApplicationService.save().then(function (response) {
-                if(response.data.startsWith("200")) {
+            	console.log(response);
+                if(response.status === 200) {
                     $scope.editMode = false;
                     $route.reload();
                     toastr.success('Update successfully');
@@ -104,13 +106,16 @@ angular.module('Application')
                 }
             });
         }
-
+/*     TODO: undo this block if we want to remove a specific config
+ *     In theory, one application can have many different configurations which should be kept in the table application_configs
+ * 	   For simplicity, we only use one configuration for one application as of now but the UI can be upgraded in the future
+ * 
         $scope.canRemoveThisConfig = function () {
             return ApplicationService.canRemoveThisConfig();
         }
         $scope.removeApplicationConfig = function () {
             ApplicationService.removeApplicationConfig().then(function (response) {
-                if(response.data.startsWith("204")) {
+                if(response.status === 204) {
                     toastr.success('Delete successfully');
                     $location.path('/applications/');
 
@@ -119,8 +124,33 @@ angular.module('Application')
                 }
             })
         }
+*/
+        
+        //removing an app also means to remove its configurations
+        $scope.canRemoveThisApp = function () {
+            return ApplicationService.canRemoveThisApp();
+        }
+        
+        $scope.removeApplication = function () {
+            ApplicationService.removeApplication().then(function (response) {
+            	 if(response.status === 204 || response.status === 404) {
+                     toastr.success('Delete successfully');
+                     $location.path('/applications/');
 
+                 } else {
+                     toastr.error('Delete failed: ' + response.data);
+                 }
+            }, function(response){
+                if(response.status === 204 || response.status === 404) {
+                    toastr.success('Delete successfully');
+                    $location.path('/applications/');
 
+                } else {
+                    toastr.error('Delete failed: ' + response.data);
+                }
+            })
+        }
+        
         $scope.hasError = function (modelController, error) {
             return (modelController.$dirty || $scope.submitted) && error;
         };
@@ -130,7 +160,7 @@ angular.module('Application')
             CSService.getIgnoreList().then(function (ignoreList) {
 
                 var clientStatuses = [];
-                if (appStatus.status != null) {
+                if (appStatus.status != null && appStatus.config!=null) {
                     var applicationConfigId = appStatus.config.id;
                     var allClientHeartbeatData = appStatus.status.allClientHeartbeatData;
                     $scope.green = 0;
