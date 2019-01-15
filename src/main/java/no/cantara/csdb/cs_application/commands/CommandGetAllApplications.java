@@ -10,6 +10,6 @@ public class CommandGetAllApplications extends BaseGetCommand<String> {
 	
 	@Override
 	protected String getTargetPath() {
-		return "application";
+		return "application/";
 	}
 }
