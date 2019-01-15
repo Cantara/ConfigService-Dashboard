@@ -39,7 +39,8 @@ angular.module('app')
             this.client = new Client(args.client);
             this.latestClientHeartbeatData = new ClientHeartbeatData(args.latestClientHeartbeatData);
             if(this.latestClientHeartbeatData){
-            	 this.client.alias = this.latestClientHeartbeatData.clientName;
+            	 //don't use clientName
+            	 //this.client.alias = this.latestClientHeartbeatData.clientName;
             }
             this.status = 'red';
             var diff = Date.now() - new Date(this.latestClientHeartbeatData.timeOfContact);
@@ -115,6 +116,17 @@ angular.module('app')
             this.env = new ClientEnvironment(env);
             this.config = new ApplicationConfig(config);
             this.events = new ExtractedEventsStore(events);
+            
+            if(this.env.envInfo){
+            	var computerName = this.env.envInfo.COMPUTERNAME;
+            	var internalIp = JSON.stringify(this.env.envInfo).match(/\"networkinterface_.*\:.*\"(\d+\.\d+\.\d+\.\d+)\"/)[1];
+            	var wrapped_os = this.env.envInfo.WRAPPER_OS ? this.env.envInfo.WRAPPER_OS :  this.env.envInfo.OS;
+            	
+            	//make up a meaningful name for this client
+            	this.status.client.clientName = computerName + ' - ' + internalIp + ' - ' + wrapped_os;
+            	
+            }
+            
         };
         return ClientDetail;
     }]);
