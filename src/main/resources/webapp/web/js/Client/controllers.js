@@ -169,6 +169,7 @@ angular.module('Client')
           	  }
         	    
         	    ClientService.updateClient(clientToSave).then(function(res){
+        	    	 toastr.success('Update successfully. Artifact ID of Client will be updated in a few minutes if the client syncs and starts properly.',  {timeOut: 15000});
         	    	d.resolve();
         	    }, function(err){
         	    	if(err.statusText){
