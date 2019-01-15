@@ -123,8 +123,7 @@ angular.module('app')
             	var wrapped_os = this.env.envInfo.WRAPPER_OS ? this.env.envInfo.WRAPPER_OS :  this.env.envInfo.OS;
             	
             	//make up a meaningful name for this client
-            	this.status.client.clientName = computerName + ' - ' + internalIp + ' - ' + wrapped_os;
-            	
+            	this.status.client.clientName = computerName + ' - ' + internalIp + ' - ' + wrapped_os;          	
             }
             
         };
