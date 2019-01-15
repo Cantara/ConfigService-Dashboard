@@ -9,6 +9,7 @@ public class CommandDeleteApplicationConfig extends BaseDeleteCommand<String> {
 	private String configId;
 	
 	public CommandDeleteApplicationConfig(String applicationId, String configId){
+		super();
 		this.configId = configId;
 		this.applicationId = applicationId;
 	}

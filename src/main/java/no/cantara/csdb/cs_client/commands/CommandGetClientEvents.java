@@ -6,6 +6,7 @@ public class CommandGetClientEvents extends BaseGetCommand<String> {
 
 	private String clientId;
 	public CommandGetClientEvents(String clientId){
+		super();
 		this.clientId = clientId;
 	}
 

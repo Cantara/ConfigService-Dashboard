@@ -5,6 +5,9 @@ import no.cantara.csdb.util.basecommands.BaseGetCommand;
 
 public class CommandGetAllClients extends BaseGetCommand<String> {
 
+	public CommandGetAllClients() {
+		super();
+	}
 
     @Override
     protected String getCacheKey() {
@@ -13,7 +16,7 @@ public class CommandGetAllClients extends BaseGetCommand<String> {
 
 	@Override
 	protected String getTargetPath() {
-        return "client/";
+        return "client";
     }
 
 	

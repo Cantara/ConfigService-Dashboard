@@ -6,6 +6,7 @@ public class CommandGetClientStatus extends BaseGetCommand<String> {
 
 	private String clientId;
 	public CommandGetClientStatus(String clientId){
+		super();
 		this.clientId = clientId;
 	}
 

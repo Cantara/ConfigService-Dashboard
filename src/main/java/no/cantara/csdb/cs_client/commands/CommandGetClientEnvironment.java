@@ -6,6 +6,7 @@ public class CommandGetClientEnvironment extends BaseGetCommand<String> {
 
 	private String clientId;
 	public CommandGetClientEnvironment(String clientId){
+		super();
 		this.clientId = clientId;
 	}
 

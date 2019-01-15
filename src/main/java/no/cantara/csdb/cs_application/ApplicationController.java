@@ -62,7 +62,7 @@ public class ApplicationController {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	@RequestMapping(value = "/{applicationId}/config/", method = RequestMethod.GET)
+	@RequestMapping(value = "/{applicationId}/config", method = RequestMethod.GET)
 	public String getConfigForApplication(@PathVariable("applicationId") String applicationId, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {		
 		CommandGetApplicationConfigsForApplication cmd = new CommandGetApplicationConfigsForApplication(applicationId);
 		return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
@@ -70,7 +70,7 @@ public class ApplicationController {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	@RequestMapping(value = "/{artifactId}/status/", method = RequestMethod.GET)
+	@RequestMapping(value = "/{artifactId}/status", method = RequestMethod.GET)
 	public String getStatusForArtifactInstances(@PathVariable("artifactId") String artifactId, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {
 		CommandGetApplicationStatus cmd = new CommandGetApplicationStatus(artifactId);
 		return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
@@ -87,7 +87,7 @@ public class ApplicationController {
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	@RequestMapping(value = "/{applicationId}/config/", method = RequestMethod.POST)
+	@RequestMapping(value = "/{applicationId}/config", method = RequestMethod.POST)
 	public String createConfig(@PathVariable("applicationId") String applicationId, @RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {
 		
 		if(isAdmin(request)){

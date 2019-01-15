@@ -7,6 +7,7 @@ public class CommandGetApplicationStatus extends BaseGetCommand<String> {
 	private String artifactId;
 	
 	public CommandGetApplicationStatus(String artifactId){
+		super();
 		this.artifactId = artifactId;
 	}
 	

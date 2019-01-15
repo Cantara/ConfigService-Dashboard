@@ -8,8 +8,9 @@ public class CommandPutAignoredClient extends BasePutCommand<String> {
 	private boolean ignore;
 	
 	public CommandPutAignoredClient(String clientId, boolean ignore){
+		super();
 		this.clientId = clientId;
-		this.ignore = ignore;		
+		this.ignore = ignore;
 	}
 
     @Override

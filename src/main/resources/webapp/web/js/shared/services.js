@@ -46,7 +46,7 @@ angular.module('app')
 
                 if(browserDetectionService.isNotIE()) {
 
-                    return $http.get('client/', {cache: clientCache})
+                    return $http.get('client', {cache: clientCache})
                         .then(function (response) {
                             var a = response.data.map(handleClientResponse);
                             return a.filter(function(item, index, array){
@@ -55,7 +55,7 @@ angular.module('app')
                         });
                 } else {
                     
-                    return $http.get('client/?random='+new Date().getTime(), {cache: clientCache})
+                    return $http.get('client?random='+new Date().getTime(), {cache: clientCache})
                         .then(function (response) {
 
                             return response.data.map(handleClientResponse);
@@ -72,18 +72,18 @@ angular.module('app')
             }
 
             service.clearCache_ClientList = function () {
-                clientCache.remove('client/');
+                clientCache.remove('client');
 
             }
 
             service.clearCache_ClientList_Of_OneApplication = function (artifactId) {
-                clientCache.remove('application/' + artifactId + "/status/");
+                clientCache.remove('application/' + artifactId + "/status");
 
             }
 
             service.getClientDetail = function (clientId){
 
-                return $q.all([$http.get('client/' + clientId + "/status/"), $http.get('client/' + clientId + "/env/"), $http.get('client/' + clientId + "/config/"),  $http.get('client/' + clientId + "/events/")])
+                return $q.all([$http.get('client/' + clientId + "/status"), $http.get('client/' + clientId + "/env"), $http.get('client/' + clientId + "/config"),  $http.get('client/' + clientId + "/events")])
                     .then(function (response) {
                         var status = response[0].data;
                         var env = response[1].data;
@@ -99,7 +99,7 @@ angular.module('app')
 
             service.getAllApplications = function () {
 
-                return $http.get('application/')
+                return $http.get('application')
                     .then(function (response) {
                     	console.log(response.data);
                         return response.data.map(function (app) {
@@ -113,7 +113,7 @@ angular.module('app')
             };
 
             service.getApplicationConfig = function(applicationid){
-                return  $http.get('application/' + applicationid + "/config/").then(function (response) {
+                return  $http.get('application/' + applicationid + "/config").then(function (response) {
                     return response.data;
                 });
             }
@@ -126,12 +126,12 @@ angular.module('app')
                     if(artifactId!=null && id!=null) {
                     	
                     	
-                        return $q.all([$http.get('application/' + artifactId + "/status/", {cache: clientCache}), $http.get('application/' + id + "/config/")]).then(function (response) {
+                        return $q.all([$http.get('application/' + artifactId + "/status", {cache: clientCache}), $http.get('application/' + id + "/config")]).then(function (response) {
                             var status = response[0].data;
                             var config = response[1].data;
                             return new ApplicationDetail(id, artifactId, status, config);
                         }, function(re){
-                        	 return $http.get('application/' + artifactId + "/status/", {cache: clientCache}).then(function (response) {
+                        	 return $http.get('application/' + artifactId + "/status", {cache: clientCache}).then(function (response) {
                         		  return new ApplicationDetail(id, artifactId, response.data, null);                            
                             });
                         	
@@ -140,12 +140,12 @@ angular.module('app')
                 } else {
 
                     if(artifactId!=null && id!=null) {
-                        return $q.all([$http.get('application/' + artifactId + "/status/?random="+new Date().getTime(), {cache: clientCache}), $http.get('application/' + id + "/config/")]).then(function (response) {
+                        return $q.all([$http.get('application/' + artifactId + "/status?random="+new Date().getTime(), {cache: clientCache}), $http.get('application/' + id + "/config")]).then(function (response) {
                             var status = response[0].data;
                             var config = response[1].data;
                             return new ApplicationDetail(id, artifactId, status, config);
                         },  function(re){
-                       	 	return $http.get('application/' + artifactId + "/status/", {cache: clientCache}).then(function (response) {
+                       	 	return $http.get('application/' + artifactId + "/status", {cache: clientCache}).then(function (response) {
                        	 		return new ApplicationDetail(id, artifactId, response.data, null);                            
                        	 });
                    	
@@ -172,10 +172,10 @@ angular.module('app')
             service.addApplication = function(applicationDetail){
                 if(applicationDetail.artifactId){
                     var appConfigToSave = angular.copy(applicationDetail);                    
-                    return $http.post('application/', {'artifactId' : appConfigToSave.artifactId}).then(function (response) {
+                    return $http.post('application', {'artifactId' : appConfigToSave.artifactId}).then(function (response) {
                     	//conveniently add the first configuration for this application
                     	if(appConfigToSave.configJsonContent!=null){
-	                        return $http.post('application/' +  response.data.id + "/config/", appConfigToSave.configJsonContent).then(function (response2) {
+	                        return $http.post('application/' +  response.data.id + "/config", appConfigToSave.configJsonContent).then(function (response2) {
 	                            return response2;
 	                        });
                     	} else {
@@ -194,7 +194,7 @@ angular.module('app')
                              return response;
                          });
                     } else {
-                    	return $http.post('application/' +  applicationDetail.id+ "/config/", appConfigToSave.configJsonContent).then(function (response2) {
+                    	return $http.post('application/' +  applicationDetail.id+ "/config", appConfigToSave.configJsonContent).then(function (response2) {
                             return response2;
                         });
                     }

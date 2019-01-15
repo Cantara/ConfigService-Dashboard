@@ -12,6 +12,7 @@ public class CommandGetAWSCloudWatchLog extends BaseGetCommand<String> {
     private String clientId;
 
     public CommandGetAWSCloudWatchLog(String clientId) {
+    	super();
         this.clientId = clientId;
     }
 

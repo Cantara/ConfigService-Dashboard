@@ -8,6 +8,7 @@ public class CommandPutClientAlias extends BasePutCommand<String> {
 	private String clientName;
 	
 	public CommandPutClientAlias(String clientId, String clientName){
+		super();
 		this.clientId = clientId;
 		this.clientName = clientName;		
 	}

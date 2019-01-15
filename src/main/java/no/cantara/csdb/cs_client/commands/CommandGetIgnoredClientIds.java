@@ -5,7 +5,7 @@ import no.cantara.csdb.util.basecommands.BaseGetCommand;
 public class CommandGetIgnoredClientIds extends BaseGetCommand<String> {
 
 	public CommandGetIgnoredClientIds(){
-	
+		super();
 	}
 
     @Override

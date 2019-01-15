@@ -8,6 +8,7 @@ public class CommandCreateApplication extends BasePostCommand<String> {
 	private String json;
 	
 	public CommandCreateApplication(String json){
+		super();
 		this.json = json;
 	}
 	

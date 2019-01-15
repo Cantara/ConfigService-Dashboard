@@ -6,6 +6,7 @@ public class CommandGetClientAppConfig extends BaseGetCommand<String> {
 
 	private String clientId;
 	public CommandGetClientAppConfig(String clientId){
+		super();
 		this.clientId = clientId;
 	}
 

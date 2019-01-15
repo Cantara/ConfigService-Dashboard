@@ -1,6 +1,5 @@
 package no.cantara.csdb.cs_client;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,8 +14,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.http.entity.ContentType;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +84,7 @@ public class ClientController {
         					}
         				}
         			}}catch(Exception ex) {
-        				ex.printStackTrace();
+        				throw ex;
         			}
         	}         
         }
@@ -97,7 +94,7 @@ public class ClientController {
  
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	@RequestMapping(value = "/{clientId}/env/", method = RequestMethod.GET)
+	@RequestMapping(value = "/{clientId}/env", method = RequestMethod.GET)
 	public String getClientEnvironment(@PathVariable("clientId") String clientId, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {
 		
 		CommandGetClientEnvironment cmd = new CommandGetClientEnvironment(clientId);
@@ -107,7 +104,7 @@ public class ClientController {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	@RequestMapping(value = "/{clientId}/status/", method = RequestMethod.GET)
+	@RequestMapping(value = "/{clientId}/status", method = RequestMethod.GET)
 	public String getClientStatus(@PathVariable("clientId") String clientId, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {
 		CommandGetClientStatus cmd = new CommandGetClientStatus(clientId);
 		return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
@@ -116,7 +113,7 @@ public class ClientController {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	@RequestMapping(value = "/{clientId}/config/", method = RequestMethod.GET)
+	@RequestMapping(value = "/{clientId}/config", method = RequestMethod.GET)
 	public String getClientAppConfig(@PathVariable("clientId") String clientId, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {
 		CommandGetClientAppConfig cmd = new CommandGetClientAppConfig(clientId);
 		return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
@@ -124,7 +121,7 @@ public class ClientController {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	@RequestMapping(value = "/{clientId}/events/", method = RequestMethod.GET)
+	@RequestMapping(value = "/{clientId}/events", method = RequestMethod.GET)
 	public String getClientEvents(@PathVariable("clientId") String clientId, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {
 		CommandGetClientEvents cmd = new CommandGetClientEvents(clientId);
 		return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
@@ -133,7 +130,7 @@ public class ClientController {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	@RequestMapping(value = "/{clientId}/cloudwatchlog/", method = RequestMethod.GET)
+	@RequestMapping(value = "/{clientId}/cloudwatchlog", method = RequestMethod.GET)
 	public String getCloudWatchLog(@PathVariable("clientId") String clientId, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {
 		CommandGetAWSCloudWatchLog cmd = new CommandGetAWSCloudWatchLog(clientId);
 		return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
@@ -163,7 +160,7 @@ public class ClientController {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/alias/{clientId}/{alias}", method = RequestMethod.POST)
-	public String setAllias(@PathVariable("clientId") String clientId, @PathVariable("alias") String alias, @RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) throws JSONException {
+	public String setAllias(@PathVariable("clientId") String clientId, @PathVariable("alias") String alias, @RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 
 		JSONObject obj = new JSONObject();
 		obj.put("success", false);
@@ -172,10 +169,10 @@ public class ClientController {
 				settingsDao.addAlias(clientId, alias);
 				obj.put("success", true);
 			}  catch (Exception e) {
-				obj.put("message", "500, Internal Server Error");
+				throw e;
 			}	
 		} else {
-			obj.put("message", "401, Unauthorized");
+			throw AppExceptionCode.USER_UNAUTHORIZED_6000; 
 		}
 		return toResult(model, response, obj.toString());
 	
@@ -184,7 +181,7 @@ public class ClientController {
     @POST
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/ignore/{clientId}", method = RequestMethod.POST)
-	public String ignoreClient(@PathVariable("clientId") String clientId, @RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) throws JSONException {
+	public String ignoreClient(@PathVariable("clientId") String clientId, @RequestBody String json, HttpServletRequest request, HttpServletResponse response, Model model) throws JSONException, AppException {
 
 		JSONObject obj = new JSONObject();
 		obj.put("success", false);
@@ -193,10 +190,10 @@ public class ClientController {
 				settingsDao.setIgnoredFlag(clientId, json.contains("true") || json.contains("1"));
 				obj.put("success", true);
 			}  catch (Exception e) {
-				obj.put("message", "500, Internal Server Error");
+				throw e;
 			}
 		} else {
-			obj.put("message", "401, Unauthorized");
+			throw AppExceptionCode.USER_UNAUTHORIZED_6000; 
 		}
 		return toResult(model, response, obj.toString());
 		

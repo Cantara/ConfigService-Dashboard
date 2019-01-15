@@ -9,6 +9,7 @@ public class CommandUpdateClient extends BasePutCommand<String> {
 	private String clientId;
 
 	public CommandUpdateClient(String clientId, String json) {
+		super();
 		this.json = json;
 		this.clientId= clientId;
 	}

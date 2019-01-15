@@ -10,6 +10,7 @@ public class CommandUpdateApplicationConfig extends BasePutCommand<String> {
 	private String configId;
 
 	public CommandUpdateApplicationConfig(String applicationId, String configId, String json) {
+		super();
 		this.json = json;
 		this.configId = configId;
 		this.applicationId = applicationId;

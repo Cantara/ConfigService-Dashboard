@@ -9,6 +9,7 @@ public class CommandDeleteApplication extends BaseDeleteCommand<String> {
 
 	
 	public CommandDeleteApplication(String applicationId){
+		super();
 		this.applicationId = applicationId;
 	}
 	

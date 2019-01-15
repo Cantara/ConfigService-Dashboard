@@ -9,6 +9,7 @@ public class CommandCreateApplicationConfig extends BasePostCommand<String> {
 	private String applicationId;
 
 	public CommandCreateApplicationConfig(String applicationId, String json) {
+		super();
 		this.json = json;
 		this.applicationId = applicationId;
 	}

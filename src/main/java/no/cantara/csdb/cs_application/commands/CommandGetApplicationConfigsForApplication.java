@@ -7,6 +7,7 @@ public class CommandGetApplicationConfigsForApplication extends BaseGetCommand<S
 	private String applicationId;
 
     public CommandGetApplicationConfigsForApplication(String applicationId) {
+    	super();
         this.applicationId = applicationId;
 	}
 	
