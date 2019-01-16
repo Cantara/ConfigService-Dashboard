@@ -15,6 +15,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import no.cantara.cs.dto.Client;
 import no.cantara.cs.dto.ClientAlias;
 import no.cantara.csdb.cs_client.commands.CommandGetAllClientAliases;
+import no.cantara.csdb.cs_client.commands.CommandGetAllClients;
 import no.cantara.csdb.cs_client.commands.CommandGetIgnoredClientIds;
 import no.cantara.csdb.cs_client.commands.CommandPutAignoredClient;
 import no.cantara.csdb.cs_client.commands.CommandPutClientAlias;
@@ -45,6 +46,8 @@ public class CSMappingSettingsDao implements SettingsDao {
 				for(ClientAlias ca : cal) {
 					aliases.put(ca.clientId, ca.clientName);
 				}
+				
+				
 
 			} catch (IOException e) {
 				e.printStackTrace();

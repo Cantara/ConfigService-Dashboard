@@ -240,7 +240,7 @@ angular.module('Client')
                 
             }, function (response) {
             	if(response.statusText){
-            		toastr.error(statusText);
+            		toastr.error(response.statusText);
             	} else {
             		toastr.error('Server error! We can not retrieve the client status!');
             	}
