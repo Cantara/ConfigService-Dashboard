@@ -26,17 +26,17 @@ import no.cantara.csdb.util.CommandResponseHandler;
 
 public class CSMappingSettingsDao implements SettingsDao {
 
-	private Map<String, String> aliases = new HashMap<>();
-	private Set<String> ignoredClients = new HashSet<String>();
+	//private Map<String, String> aliases = new HashMap<>();
+	//private Set<String> ignoredClients = new HashSet<String>();
 	    
 	@Override
 	public Map<String, String> getAliases() {
-		if(aliases!=null) {
-			Map<String, String> m = new HashMap<String, String>(); 
-			m.putAll(aliases);
-			return m;
-		}
-		aliases = new HashMap<>();
+//		if(aliases!=null) {
+//			Map<String, String> m = new HashMap<String, String>(); 
+//			m.putAll(aliases);
+//			return m;
+//		}
+		Map<String, String> aliases = new HashMap<>();
 		String clientsJson = new CommandGetAllClientAliases().execute();
 		if (clientsJson != null) {
 			ObjectMapper mapper = new ObjectMapper();
@@ -64,7 +64,7 @@ public class CSMappingSettingsDao implements SettingsDao {
 		CommandPutClientAlias cmd = new CommandPutClientAlias(clientId, alias);
 		cmd.execute();
 		if(cmd.getStatusCode()==200) {
-			aliases.put(clientId, alias);
+			//aliases.put(clientId, alias);
 			return true;
 		} else {
 			return false;
@@ -73,9 +73,10 @@ public class CSMappingSettingsDao implements SettingsDao {
 
 	@Override
 	public Set<String> getIgnoredClients() {
-		if(ignoredClients!=null) {
-			return new HashSet<String>(ignoredClients);
-		}
+//		if(ignoredClients!=null) {
+//			return new HashSet<String>(ignoredClients);
+//		}
+		Set<String> ignoredClients = new HashSet<String>();
 		String clientIdsJson = new CommandGetIgnoredClientIds().execute();
 		if (clientIdsJson != null) {
 			ObjectMapper mapper = new ObjectMapper();
@@ -98,13 +99,6 @@ public class CSMappingSettingsDao implements SettingsDao {
 		CommandPutAignoredClient cmd = new CommandPutAignoredClient(clientId, ignore);
 		cmd.execute();
 		if(cmd.getStatusCode()==200) {
-			if(ignore) {
-				if(!ignoredClients.contains(clientId)) {
-					ignoredClients.add(clientId);
-				}
-			} else {
-				ignoredClients.remove(clientId);
-			}
 			return true;
 		} else {
 			return false;
