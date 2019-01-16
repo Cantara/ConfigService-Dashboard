@@ -1,9 +1,8 @@
 package no.cantara.csdb;
 
-import javax.ws.rs.ext.RuntimeDelegate;
-
+import com.sun.jersey.server.impl.provider.RuntimeDelegateImpl;
 import no.cantara.csdb.config.ConfigValue;
-
+import no.cantara.csdb.health.HealthResource;
 import org.eclipse.jetty.security.ConstraintMapping;
 import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.security.HashLoginService;
@@ -15,7 +14,7 @@ import org.eclipse.jetty.util.security.Constraint;
 import org.eclipse.jetty.util.security.Credential;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import com.sun.jersey.server.impl.provider.RuntimeDelegateImpl;
+import javax.ws.rs.ext.RuntimeDelegate;
 
 public class Main {
 
@@ -59,6 +58,12 @@ public class Main {
 		roleConstraintMapping.setConstraint(roleConstraint);
 		roleConstraintMapping.setPathSpec("/client/*");
 		securityHandler.addConstraintMapping(roleConstraintMapping);
+
+        // Allow healthresource to be accessed without authentication
+        ConstraintMapping healthEndpointConstraintMapping = new ConstraintMapping();
+        healthEndpointConstraintMapping.setConstraint(new Constraint(Constraint.NONE, Constraint.ANY_ROLE));
+        healthEndpointConstraintMapping.setPathSpec(HealthResource.HEALTH_PATH);
+        securityHandler.addConstraintMapping(healthEndpointConstraintMapping);
 
         HashLoginService loginService = new HashLoginService("ConfigService");
 
