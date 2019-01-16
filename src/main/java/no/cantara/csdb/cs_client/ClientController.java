@@ -44,12 +44,14 @@ import no.cantara.csdb.cs_application.commands.CommandUpdateClient;
 import no.cantara.csdb.cs_client.commands.CommandGetAWSCloudWatchLog;
 import no.cantara.csdb.cs_client.commands.CommandGetAllClientEnvironments;
 import no.cantara.csdb.cs_client.commands.CommandGetAllClientHeartBeatData;
+import no.cantara.csdb.cs_client.commands.CommandGetAllClientStatuses;
 import no.cantara.csdb.cs_client.commands.CommandGetAllClients;
 import no.cantara.csdb.cs_client.commands.CommandGetClient;
 import no.cantara.csdb.cs_client.commands.CommandGetClientAppConfig;
 import no.cantara.csdb.cs_client.commands.CommandGetClientEnvironment;
 import no.cantara.csdb.cs_client.commands.CommandGetClientEvents;
 import no.cantara.csdb.cs_client.commands.CommandGetClientHeartBeatData;
+import no.cantara.csdb.cs_client.commands.CommandGetClientStatus;
 import no.cantara.csdb.errorhandling.AppException;
 import no.cantara.csdb.errorhandling.AppExceptionCode;
 import no.cantara.csdb.settings.SettingsDao;
@@ -71,64 +73,9 @@ public class ClientController {
     @Produces(MediaType.APPLICATION_JSON)
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String getAllClientStatuses(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-
-    	String jsonResult;
-    	jsonResult = getAllClientStatuses(settingsDao.getIgnoredClients());
-    	return toResult(model, response, jsonResult);
-		
-
+    	CommandGetAllClientStatuses cmd = new CommandGetAllClientStatuses();
+		return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(),cmd.getStatusCode());
 	}
-    
-    String getAllClientStatuses(Set<String> ignoredClients) throws Exception {
-    	List<ClientStatus> clientStatusList = new ArrayList<>();
-    	ObjectMapper mapper = new ObjectMapper();
-    	
-        String clientsJson = new CommandGetAllClients().execute();
-        String allClientHeartBeatsJson = new CommandGetAllClientHeartBeatData().execute();
-        String allClientEnvsJson = new CommandGetAllClientEnvironments().execute();
-        
-       
-        if(clientsJson!=null && allClientEnvsJson !=null && allClientHeartBeatsJson!=null) {
-        	
-        	List<Client> clients = Arrays.asList(mapper.readValue(clientsJson, Client[].class));
-        	Map<String, ClientHeartbeatData> heartbeats = mapper.readValue(allClientHeartBeatsJson,  new TypeReference<HashMap<String,ClientHeartbeatData>>() {});
-        	Map<String, ClientEnvironment> envs = mapper.readValue(allClientEnvsJson, new TypeReference<HashMap<String,ClientEnvironment>>() {});
-        	
-        	for (Client client : clients) {
-        		if (!ignoredClients.contains(client.clientId)) {
-        			ClientHeartbeatData clientHeartBeat = heartbeats.get(client.clientId);
-        			if(clientHeartBeat!=null) {
-        				ClientEnvironment env = envs.get(client.clientId);
-        				if(env!=null) {
-        					clientHeartBeat.clientName = makeUpADefaultClientName(env);
-        				}
-        			}
-        			
-					clientStatusList.add(new ClientStatus(client, clientHeartBeat));
-				}
-        	}         
-        
-        	
-        }
-        
-
-        return mapper.writeValueAsString(clientStatusList);
-    }
-
-	private String makeUpADefaultClientName(ClientEnvironment env) {
-		String computerName = env.envInfo.get("COMPUTERNAME");
-		String localIP = "";
-		for(String key : env.envInfo.keySet()) {
-			if(key.startsWith("networkinterface_")) {
-				localIP = env.envInfo.get(key);
-				break;
-			}
-		}
-		String wrapped_os = env.envInfo.containsKey("WRAPPER_OS")? 
-				env.envInfo.get("WRAPPER_OS"): env.envInfo.get("OS");
-		return computerName + " - " + localIP + " - " + wrapped_os;
-	}
-
  
 	@GET
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -144,23 +91,8 @@ public class ClientController {
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@RequestMapping(value = "/{clientId}/status", method = RequestMethod.GET)
 	public String getClientStatus(@PathVariable("clientId") String clientId, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException, IOException {
-		
-	
-    	ObjectMapper mapper = new ObjectMapper();
-    	ClientStatus status = null;
-		String heartBeatJson = new CommandGetClientHeartBeatData(clientId).execute();
-		String clientJson = new CommandGetClient(clientId).execute();
-		String envJson = new CommandGetClientEnvironment(clientId).execute();
-		
-		if(heartBeatJson!=null && clientJson!=null && envJson !=null) {
-			Client client = mapper.readValue(clientJson, Client.class);
-			ClientHeartbeatData heartbeat = mapper.readValue(heartBeatJson, ClientHeartbeatData.class);
-		    heartbeat.clientName = makeUpADefaultClientName(mapper.readValue(envJson, ClientEnvironment.class));
-		    status = new ClientStatus(client, heartbeat);
-		}
-		
-		return toResult(model, response, mapper.writeValueAsString(status));
-    
+		CommandGetClientStatus cmd = new CommandGetClientStatus(clientId);
+		return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(),cmd.getStatusCode());
 	}
 
 	@GET

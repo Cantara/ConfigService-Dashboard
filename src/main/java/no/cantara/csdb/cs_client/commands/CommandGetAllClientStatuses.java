@@ -2,9 +2,9 @@ package no.cantara.csdb.cs_client.commands;
 
 import no.cantara.csdb.util.basecommands.BaseGetCommand;
 
-public class CommandGetAllClientHeartBeatData extends BaseGetCommand<String> {
+public class CommandGetAllClientStatuses extends BaseGetCommand<String> {
 
-	public CommandGetAllClientHeartBeatData(){
+	public CommandGetAllClientStatuses(){
 		super();
 		
 	}
@@ -16,7 +16,7 @@ public class CommandGetAllClientHeartBeatData extends BaseGetCommand<String> {
 
 	@Override
 	protected String getTargetPath() {
-        return "client/heartbeats";
+        return "client/status";
     }
 
 	
