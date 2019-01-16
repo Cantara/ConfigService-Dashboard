@@ -3,6 +3,7 @@ package no.cantara.csdb.health;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -15,7 +16,7 @@ import java.util.Properties;
 
 import static no.cantara.csdb.health.HealthResource.HEALTH_PATH;
 
-
+@Controller
 @Path(HEALTH_PATH)
 @Produces(MediaType.APPLICATION_JSON)
 public class HealthResource {
