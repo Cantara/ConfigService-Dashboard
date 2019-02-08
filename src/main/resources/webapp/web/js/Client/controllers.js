@@ -104,7 +104,7 @@ angular.module('Client')
     }]);
 
 angular.module('Client')
-    .controller('ClientDetailController', ['$scope', 'CSService', 'ClientService',  '$routeParams', '$timeout',  'ConstantValues', 'toastr', '$interval', '$filter', '$q', function ($scope, CSService, ClientService, $routeParams, $timeout, ConstantValues, toastr, $interval,  $filter, $q) {
+    .controller('ClientDetailController', ['$scope', 'CSService', 'ClientService',  '$routeParams', '$timeout',  'ConstantValues', 'toastr', '$interval', '$filter', '$q', '$log', '$document', '$location', function ($scope, CSService, ClientService, $routeParams, $timeout, ConstantValues, toastr, $interval,  $filter, $q, $log, $document, $location) {
 
     	$scope.applicationConfigs = [];
     	
@@ -147,15 +147,9 @@ angular.module('Client')
             return d.promise;
 
         }
+    
         
-         $scope.loadAllConfigs = function() {
-        	 return $scope.applicationConfigs.length ? null : CSService.getAllConfigs().then(function (data) {
-        		
-                  $scope.applicationConfigs = data;
-                  console.log($scope.applicationConfigs);
-                  console.log($scope.clientDetail.config);
-              });
-          };
+        
           
           $scope.moveToConfig = function(configId){
         	  
@@ -169,8 +163,12 @@ angular.module('Client')
           	  }
         	    
         	    ClientService.updateClient(clientToSave).then(function(res){
-        	    	 toastr.success('Update successfully. Artifact ID of Client will be updated in a few minutes if the client syncs and starts properly.',  {timeOut: 15000});
-        	    	d.resolve();
+        	    	 toastr.success('Update successfully. The client heart beat status will be updated soon.',  {timeOut: 15000});
+        	    	      	    	
+        	    	 $('#appConfigSelectModal').modal('hide');
+        	    	 d.resolve();
+        	    	 location.reload();
+        	    	
         	    }, function(err){
         	    	if(err.statusText){
         	    		d.resolve(err.statusText)
@@ -184,6 +182,7 @@ angular.module('Client')
           }
           
           $scope.refresh = function(){
+        	  
         	  updateClientStatus();
           }
           
@@ -229,12 +228,21 @@ angular.module('Client')
             }
         }
         
+        $scope.configData = {};
+        
+        
         var updateClientStatus = function(){
             startTime = new Date().getTime();
             console.log("start updating...");
             ClientService.getClientDetail($routeParams.id).then(function (data) {
                 $scope.clientDetail = data;
                 $scope.dataLoading = false;
+                  
+                $scope.configEditStatus.selectedAppConfig = JSON.parse(JSON.stringify($scope.clientDetail.config));
+                
+                delete $scope.configEditStatus.selectedAppConfig.id;
+                delete $scope.configEditStatus.selectedAppConfig.lastChanged;
+                
                 console.log("client status updated...");
                 //toastr.success('client status updated...');
                 
@@ -248,5 +256,46 @@ angular.module('Client')
         }
 
         init();
+        
+        $scope.configEditStatus = {selectFromExistingConfig : true};
+        
+        $scope.showAppConfigEditor = function (){
+        	$('#appConfigSelectModal').modal('show');
+        	$scope.configData.selectedConfig = null;
+        	CSService.getAllConfigs().then(function (data) {
+        		 $scope.configData.availableConfigs = data;
+            });
+        	
+        	CSService.getApplicationArtifactIdByConfigId($scope.clientDetail.config.id).then(function(data) {
+        		$scope.configEditStatus.artifactId = data;
+        	});
+        	
+        }
+        
+        $scope.moveClient = function (){
+        	if($scope.configEditStatus.selectFromExistingConfig){
+        		return $scope.moveToConfig($scope.configData.selectedConfig.id);
+        	} else {
+        		CSService.addApplication($scope.configEditStatus.artifactId, JSON.stringify($scope.configEditStatus.selectedAppConfig)).then(function(response){
+        			return $scope.moveToConfig(response.data.id);
+        		});
+        	}
+        }
+        
+        $scope.goto = function () {
+        	return CSService.getApplicationByArtifactId($scope.clientDetail.status.latestClientHeartbeatData.artifactId).then(function(response){
+        		if(response.data){
+              		var appId = response.data.id;
+              		$location.path('/applications/' + appId + "/" + $scope.clientDetail.status.latestClientHeartbeatData.artifactId);
+              	}
+        	});
+        	
+            
+        }
 
+        
+        
+
+    	
+    	
     }]);

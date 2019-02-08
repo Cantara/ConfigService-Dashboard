@@ -50,6 +50,11 @@ angular.module('app').config(function ($routeProvider, CSServiceProvider, $httpP
         leftNav: 'partials/left-nav-main.html',
         topNav: 'partials/top-nav.html',
         controller: 'ApplicationDetailController'
+    }).when('/application/new/:artifactId/:configId', {
+        templateUrl: 'partials/application-edit.html',
+        leftNav: 'partials/left-nav-main.html',
+        topNav: 'partials/top-nav.html',
+        controller: 'ApplicationDetailController'
     }).when('/application/edit/:id', {
         templateUrl: 'partials/application-edit.html',
         leftNav: 'partials/left-nav-main.html',

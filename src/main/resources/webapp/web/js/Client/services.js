@@ -42,6 +42,7 @@ angular.module('Client')
         	  
         	return CSService.updateClient(client);
         }
-
+        
+      
         return service;
     }]);

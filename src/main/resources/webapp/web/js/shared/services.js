@@ -20,6 +20,7 @@ angular.module('app')
             var aliasmap=null;
 
 
+            
             var clientCache = CacheFactory('clientCache', {
                 maxAge: ConstantValues.cacheMaxAge, // Items added to this cache expire after 15 minutes.
                 cacheFlushInterval: ConstantValues.cacheAutoFlushInterval, // This cache will clear itself every hour.
@@ -101,7 +102,7 @@ angular.module('app')
 
                 return $http.get('application/')
                     .then(function (response) {
-                    	console.log(response.data);
+                    	
                         return response.data.map(function (app) {
 
                             return new Application(app);
@@ -114,6 +115,21 @@ angular.module('app')
 
             service.getApplicationConfig = function(applicationid){
                 return  $http.get('application/' + applicationid + "/config/").then(function (response) {
+                  
+                    return response.data;
+                });
+            }
+            
+            service.getApplicationConfigByConfigId = function(configid){
+                return  $http.get('application/config/' + configid).then(function (response) {
+                   
+                    return response.data;
+                });
+            }
+            
+            service.getApplicationArtifactIdByConfigId = function(configid){
+                return  $http.get('application/config/findartifactid/' + configid).then(function (response) {
+                   
                     return response.data;
                 });
             }
@@ -126,13 +142,14 @@ angular.module('app')
                     if(artifactId!=null && id!=null) {
                     	
                     	
-                        return $q.all([$http.get('application/' + artifactId + "/status/", {cache: clientCache}), $http.get('application/' + id + "/config/")]).then(function (response) {
+                        return $q.all([$http.get('application/' + artifactId + "/status/", {cache: clientCache}), $http.get('application/' + id + "/config/"),  $http.get('application/' + id + "/config/list")]).then(function (response) {
                             var status = response[0].data;
-                            var config = response[1].data;
-                            return new ApplicationDetail(id, artifactId, status, config);
+                            var the_latest_config = response[1].data;
+                            var all_configs = response[2].data;
+                            return new ApplicationDetail(id, artifactId, status, the_latest_config, all_configs);
                         }, function(re){
                         	 return $http.get('application/' + artifactId + "/status/", {cache: clientCache}).then(function (response) {
-                        		  return new ApplicationDetail(id, artifactId, response.data, null);                            
+                        		  return new ApplicationDetail(id, artifactId, response.data, null, null);
                             });
                         	
                         });
@@ -140,13 +157,14 @@ angular.module('app')
                 } else {
 
                     if(artifactId!=null && id!=null) {
-                        return $q.all([$http.get('application/' + artifactId + "/status/?random="+new Date().getTime(), {cache: clientCache}), $http.get('application/' + id + "/config/")]).then(function (response) {
+                        return $q.all([$http.get('application/' + artifactId + "/status/?random="+new Date().getTime(), {cache: clientCache}), $http.get('application/' + id + "/config/"), $http.get('application/' + id + "/config/list")]).then(function (response) {
                             var status = response[0].data;
-                            var config = response[1].data;
-                            return new ApplicationDetail(id, artifactId, status, config);
+                            var the_latest_config = response[1].data;
+                            var all_configs = response[2].data;
+                            return new ApplicationDetail(id, artifactId, status, the_latest_config, all_configs);
                         },  function(re){
                        	 	return $http.get('application/' + artifactId + "/status/", {cache: clientCache}).then(function (response) {
-                       	 		return new ApplicationDetail(id, artifactId, response.data, null);                            
+                       	 		return new ApplicationDetail(id, artifactId, response.data, null, null);
                        	 });
                    	
                    });
@@ -169,9 +187,30 @@ angular.module('app')
 
             };
 
-            service.addApplication = function(applicationDetail){
-                if(applicationDetail.artifactId){
-                    var appConfigToSave = angular.copy(applicationDetail);                    
+           
+           
+            service.addApplication_ = function(applicationDetail){
+            	var appConfigToSave = angular.copy(applicationDetail);
+            	
+            	return service.addApplication(appConfigToSave.artifactId , JSON.stringify(appConfigToSave.configJsonContent));
+               /*
+            	if(applicationDetail.artifactId){
+                    var appConfigToSave = angular.copy(applicationDetail);
+                    return $http.get('application/' + appConfigToSave.artifactId).then(function (response){
+                    	var appId = null;
+                    	if(response.data){
+                    		appId = response.data.id;
+                    		return service.createANewConfigForThisApp(appId, appConfigToSave.configJsonContent);
+                    	} else {
+                    		//artifact does not exist, create new
+                    		return $http.post('application/', {'artifactId' : appConfigToSave.artifactId}).then(function (response2) {
+                    			appId = response2.data.id;
+                    			return service.createANewConfigForThisApp(appId, appConfigToSave.configJsonContent);
+                    		});
+                    	}  
+                    });*/
+                    
+                    /*
                     return $http.post('application/', {'artifactId' : appConfigToSave.artifactId}).then(function (response) {
                     	//conveniently add the first configuration for this application
                     	if(appConfigToSave.configJsonContent!=null){
@@ -182,7 +221,44 @@ angular.module('app')
                     		return response;
                     	}
                     });
-                }
+                    */
+                
+            }
+            
+            
+            
+            
+            service.addApplication = function(artifactId, configJsonContent){
+
+                    return $http.get('application/' + artifactId).then(function (response){
+                    	var appId = null;
+                    	if(response.data){
+                    		appId = response.data.id;
+                    		return service.createANewConfigForThisApp(appId, configJsonContent);
+                    	} else {
+                    		//artifact does not exist, create new
+                    		return $http.post('application/', {'artifactId' : artifactId}).then(function (response2) {
+                    			appId = response2.data.id;
+                    			return service.createANewConfigForThisApp(appId, configJsonContent);
+                    		});
+                    	}  
+                    });
+               
+            }
+            
+            service.getApplicationByArtifactId = function(artifactId){
+            	 return $http.get('application/' + artifactId).then(function (response){
+                 	return response;
+                 });
+            }
+            
+            service.createANewConfigForThisApp = function(appId, json) {
+            	if(json!=null){
+                    return $http.post('application/' +  appId + "/config/", json).then(function (response3) {
+                    	
+                        return response3;
+                    });
+            	}
             }
 
             service.updateApplicationConfig = function (applicationDetail) {
@@ -190,29 +266,33 @@ angular.module('app')
                     var appConfigToSave = angular.copy(applicationDetail);
                     
                     if(typeof appConfigToSave.config != "undefined" && typeof appConfigToSave.config.id != "undefined" ){
-                    	 return $http.put('application/' + applicationDetail.id + "/config/" +  applicationDetail.config.id , appConfigToSave.configJsonContent).then(function (response) {
+                    	 return $http.put('application/' + appConfigToSave.id + "/config/" +  appConfigToSave.config.id , appConfigToSave.configJsonContent).then(function (response) {
                              return response;
                          });
                     } else {
-                    	return $http.post('application/' +  applicationDetail.id+ "/config/", appConfigToSave.configJsonContent).then(function (response2) {
+                    	return $http.post('application/' +  appConfigToSave.id+ "/config/", appConfigToSave.configJsonContent).then(function (response2) {
                             return response2;
                         });
-                    }
-                   
+                    }                  
                 }
             }
-
-            /* Check this later, not in use now
-             * 
-             * 
-            service.removeApplicationConfig = function(applicationId, configId){
-                return $http.delete("application/" + applicationId  + "/config/" + configId);
-            }*/
+ 
+            service.removeApplicationConfig = function(configId){
+                return $http.delete("application/config/" + configId);
+            }
 
             service.removeApplication = function(applicationId){
                 return $http.delete("application/" + applicationId);
             }
-
+            
+            service.canRemoveThisApp = function(applicationId){
+                return $http.get("application/canDeleteApp/" + applicationId);
+            }
+            
+            service.canRemoveThisAppConfig = function(configId){
+                return $http.get("application/canDeleteAppConfig/" + configId);
+            }
+            
             service.saveAlias = function (clientid, alias) {
                 return $http.post('client/alias/' + clientid + "/" +  alias,{}).then(function (response) {
                     if(response.data.success) {
@@ -226,6 +306,7 @@ angular.module('app')
 
             service.applyFriendlyName=function(client){
 
+            	
                 if(aliasmap!=null){
 
                     if(client.clientId in aliasmap) {
@@ -266,7 +347,7 @@ angular.module('app')
             service.getAllConfigs = function(){
             	 return $http.get('application/config')
                  .then(function (response) {
-                	 console.log(response.data);
+                	
                      return response.data.map(function (config) {
 
                          return new ApplicationConfig(config);
@@ -276,6 +357,13 @@ angular.module('app')
                  });
  
             }
+
+            service.getConfigByConfigId = function(configId){
+	           	 return $http.get('application/config/' + configId).then(function (response) {
+	           		 return response;
+	              });
+
+           }
             
             service.updateClient = function(client) {
             	  if (client) {
@@ -286,6 +374,16 @@ angular.module('app')
                      
                   }
             }
+            
+            service.updateClientList = function(clientList) {
+          	  if (clientList) {
+                    
+               	  return $http.put('client/updateClientList', clientList).then(function (response) {
+                        return response;
+                    });
+                   
+                }
+          }
 
             return service;
         }];

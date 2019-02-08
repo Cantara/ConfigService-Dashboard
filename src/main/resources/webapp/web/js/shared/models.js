@@ -140,11 +140,11 @@ angular.module('app')
 
             this.id = args.id;
             this.artifactId = args.artifactId;
-            this.appConfig=null;
+            this.appConfig = null;
         }
 
-        Application.prototype.setAppConfig= function (appConfig) {
-            this.appConfig= new ApplicationConfig(appConfig);
+        Application.prototype.setAppConfig = function (appConfig) {
+            this.appConfig = new ApplicationConfig(appConfig);
         }
 
         return Application;
@@ -169,16 +169,26 @@ angular.module('app')
 
 angular.module('app')
     .factory('ApplicationDetail', [ 'ApplicationStatus', 'ApplicationConfig', function ( ApplicationStatus, ApplicationConfig) {
-        function ApplicationDetail(id, artifactId, status, config) {
+        function ApplicationDetail(id, artifactId, status, the_latest_config, all_configs) {
             this.id = id;
             this.artifactId = artifactId;
             if (status != null) {
                 this.status = new ApplicationStatus(status);
             }
-            if(config!=null) {
-                this.config = new ApplicationConfig(config);
-                this.configJsonContent = JSON.stringify(this.config, null, 2);
+            
+            if(all_configs!=null) {
+                var configs = all_configs.map(function (config) {
+                    return new ApplicationConfig(config);
+                });
+                
+                this.configData = {
+                    	availableConfigs : configs,
+                    	selectedConfig : new ApplicationConfig(the_latest_config)        	
+                 };
             }
+            
+            
+
         };
         return ApplicationDetail;
     }]);

@@ -5,18 +5,16 @@ import no.cantara.csdb.util.basecommands.BaseDeleteCommand;
 
 public class CommandDeleteApplicationConfig extends BaseDeleteCommand<String> {
 	
-	private String applicationId;
 	private String configId;
 	
-	public CommandDeleteApplicationConfig(String applicationId, String configId){
+	public CommandDeleteApplicationConfig(String configId){
 		super();
 		this.configId = configId;
-		this.applicationId = applicationId;
 	}
 	
 	@Override
 	protected String getTargetPath() {
-		return "application/" + applicationId + "/config/" + configId;
+		return "application/config/" + configId;
 	}
 	
 

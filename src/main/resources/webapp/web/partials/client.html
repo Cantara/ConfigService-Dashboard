@@ -4,8 +4,10 @@
      <i class="fa fa-spinner fa-spin"></i>
 </div>
 <div ng-hide="dataLoading">
+<h1>Client heart beat status</h1>
 <div class="client-header" ng-style="{'background-color': clientDetail.status.bgcolor, 'color': clientDetail.status.fgcolor}">
     <div class="col-sm-4">
+    	
         <b>Client ID:</b> {{clientDetail.status.client.clientId}}<br/>
         <b>Display Name:</b> <span editable-text="clientDetail.status.client.alias"  e-form="aliasEditableText" onbeforesave="saveEdit($data)">{{ clientDetail.status.client.alias || 'empty' }}</span>
         <span class="glyphicon glyphicon-pencil" ng-click="aliasEditableText.$show()" ng-hide="aliasEditableText.$visible" ng-if="globals.currentUser.isAdmin"></span>
@@ -19,10 +21,13 @@
  		-->
     </div>
     <div class="col-sm-4">
-        <b>Artifact ID of Client:</b> {{clientDetail.status.latestClientHeartbeatData.artifactId}}<br/>
+            <b>Artifact ID: </b> <span style="text-decoration: underline;" ng-click="goto()" class="clickable">{{clientDetail.status.latestClientHeartbeatData.artifactId}}</span><br/>
+            <b>App Config ID:</b> {{clientDetail.status.latestClientHeartbeatData.applicationConfigId}} <br/>
+    <!--  
+        <b>Artifact ID:</b> {{clientDetail.status.latestClientHeartbeatData.artifactId}}<br/>
         <b>App Config:</b> <span editable-select="clientDetail.config.id" e-form="configEditableText" onshow="loadAllConfigs()" e-ng-options="g.id as g.name for g in applicationConfigs"  onbeforesave="moveToConfig($data)" onaftersave="refresh()">{{ clientDetail.config.name || 'empty' }}</span>
 		  <span class="glyphicon glyphicon-pencil"  ng-click="configEditableText.$show()" ng-hide="configEditableText.$visible" ng-if="globals.currentUser.isAdmin"></span>
-  
+    -->
 
     </div>
     <div class="col-sm-4">
@@ -37,13 +42,16 @@
 </button>
 
 <div>
+    <div style="float: right;">
+    
+    	<button ng-if="globals.currentUser.isAdmin" class="pull-right btn primary client-edit-btn" title="Edit app config" 
+    		ng-click="showAppConfigEditor()">
+            <span class="glyphicon glyphicon-arrow-right"></span>&nbsp;Move this client to another app config
+        </button>
+    </div>
+    <div>
     <my-tabs>
-
-        <my-pane title="Configuration">
-            <!--
-            <a href="#/client/edit" class="btn btn-primary" ng-if="globals.currentUser.isAdmin"><span
-                    class="glyphicon glyphicon-cog"></span> Edit
-                Configuration</a> -->
+        <my-pane title="Defined Configuration">
             <pre>{{clientDetail.config.display()}}</pre>
         </my-pane>
         <my-pane title="Environment">
@@ -55,8 +63,86 @@
         <my-pane title="CloudWatch Logs">
             <pre>Not Implemented</pre>
         </my-pane>
+          
     </my-tabs>
-
+  
+	</div>
+    <br style="clear: both;"/>
 </div>
+
+
+<div class="modal fade" id="appConfigSelectModal" tabindex="-1" role="dialog" aria-labelledby="appConfigSelectLabel" aria-hidden="false">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="appConfigSelectLabel">
+					<span>App Config Edit</span>
+				</h4>
+			</div>
+
+
+
+			<div class="modal-body">
+				
+				<div>
+					<label class="rate-hit">
+     				<input type="radio" ng-model="configEditStatus.selectFromExistingConfig" ng-value="true" ng-checked="configEditStatus.selectFromExistingConfig"> Select from available app configs</label>&nbsp;&nbsp;
+ 					<label class="rate-miss">
+     				<input type="radio" ng-model="configEditStatus.selectFromExistingConfig" ng-value="false" ng-checked="!configEditStatus.selectFromExistingConfig">
+     				Create a new app config for this client
+ 					</label>
+ 
+					<div ng-show="configEditStatus.selectFromExistingConfig" class="margin-top panel">
+					<select name="mySelect" id="mySelect"
+					        ng-options="config.name for config in configData.availableConfigs track by config.id"
+					        ng-model="configData.selectedConfig" ng-change="configChange()">
+					 <option value="">--Select Config--</option>       
+					 </select>
+					
+					</div>
+					<div ng-show="!configEditStatus.selectFromExistingConfig"  class="margin-top panel">
+						<form name="applicationConfigForm" novalidate>
+							 <div class="form-group" ng-class="{'has-error':applicationConfigForm.artifactId.$error.required}">
+					            <label for="artifact-id">Artifact ID</label>
+					            <input type="text" name="artifactId" class="form-control" id="artifact-id" placeholder="Enter artifact id. Must be unique." ng-model="configEditStatus.artifactId"  required>
+					            <label ng-show="hasError(applicationForm.artifactId, applicationForm.artifactId.$error.required)" ng-class="{'text-danger': applicationForm.artifactId.$error.required}">Artifact id is required and it should be unique.</label>
+					        </div>
+					         <div class="form-group">
+					            <label for="app-config" >Application Config</label>
+					            <textarea style="min-width: 100%" json-text
+					            		msd-elastic name="appconfig" 
+					            		class="form-control" 
+					            		id="app-config" 
+					            		placeholder="Enter application config." 
+					            		ng-model="configEditStatus.selectedAppConfig" required></textarea>
+					             <label ng-show="hasError(applicationConfigForm.appconfig, applicationConfigForm.appconfig.$error.required)" ng-class="{'text-danger': applicationConfigForm.appconfig.$error.required}">Configuration required</label>
+					        </div>
+				        </form>
+					</div>
+
+
+				</div>
+
+
+
+				<div class="modal-footer">
+
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						
+					<button type="button" class="btn btn-primary"
+						ng-disabled="!configEditStatus.selectFromExistingConfig && (applicationConfigForm.$invalid || applicationConfigForm.$pristine) || (configEditStatus.selectFromExistingConfig && !configData.selectedConfig)"
+						ng-click="moveClient()">Move this client to this config</button>
+
+				</div>
+
+
+
+			</div>
+		</div>
+</div>
+
+
 </div>
 </div>

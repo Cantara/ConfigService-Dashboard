@@ -41,6 +41,7 @@ import no.cantara.cs.dto.ClientStatus;
 import no.cantara.csdb.Main;
 import no.cantara.csdb.config.ConstantValue;
 import no.cantara.csdb.cs_application.commands.CommandUpdateClient;
+import no.cantara.csdb.cs_application.commands.CommandUpdateClientList;
 import no.cantara.csdb.cs_client.commands.CommandGetAWSCloudWatchLog;
 import no.cantara.csdb.cs_client.commands.CommandGetAllClientEnvironments;
 import no.cantara.csdb.cs_client.commands.CommandGetAllClientHeartBeatData;
@@ -203,6 +204,21 @@ public class ClientController {
 
 		if(isAdmin(request)){
 			CommandUpdateClient cmd = new CommandUpdateClient(clientId, jsonRequest);
+			return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
+
+		} else {
+			throw AppExceptionCode.USER_UNAUTHORIZED_6000;
+		}
+		
+	}
+	
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	@RequestMapping(value = "/updateClientList", method = RequestMethod.PUT)
+	public String putClients(@RequestBody String jsonRequest, HttpServletRequest request, HttpServletResponse response, Model model) throws AppException {
+
+		if(isAdmin(request)){
+			CommandUpdateClientList cmd = new CommandUpdateClientList(jsonRequest);
 			return CommandResponseHandler.handle(response, model, cmd.execute(), cmd.getResponseBodyAsByteArray(), cmd.getStatusCode());
 
 		} else {

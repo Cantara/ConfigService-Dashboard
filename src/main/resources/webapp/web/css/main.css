@@ -125,7 +125,7 @@ input[type="checkbox"].input-validation-error {
     margin-right: 20px;
 }
 .client-header {
-    height: 65px;
+   overflow:hidden;
     color:black;
     vertical-align: middle;
     padding-top: 12px;
@@ -219,4 +219,13 @@ div[ng-view].ng-leave-active {
     body {
         margin: 0;
     }
+}
+
+.panel {
+    background: #FCFCFC;
+    padding: 16px;
+    border: 1px solid #D5D5D5;
+}
+.margin-top {
+	margin-top: 10px;
 }

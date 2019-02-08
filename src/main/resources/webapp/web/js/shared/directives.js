@@ -12,6 +12,26 @@ angular.module('app')
         }
     }
 }]);
+
+angular.module('app')
+	.directive('jsonText', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attr, ngModel) {            
+          function into(input) {
+            return JSON.parse(input);
+          }
+          function out(data) {
+            return JSON.stringify(data, null, 2);
+          }
+          ngModel.$parsers.push(into);
+          ngModel.$formatters.push(out);
+        }
+    };
+});
+    
+
 angular.module('app')
     .directive('myTabs', function () {
         return {
