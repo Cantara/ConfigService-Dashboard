@@ -37,7 +37,8 @@
 
     <my-tabs>
     <my-pane title="Clients">
-        <div ng-include="'partials/clients.html'"></div>
+        <div ng-hide="canRemoveThisAppConfig" ng-include="'partials/clients.html'"></div>
+        <div ng-show="canRemoveThisAppConfig==false && clientStatuses.length==0">Waiting for clients' heart beats... Please check the refresh button for regular updates</div>
     </my-pane>
     <my-pane title="Status">
         <pre>{{applicationDetail.status.display()}}</pre>
