@@ -61,7 +61,7 @@ public abstract class BaseHttpDeleteHystrixCommand<R> extends HystrixCommand<R> 
             if (getQueryParameters() != null && getQueryParameters().length != 0) {
                 request = HttpRequest.delete(uriString, true, getQueryParameters());
             } else {
-                request = HttpRequest.delete(uriString);
+                request = HttpRequest.delete(uriString, true);
             }
             request.trustAllCerts();
             request.trustAllHosts();

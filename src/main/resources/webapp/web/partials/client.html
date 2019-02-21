@@ -97,10 +97,13 @@
 					<div ng-show="configEditStatus.selectFromExistingConfig" class="margin-top panel">
 					<select name="mySelect" id="mySelect"
 					        ng-options="config.name for config in configData.availableConfigs track by config.id"
-					        ng-model="configData.selectedConfig" ng-change="configChange()">
+					        ng-model="configData.selectedConfig" ng-change="modalConfigChange()">
 					 <option value="">--Select Config--</option>       
 					 </select>
-					
+					 <br/>
+					 <h1>{{configData.artifactId}}</h1>
+					 <br/>
+					 <pre>{{print(configData.selectedConfig);}}</pre>
 					</div>
 					<div ng-show="!configEditStatus.selectFromExistingConfig"  class="margin-top panel">
 						<form name="applicationConfigForm" novalidate>

@@ -77,12 +77,13 @@ angular.module('Application')
 		$scope.editMode = !$scope.editMode;
 	}
 
-	$scope.create = function () {
+	$scope.saveApp = function () {
 		$scope.submitted = true;
 		if ($scope.applicationForm.$invalid) return;
 
-		ApplicationService.save($scope.applicationDetail).then(function (response) {           	
-			if(response.status === 200) {
+		ApplicationService.createAppConfig($scope.applicationDetail.artifactId, $scope.applicationDetail.configJsonContent).then(function (response) {          
+
+			if(response && response.status === 200) {
 				$scope.submitted = false;
 				init();
 				$scope.applicationForm.$setPristine();
@@ -95,9 +96,9 @@ angular.module('Application')
 		});
 	}
 
-	$scope.update = function () {
-
-		ApplicationService.save($scope.applicationDetail).then(function (response) {
+	$scope.updateAppConfig = function () {
+		
+		ApplicationService.updateAppConfig($scope.applicationDetail.id, $scope.applicationDetail.configData.selectedConfig.id, $scope.applicationDetail.configData.selectedConfig).then(function (response) {
 
 			if(response.status === 200) {
 				$scope.editMode = false;
@@ -144,7 +145,7 @@ angular.module('Application')
 
 	var canRemoveThisAppConfigCheck = function (){
 		//return ($scope.clientStatuses === undefined || $scope.clientStatuses.length == 0);
-		if($scope.applicationDetail.configData!= undefined){
+		if($scope.applicationDetail.configData!= undefined && $scope.applicationDetail.configData.selectedConfig!= undefined){
 			ApplicationService.canRemoveThisAppConfig($scope.applicationDetail.configData.selectedConfig.id).then(function(response){
 
 				$scope.canRemoveThisAppConfig = response.data;
@@ -292,6 +293,12 @@ angular.module('Application')
 		loadClientStatuses();    
 		canRemoveThisAppConfigCheck();
 	}
+	
+	$scope.modalConfigChange = function () {
+		CSService.getApplicationArtifactIdByConfigId($scope.configData.selectedConfig.id).then(function(data) {
+			$scope.configData.artifactId = data;
+		});
+	}
 
 	var startTime=0;
 //	$scope.selectedConfig = null;
@@ -331,11 +338,12 @@ angular.module('Application')
 
 	$scope.showAppConfigEditor = function (){
 		$('#appConfigSelectModal').modal('show');
-		$scope.configData.selectedConfig = null;
+		//$scope.configData.selectedConfig = null;
 		CSService.getAllConfigs().then(function (data) {
 			$scope.configData.availableConfigs = data;
 		});
-
+		
+		
 		$scope.configEditStatus.artifactId = $scope.applicationDetail.artifactId;
 		$scope.configEditStatus.selectedAppConfig = JSON.parse(JSON.stringify($scope.applicationDetail.configData.selectedConfig));
 

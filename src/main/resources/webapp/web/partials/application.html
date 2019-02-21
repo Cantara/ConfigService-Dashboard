@@ -47,7 +47,7 @@
     	<div ng-show="globals.currentUser.isAdmin">
         <div>
             <button class="btn btn-warning client-edit-btn" ng-click="setEdit()" ng-hide="editMode">Edit</button>
-            <button class="btn btn-primary client-edit-btn" ng-click="update()" ng-show="editMode">Save</button>
+            <button class="btn btn-primary client-edit-btn" ng-click="updateAppConfig()" ng-show="editMode">Save</button>
             <button class="btn client-edit-btn" ng-click="setEdit()" ng-show="editMode">Cancel</button>
 
         </div>
@@ -93,9 +93,13 @@
 					<div ng-show="configEditStatus.selectFromExistingConfig" class="margin-top panel">
 					<select name="mySelect" id="mySelect"
 					        ng-options="config.name for config in configData.availableConfigs track by config.id"
-					        ng-model="configData.selectedConfig" ng-change="configChange()">
+					        ng-model="configData.selectedConfig" ng-change="modalConfigChange()">
 					 <option value="">--Select Config--</option>       
 					 </select>
+					 <br/>
+					 <h1>{{configData.artifactId}}</h1>
+					 <br/>
+					 <pre ng-hide="editMode">{{print(configData.selectedConfig);}}</pre>
 					
 					</div>
 					<div ng-show="!configEditStatus.selectFromExistingConfig"  class="margin-top panel">

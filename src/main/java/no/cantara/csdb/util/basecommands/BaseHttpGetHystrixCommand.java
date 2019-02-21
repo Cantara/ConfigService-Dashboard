@@ -66,7 +66,7 @@ public abstract class BaseHttpGetHystrixCommand<R> extends HystrixCommand<R>{
 			if(getQueryParameters()!=null && getQueryParameters().length!=0){
 				request = HttpRequest.get(uriString, true, getQueryParameters());
 			} else {
-				request = HttpRequest.get(uriString);
+				request = HttpRequest.get(uriString, true);
 			}
 			
 			if(getAcceptHeaderRequestValue()!=null && !getAcceptHeaderRequestValue().equals("")){

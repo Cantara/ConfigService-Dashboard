@@ -108,19 +108,7 @@ angular.module('Client')
 
     	$scope.applicationConfigs = [];
     	
-    	/*
-        $scope.editMode = false;
-        var aliasBeforeEdit;
-        $scope.toggleEdit=function(){
-
-            if($scope.editMode === true) {
-                $scope.clientDetail.status.client.alias = aliasBeforeEdit;
-            } else {
-                aliasBeforeEdit =  $scope.clientDetail.status.client.alias;
-            }
-
-            $scope.editMode = !$scope.editMode;
-        }*/
+    
 
         $scope.saveEdit=function(alias){
         	var d = $q.defer();
@@ -261,7 +249,7 @@ angular.module('Client')
         
         $scope.showAppConfigEditor = function (){
         	$('#appConfigSelectModal').modal('show');
-        	$scope.configData.selectedConfig = null;
+        	
         	CSService.getAllConfigs().then(function (data) {
         		 $scope.configData.availableConfigs = data;
             });
@@ -271,6 +259,17 @@ angular.module('Client')
         	});
         	
         }
+        
+        $scope.modalConfigChange = function () {
+    		CSService.getApplicationArtifactIdByConfigId($scope.configData.selectedConfig.id).then(function(data) {
+    			$scope.configData.artifactId = data;
+    		});
+    	}
+        
+        $scope.print = function (json) {
+    		return JSON.stringify(json, null, 2);
+    	};
+
         
         $scope.moveClient = function (){
         	if($scope.configEditStatus.selectFromExistingConfig){

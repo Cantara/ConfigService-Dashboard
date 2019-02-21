@@ -62,7 +62,7 @@ public abstract class BaseHttpPutHystrixCommand<R> extends HystrixCommand<R> {
             if (getQueryParameters() != null && getQueryParameters().length != 0) {
                 request = HttpRequest.put(uriString, true, getQueryParameters());
             } else {
-                request = HttpRequest.put(uriString);
+                request = HttpRequest.put(uriString, true);
             }
             request.trustAllCerts();
             request.trustAllHosts();

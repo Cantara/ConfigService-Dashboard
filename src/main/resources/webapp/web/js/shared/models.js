@@ -176,6 +176,8 @@ angular.module('app')
                 this.status = new ApplicationStatus(status);
             }
             
+            this.configData = {};
+            
             if(all_configs!=null) {
                 var configs = all_configs.map(function (config) {
                     return new ApplicationConfig(config);
