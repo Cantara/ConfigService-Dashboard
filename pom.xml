@@ -211,7 +211,7 @@
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
-            <version>3.2.7</version>
+            <version>3.3.0</version>
         </dependency>
 
         <dependency>
