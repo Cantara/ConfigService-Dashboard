@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>no.cantara.csdb</groupId>
     <artifactId>ConfigService-Dashboard</artifactId>
-    <version>0.9.1-SNAPSHOT</version>
+    <version>0.9.1</version>
     <packaging>jar</packaging>
     <name>ConfigService-Dashboard</name>
     <url>https://wiki.cantara.no/display/JAU/ConfigService+Dashboard</url>
@@ -41,7 +41,7 @@
         <developerConnection>scm:git:ssh://git@github.com/Cantara/ConfigService-Dashboard.git</developerConnection>
         <connection>scm:git:https://github.com/Cantara/ConfigService-Dashboard.git</connection>
         <url>https://github.com/Cantara/ConfigService-Dashboard</url>
-        <tag>HEAD</tag>
+        <tag>ConfigService-Dashboard-0.9.1</tag>
     </scm>
 
     <properties>
@@ -343,8 +343,8 @@
                                     </manifestEntries>
                                 </transformer>
 
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ComponentsXmlResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ComponentsXmlResourceTransformer" />
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>META-INF/spring.schemas</resource>
                                 </transformer>
