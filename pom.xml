@@ -15,8 +15,8 @@
             <roles>
                 <role>Developer</role>
             </roles>
-            <organization>Capra Consulting AS</organization>
-            <organizationUrl>http://www.capraconsulting.no/</organizationUrl>
+            <organization>Cantara</organization>
+            <organizationUrl>https://wiki.cantara.no/</organizationUrl>
         </developer>
         <developer>
             <id>huydo</id>
@@ -25,8 +25,8 @@
             <roles>
                 <role>Developer</role>
             </roles>
-            <organization>Capra Consulting AS</organization>
-            <organizationUrl>http://www.capraconsulting.no/</organizationUrl>
+            <organization>Cantara</organization>
+            <organizationUrl>https://wiki.cantara.no/</organizationUrl>
         </developer>
     </developers>
 
@@ -120,6 +120,12 @@
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-json</artifactId>
             <version>${jersey.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId> com.sun.jersey</groupId>
+                    <artifactId>jersey-json</artifactId>
+                </exclusion>
+            <exclusions>                
         </dependency>
 
         <!-- ONLY for DI, override spring versions from constretto-spring -->
