@@ -125,7 +125,7 @@
                     <groupId> com.sun.jersey</groupId>
                     <artifactId>jersey-json</artifactId>
                 </exclusion>
-            <exclusions>                
+            </exclusions>
         </dependency>
 
         <!-- ONLY for DI, override spring versions from constretto-spring -->
