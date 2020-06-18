@@ -12,6 +12,8 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.security.Constraint;
 import org.eclipse.jetty.util.security.Credential;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.ws.rs.ext.RuntimeDelegate;
@@ -20,6 +22,8 @@ public class Main {
 
 	public static final String ADMIN_ROLE = "admin";
 	public static final String USER_ROLE = "user";
+	private static final Logger log = LoggerFactory.getLogger(Main.class);
+
 
 	public static void main(String[] arguments) throws Exception {
 
@@ -37,6 +41,8 @@ public class Main {
 		context.addServlet(servletHolder, "/*");
 
 		server.start();
+		log.info("ConfigService DashBoard started - health check: http://localhost:" + ConfigValue.SERVICE_PORT + ConfigValue.SERVICE_CONTEXT + HealthResource.HEALTH_PATH);
+		System.out.println("ConfigService DashBoard started - health check: http://localhost:" + ConfigValue.SERVICE_PORT + ConfigValue.SERVICE_CONTEXT + HealthResource.HEALTH_PATH);
 		server.join();
 	}
 
@@ -62,6 +68,7 @@ public class Main {
         // Allow healthresource to be accessed without authentication
         ConstraintMapping healthEndpointConstraintMapping = new ConstraintMapping();
         healthEndpointConstraintMapping.setConstraint(new Constraint(Constraint.NONE, Constraint.ANY_ROLE));
+//		healthEndpointConstraintMapping.setPathSpec("/api/*");
         healthEndpointConstraintMapping.setPathSpec(HealthResource.HEALTH_PATH);
         securityHandler.addConstraintMapping(healthEndpointConstraintMapping);
 
