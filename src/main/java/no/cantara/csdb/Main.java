@@ -41,8 +41,8 @@ public class Main {
 		context.addServlet(servletHolder, "/*");
 
 		server.start();
-		log.info("ConfigService DashBoard started - health check: http://localhost:" + ConfigValue.SERVICE_PORT + ConfigValue.SERVICE_CONTEXT + HealthResource.HEALTH_PATH);
-		System.out.println("ConfigService DashBoard started - health check: http://localhost:" + ConfigValue.SERVICE_PORT + ConfigValue.SERVICE_CONTEXT + HealthResource.HEALTH_PATH);
+		log.info("ConfigService Dashboard started - health check: http://localhost:" + ConfigValue.SERVICE_PORT + ConfigValue.SERVICE_CONTEXT + HealthResource.HEALTH_PATH);
+		System.out.println("ConfigService Dashboard started - health check: http://localhost:" + ConfigValue.SERVICE_PORT + ConfigValue.SERVICE_CONTEXT + HealthResource.HEALTH_PATH);
 		server.join();
 	}
 
