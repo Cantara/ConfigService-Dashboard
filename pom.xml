@@ -50,7 +50,7 @@
         <spring.version>5.3.0</spring.version>
         <jetty.version>9.4.35.v20201120</jetty.version>
         <jackson.version>2.11.3</jackson.version>
-        <aws.version>1.11.897</aws.version>
+        <aws.version>1.11.898</aws.version>
         <slf4j.version>1.7.30</slf4j.version>
     </properties>
 
