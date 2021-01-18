@@ -58,7 +58,7 @@
         <dependency>
             <groupId>no.cantara.jau</groupId>
             <artifactId>configservice-sdk</artifactId>
-            <version>0.17.12</version>
+            <version>0.17.22</version>
             <exclusions>
                 <!-- exclude because ut overlaps with spring-aop from spring-context -->
                 <exclusion>
