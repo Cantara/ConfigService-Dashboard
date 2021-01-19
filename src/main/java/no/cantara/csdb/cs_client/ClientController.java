@@ -1,24 +1,16 @@
 package no.cantara.csdb.cs_client;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import no.cantara.csdb.Main;
+import no.cantara.csdb.config.ConstantValue;
+import no.cantara.csdb.cs_application.commands.CommandUpdateClient;
+import no.cantara.csdb.cs_application.commands.CommandUpdateClientList;
+import no.cantara.csdb.cs_client.commands.*;
+import no.cantara.csdb.errorhandling.AppException;
+import no.cantara.csdb.errorhandling.AppExceptionCode;
+import no.cantara.csdb.settings.SettingsDao;
+import no.cantara.csdb.util.CommandResponseHandler;
 import org.apache.http.entity.ContentType;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -30,33 +22,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import no.cantara.cs.dto.Client;
-import no.cantara.cs.dto.ClientEnvironment;
-import no.cantara.cs.dto.ClientHeartbeatData;
-import no.cantara.cs.dto.ClientStatus;
-import no.cantara.csdb.Main;
-import no.cantara.csdb.config.ConstantValue;
-import no.cantara.csdb.cs_application.commands.CommandUpdateClient;
-import no.cantara.csdb.cs_application.commands.CommandUpdateClientList;
-import no.cantara.csdb.cs_client.commands.CommandGetAWSCloudWatchLog;
-import no.cantara.csdb.cs_client.commands.CommandGetAllClientEnvironments;
-import no.cantara.csdb.cs_client.commands.CommandGetAllClientHeartBeatData;
-import no.cantara.csdb.cs_client.commands.CommandGetAllClientStatuses;
-import no.cantara.csdb.cs_client.commands.CommandGetAllClients;
-import no.cantara.csdb.cs_client.commands.CommandGetClient;
-import no.cantara.csdb.cs_client.commands.CommandGetClientAppConfig;
-import no.cantara.csdb.cs_client.commands.CommandGetClientEnvironment;
-import no.cantara.csdb.cs_client.commands.CommandGetClientEvents;
-import no.cantara.csdb.cs_client.commands.CommandGetClientHeartBeatData;
-import no.cantara.csdb.cs_client.commands.CommandGetClientStatus;
-import no.cantara.csdb.errorhandling.AppException;
-import no.cantara.csdb.errorhandling.AppExceptionCode;
-import no.cantara.csdb.settings.SettingsDao;
-import no.cantara.csdb.util.CommandResponseHandler;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/client")
