@@ -7,30 +7,6 @@
     <name>ConfigService-Dashboard</name>
     <url>https://wiki.cantara.no/display/JAU/ConfigService+Dashboard</url>
 
-    <developers>
-        <developer>
-            <id>totto</id>
-            <name>Thor Henning Hetland</name>
-            <email>totto@totto.org</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-            <organization>Cantara</organization>
-            <organizationUrl>https://wiki.cantara.no/</organizationUrl>
-        </developer>
-        <developer>
-            <id>huydo</id>
-            <name>Huy Do</name>
-            <email>misterhuydo@gmail.com</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-            <organization>Cantara</organization>
-            <organizationUrl>https://wiki.cantara.no/</organizationUrl>
-        </developer>
-    </developers>
-
-
     <parent>
         <groupId>no.cantara.emi</groupId>
         <artifactId>parent</artifactId>
@@ -58,7 +34,7 @@
         <dependency>
             <groupId>no.cantara.jau</groupId>
             <artifactId>configservice-sdk</artifactId>
-            <version>0.17.26</version>
+            <version>0.17.28</version>
             <exclusions>
                 <!-- exclude because ut overlaps with spring-aop from spring-context -->
                 <exclusion>
@@ -471,6 +447,28 @@
         </plugins>
     </build>
 
+    <developers>
+        <developer>
+            <id>totto</id>
+            <name>Thor Henning Hetland</name>
+            <email>totto@totto.org</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <organization>Cantara</organization>
+            <organizationUrl>https://wiki.cantara.no/</organizationUrl>
+        </developer>
+        <developer>
+            <id>huydo</id>
+            <name>Huy Do</name>
+            <email>misterhuydo@gmail.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <organization>Cantara</organization>
+            <organizationUrl>https://wiki.cantara.no/</organizationUrl>
+        </developer>
+    </developers>
 
     <repositories>
         <!-- Needed for parent  -->
