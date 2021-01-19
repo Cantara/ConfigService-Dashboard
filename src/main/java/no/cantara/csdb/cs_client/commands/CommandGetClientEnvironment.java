@@ -21,6 +21,7 @@ public class CommandGetClientEnvironment extends BaseGetCommand<String> {
 
 	@Override
 	protected HttpRequest dealWithRequestBeforeSend(HttpRequest request) {
+		super.dealWithRequestBeforeSend(request);
 		request.accept(MediaType.APPLICATION_JSON);
 		return request;
 	}
