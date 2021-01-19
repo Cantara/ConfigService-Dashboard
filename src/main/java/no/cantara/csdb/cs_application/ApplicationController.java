@@ -1,37 +1,10 @@
 package no.cantara.csdb.cs_application;
 
-import javax.annotation.security.RolesAllowed;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 import no.cantara.csdb.Main;
-import no.cantara.csdb.config.ConstantValue;
-import no.cantara.csdb.cs_application.commands.CommandCreateApplication;
-import no.cantara.csdb.cs_application.commands.CommandCreateApplicationConfig;
-import no.cantara.csdb.cs_application.commands.CommandDeleteApplication;
-import no.cantara.csdb.cs_application.commands.CommandDeleteApplicationConfig;
-import no.cantara.csdb.cs_application.commands.CommandApplicationConfigForApplicationByConfigId;
-import no.cantara.csdb.cs_application.commands.CommandGetAllApplicationConfigs;
-import no.cantara.csdb.cs_application.commands.CommandGetAllApplications;
-import no.cantara.csdb.cs_application.commands.CommandGetApplicationByArtifactId;
-import no.cantara.csdb.cs_application.commands.CommandGetApplicationConfigsForApplication;
-import no.cantara.csdb.cs_application.commands.CommandGetApplicationStatus;
-import no.cantara.csdb.cs_application.commands.CommandGetArtifactIdByConfigId;
-import no.cantara.csdb.cs_application.commands.CommandGetRemoveThisAppCheck;
-import no.cantara.csdb.cs_application.commands.CommandGetRemoveThisAppConfigCheck;
-import no.cantara.csdb.cs_application.commands.CommandGetTheLatestApplicationConfigForApplication;
-import no.cantara.csdb.cs_application.commands.CommandUpdateApplicationConfig;
+import no.cantara.csdb.cs_application.commands.*;
 import no.cantara.csdb.errorhandling.AppException;
 import no.cantara.csdb.errorhandling.AppExceptionCode;
 import no.cantara.csdb.util.CommandResponseHandler;
-import no.cantara.csdb.util.basecommands.BaseGetCommand;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
 @Controller
 @RequestMapping("/application")
