@@ -1,27 +1,15 @@
 package no.cantara.csdb.settings;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
-import org.codehaus.jackson.map.ObjectMapper;
-
-import no.cantara.cs.dto.Client;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import no.cantara.cs.dto.ClientAlias;
 import no.cantara.csdb.cs_client.commands.CommandGetAllClientAliases;
-import no.cantara.csdb.cs_client.commands.CommandGetAllClients;
 import no.cantara.csdb.cs_client.commands.CommandGetIgnoredClientIds;
 import no.cantara.csdb.cs_client.commands.CommandPutAignoredClient;
 import no.cantara.csdb.cs_client.commands.CommandPutClientAlias;
 import no.cantara.csdb.errorhandling.AppException;
-import no.cantara.csdb.errorhandling.AppExceptionCode;
-import no.cantara.csdb.util.CommandResponseHandler;
+
+import java.io.IOException;
+import java.util.*;
 
 
 public class CSMappingSettingsDao implements SettingsDao {

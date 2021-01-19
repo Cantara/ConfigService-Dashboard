@@ -1,6 +1,5 @@
 package no.cantara.csdb;
 
-import com.sun.jersey.server.impl.provider.RuntimeDelegateImpl;
 import no.cantara.csdb.config.ConfigValue;
 import no.cantara.csdb.health.HealthResource;
 import org.eclipse.jetty.security.ConstraintMapping;
@@ -12,6 +11,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.security.Constraint;
 import org.eclipse.jetty.util.security.Credential;
+import org.glassfish.jersey.internal.RuntimeDelegateImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.DispatcherServlet;
