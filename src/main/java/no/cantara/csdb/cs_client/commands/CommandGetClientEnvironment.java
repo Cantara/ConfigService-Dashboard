@@ -3,8 +3,6 @@ package no.cantara.csdb.cs_client.commands;
 import com.github.kevinsawicki.http.HttpRequest;
 import no.cantara.csdb.util.basecommands.BaseGetCommand;
 
-import javax.ws.rs.core.MediaType;
-
 public class CommandGetClientEnvironment extends BaseGetCommand<String> {
 
 	private String clientId;
@@ -22,7 +20,7 @@ public class CommandGetClientEnvironment extends BaseGetCommand<String> {
 	@Override
 	protected HttpRequest dealWithRequestBeforeSend(HttpRequest request) {
 		super.dealWithRequestBeforeSend(request);
-		request.accept(MediaType.APPLICATION_JSON);
+		//request.accept(MediaType.APPLICATION_JSON);
 		return request;
 	}
 
