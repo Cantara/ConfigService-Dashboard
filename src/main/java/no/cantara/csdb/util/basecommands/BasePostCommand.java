@@ -20,10 +20,11 @@ public abstract class BasePostCommand<T> extends BaseHttpPostHystrixCommand<T>{
 	
 	@Override
 	protected HttpRequest dealWithRequestBeforeSend(HttpRequest request) {
-		String usernameAndPassword = ConfigValue.CONFIGSERVICE_USERNAME + ":" + ConfigValue.CONFIGSERVICE_PASSWORD;
-		String encoded = Base64.getEncoder().encodeToString(usernameAndPassword.getBytes());
-		request.authorization("Basic " + encoded);
-		request.contentType(HttpSender.APPLICATION_JSON);
+//		String usernameAndPassword = ConfigValue.CONFIGSERVICE_USERNAME + ":" + ConfigValue.CONFIGSERVICE_PASSWORD;
+//		String encoded = Base64.getEncoder().encodeToString(usernameAndPassword.getBytes());
+//		request.authorization("Basic " + encoded);
+//		request.contentType(HttpSender.APPLICATION_JSON);
+		request.basic(ConfigValue.CONFIGSERVICE_USERNAME , ConfigValue.CONFIGSERVICE_PASSWORD);
 		return super.dealWithRequestBeforeSend(request);
 	}
 	

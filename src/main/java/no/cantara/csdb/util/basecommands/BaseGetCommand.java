@@ -20,10 +20,10 @@ public abstract class BaseGetCommand<T> extends BaseHttpGetHystrixCommand<T>{
 	
 	@Override
 	protected HttpRequest dealWithRequestBeforeSend(HttpRequest request) {
-		String usernameAndPassword = ConfigValue.CONFIGSERVICE_USERNAME + ":" + ConfigValue.CONFIGSERVICE_PASSWORD;
-		String encoded = Base64.getEncoder().encodeToString(usernameAndPassword.getBytes());
-		request.authorization("Basic " + encoded);
-		request.contentType(ContentType.APPLICATION_JSON.toString());
+//		String usernameAndPassword = ConfigValue.CONFIGSERVICE_USERNAME + ":" + ConfigValue.CONFIGSERVICE_PASSWORD;
+//		String encoded = Base64.getEncoder().encodeToString(usernameAndPassword.getBytes());
+		request.basic(ConfigValue.CONFIGSERVICE_USERNAME , ConfigValue.CONFIGSERVICE_PASSWORD);
+		//request.contentType("application/json");
 		return super.dealWithRequestBeforeSend(request);
 	}
 }
