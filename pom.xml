@@ -24,7 +24,7 @@
         <service.name>ConfigService-Dashboard</service.name>
         <jersey.version>2.32</jersey.version>
         <spring.version>5.3.5</spring.version>
-        <jetty.version>9.4.38.v20210224</jetty.version>
+        <jetty.version>9.4.39.v20210325</jetty.version>
         <jackson.version>2.12.2</jackson.version>
         <aws.version>1.11.977</aws.version>
         <slf4j.version>1.7.30</slf4j.version>
@@ -190,6 +190,13 @@
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
             <version>3.3.0</version>
+            <exclusions>
+                <exclusion>
+                    <dependency>
+                     <groupId>junit</groupId>
+                     <artifactId>junit</artifactId>
+                 </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
