@@ -27,7 +27,7 @@
         <spring.version>5.3.5</spring.version>
         <jetty.version>9.4.39.v20210325</jetty.version>
         <jackson.version>2.12.2</jackson.version>
-        <aws.version>1.11.977</aws.version>
+        <aws.version>1.11.982</aws.version>
         <slf4j.version>1.7.30</slf4j.version>
     </properties>
 
@@ -322,27 +322,21 @@
                                 </excludes>
                             </artifactSet>
                             <transformers>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
                                         <Main-Class>no.cantara.csdb.Main</Main-Class>
                                     </manifestEntries>
                                 </transformer>
 
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ComponentsXmlResourceTransformer"/>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ComponentsXmlResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>META-INF/spring.schemas</resource>
                                 </transformer>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>META-INF/spring.handlers</resource>
                                 </transformer>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>META-INF/spring.tooling</resource>
                                 </transformer>
                             </transformers>
