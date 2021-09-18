@@ -26,7 +26,7 @@
         <jersey.version>2.34</jersey.version>
         <spring.version>5.3.9</spring.version>
         <jetty.version>9.4.43.v20210629</jetty.version>
-        <jackson.version>2.12.4</jackson.version>
+        <jackson.version>2.12.5</jackson.version>
         <aws.version>1.12.46</aws.version>
         <slf4j.version>1.7.32</slf4j.version>
     </properties>
