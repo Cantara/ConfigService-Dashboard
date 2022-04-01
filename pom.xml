@@ -27,7 +27,7 @@
         <spring.version>5.3.18</spring.version>
         <jetty.version>9.4.45.v20220203</jetty.version>
         <jackson.version>2.13.2</jackson.version>
-        <aws.version>1.12.190</aws.version>
+        <aws.version>1.12.191</aws.version>
         <slf4j.version>1.7.36</slf4j.version>
     </properties>
 
