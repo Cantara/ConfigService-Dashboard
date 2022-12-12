@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>no.cantara.csdb</groupId>
     <artifactId>ConfigService-Dashboard</artifactId>
-    <version>0.18.4-SNAPSHOT</version>
+    <version>0.18.4</version>
     <packaging>jar</packaging>
     <name>ConfigService-Dashboard</name>
     <url>https://wiki.cantara.no/display/JAU/ConfigService+Dashboard</url>
@@ -18,7 +17,7 @@
         <developerConnection>scm:git:ssh://git@github.com/Cantara/ConfigService-Dashboard.git</developerConnection>
         <connection>scm:git:https://github.com/Cantara/ConfigService-Dashboard.git</connection>
         <url>https://github.com/Cantara/ConfigService-Dashboard</url>
-        <tag>ConfigService-Dashboard-0.17.22</tag>
+        <tag>ConfigService-Dashboard-0.18.4</tag>
     </scm>
 
     <properties>
@@ -327,8 +326,8 @@
                                     </manifestEntries>
                                 </transformer>
 
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ComponentsXmlResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ComponentsXmlResourceTransformer" />
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>META-INF/spring.schemas</resource>
                                 </transformer>
