@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>no.cantara.csdb</groupId>
     <artifactId>ConfigService-Dashboard</artifactId>
-    <version>0.18.27-SNAPSHOT</version>
+    <version>0.18.27</version>
     <packaging>jar</packaging>
     <name>ConfigService-Dashboard</name>
     <url>https://wiki.cantara.no/display/JAU/ConfigService+Dashboard</url>
@@ -17,7 +17,7 @@
         <developerConnection>scm:git:ssh://git@github.com/Cantara/ConfigService-Dashboard.git</developerConnection>
         <connection>scm:git:https://github.com/Cantara/ConfigService-Dashboard.git</connection>
         <url>https://github.com/Cantara/ConfigService-Dashboard</url>
-        <tag>ConfigService-Dashboard-0.17.22</tag>
+        <tag>ConfigService-Dashboard-0.18.27</tag>
     </scm>
 
     <properties>
