@@ -1,0 +1,21 @@
+id: ConfigService-Dashboard
+name: Config Service Dashboard
+version: 0.18.4-SNAPSHOT
+description: |
+  Web UI for managing and monitoring the Cantara Config Service. Allows
+  administrators to view registered clients, inspect and edit their
+  configurations, and review configuration change history.
+units:
+  - id: dashboard-ui
+    name: Dashboard UI
+    type: webapp
+    description: Web administration interface for Config Service — client list and navigation.
+    path: src/main/java/no/cantara/cs
+  - id: client-view
+    name: Client View
+    type: component
+    description: Per-client configuration display and editing screens.
+  - id: audit-view
+    name: Audit View
+    type: component
+    description: Configuration change history viewer showing who changed what and when.
