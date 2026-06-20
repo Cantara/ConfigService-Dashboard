@@ -1,3 +1,17 @@
+kcp_version: "0.21"
+updated: "2026-06-20"
+language: en
+license: "Apache-2.0"
+indexing: private
+temporal:
+  valid_from: "2026-03-10"
+signing:
+  scheme: ed25519
+  scope: this-manifest
+  public_key: "MCowBQYDK2VwAyEAuipgusnqU9vjf3p2yPVLD/DmERT6tBbLOqEETdxAhMU="
+  signature: "https://raw.githubusercontent.com/Cantara/ConfigService-Dashboard/master/knowledge.yaml.sig"
+not_for: []
+
 id: ConfigService-Dashboard
 name: Config Service Dashboard
 version: 0.18.4-SNAPSHOT
@@ -11,11 +25,20 @@ units:
     type: webapp
     description: Web administration interface for Config Service — client list and navigation.
     path: src/main/java/no/cantara/cs
+      content_hash:
+        algorithm: sha256
+        value: ""
   - id: client-view
     name: Client View
     type: component
     description: Per-client configuration display and editing screens.
+      content_hash:
+        algorithm: sha256
+        value: ""
   - id: audit-view
     name: Audit View
     type: component
     description: Configuration change history viewer showing who changed what and when.
+      content_hash:
+        algorithm: sha256
+        value: ""
