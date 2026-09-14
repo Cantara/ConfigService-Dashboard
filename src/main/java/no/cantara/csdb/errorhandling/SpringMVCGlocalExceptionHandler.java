@@ -3,13 +3,17 @@ package no.cantara.csdb.errorhandling;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import javax.ws.rs.WebApplicationException;
+import jakarta.ws.rs.WebApplicationException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
+
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 @ControllerAdvice
@@ -24,6 +28,13 @@ public class SpringMVCGlocalExceptionHandler {
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public ResponseEntity handle(NoHandlerFoundException ex){
 		return new ResponseEntity<String>(ExceptionConfig.handleSecurity(new ErrorMessage(ex)).toString(), HttpStatus.NOT_FOUND);
+	}
+
+	// Spring 6.1+ throws for a missing static file where Spring 5 answered 404;
+	// without this the catch-all below turned every missing resource into a 500.
+	@ExceptionHandler(NoResourceFoundException.class)
+	public void handleNoResource(HttpServletResponse response) throws IOException {
+		response.sendError(HttpServletResponse.SC_NOT_FOUND);
 	}
 
 	@ExceptionHandler(Throwable.class)

@@ -2,21 +2,21 @@ package no.cantara.csdb;
 
 import no.cantara.csdb.config.ConfigValue;
 import no.cantara.csdb.health.HealthResource;
-import org.eclipse.jetty.security.ConstraintMapping;
-import org.eclipse.jetty.security.ConstraintSecurityHandler;
+import org.eclipse.jetty.ee10.servlet.security.ConstraintMapping;
+import org.eclipse.jetty.ee10.servlet.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.security.UserStore;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.security.Constraint;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
+import org.eclipse.jetty.security.Constraint;
 import org.eclipse.jetty.util.security.Credential;
 import org.glassfish.jersey.internal.RuntimeDelegateImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import javax.ws.rs.ext.RuntimeDelegate;
+import jakarta.ws.rs.ext.RuntimeDelegate;
 
 public class Main {
 
@@ -30,7 +30,8 @@ public class Main {
 		RuntimeDelegate.setInstance(new RuntimeDelegateImpl());
 
 		Server server = new Server(ConfigValue.SERVICE_PORT);
-		ServletContextHandler context = new ServletContextHandler(server, ConfigValue.SERVICE_CONTEXT);
+		ServletContextHandler context = new ServletContextHandler(ConfigValue.SERVICE_CONTEXT);
+		server.setHandler(context);
 		ConstraintSecurityHandler securityHandler = buildSecurityHandler();
 		context.setSecurityHandler(securityHandler);
 
@@ -48,10 +49,8 @@ public class Main {
 
 	private static ConstraintSecurityHandler buildSecurityHandler() {
 
-		Constraint roleConstraint = new Constraint();
-		roleConstraint.setName(Constraint.__BASIC_AUTH);
-		roleConstraint.setRoles(new String[]{USER_ROLE, ADMIN_ROLE});
-		roleConstraint.setAuthenticate(true);
+		// Jetty 12: a role-restricted constraint implies authentication.
+		Constraint roleConstraint = Constraint.from(USER_ROLE, ADMIN_ROLE);
 
 		ConstraintSecurityHandler securityHandler = new ConstraintSecurityHandler();
 
@@ -67,7 +66,7 @@ public class Main {
 
         // Allow healthresource to be accessed without authentication
         ConstraintMapping healthEndpointConstraintMapping = new ConstraintMapping();
-        healthEndpointConstraintMapping.setConstraint(new Constraint(Constraint.NONE, Constraint.ANY_ROLE));
+        healthEndpointConstraintMapping.setConstraint(Constraint.ALLOWED);
 //		healthEndpointConstraintMapping.setPathSpec("/api/*");
         healthEndpointConstraintMapping.setPathSpec(HealthResource.HEALTH_PATH);
         securityHandler.addConstraintMapping(healthEndpointConstraintMapping);
