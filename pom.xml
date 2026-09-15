@@ -24,7 +24,7 @@
         <service.name>ConfigService-Dashboard</service.name>
         <!-- The Cantara parent pins 1.8; Jetty 12 and Spring 6 are Java 17. -->
         <jdk.version>17</jdk.version>
-        <jersey.version>3.1.12</jersey.version>
+        <jersey.version>4.0.2</jersey.version>
         <spring.version>6.2.19</spring.version>
         <jetty.version>12.1.13</jetty.version>
         <aws.version>1.12.797</aws.version>
