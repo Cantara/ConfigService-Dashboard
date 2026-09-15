@@ -1,9 +1,8 @@
 package no.cantara.csdb.util;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.http.entity.ContentType;
-import org.eclipse.jetty.http.HttpContent;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 
